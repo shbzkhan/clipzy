@@ -11,7 +11,10 @@ app.use(express.static("public"))
 app.use(cors())
 
 //import route statement
-// import 
+import userRouter from "./routes/user.routes.js"
+
+//router declaration
+app.use("api/v1/users", userRouter)
 
 
 
