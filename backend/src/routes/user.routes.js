@@ -28,3 +28,5 @@ router.route("/register").post(
 router.route("/login").post(loginUser)
 router.route("/logout").post(auth,logoutUser)
 router.route("/refresh-token").post(auth,refreshAccessToken)
+
+export default router
