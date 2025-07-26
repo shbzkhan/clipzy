@@ -296,7 +296,7 @@ const updatUserAvatar = asyncHandler(async(req, res)=>{
 
     const publicId = user.avatar.split("/").pop().split(".")[0]
     const avatar = await updateToCloududinary(publicId, avatarLocalPath)
-    if (!avatar) {
+    if (!avatar.url) {
         throw new apiError(400, "Avatar not update try again")
     }
 
@@ -328,12 +328,12 @@ const updatUserCoverImage = asyncHandler(async(req, res)=>{
     if(user.coverImage && user.coverImage.includes("cloudinary")){
         const publicId = user.coverImage.split("/").pop().split(".")[0]
         const coverImage = await updateToCloududinary(publicId, coverImageLocalPath)
-        if (!coverImage) {
+        if (!coverImage.url) {
             throw new apiError(400, "Cover Image not update try again")
         }
     }else if(!user.coverImage || user.coverImage ===""){
         const coverImage = await uploadToCloudinary(coverImageLocalPath)
-        if (!coverImage) {
+        if (!coverImage.url) {
             throw new apiError(400, "Cover Image not uploade, try again")
         }   
     }else{
