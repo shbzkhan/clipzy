@@ -2,11 +2,10 @@ import {User} from "../models/user.model.js"
 import { apiError } from "../utils/apiError.js";
 import { apiResponse } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js"
-import { uploadToCloudinary } from "../utils/cloudinary.js";
+import { updateToCloududinary, uploadToCloudinary } from "../utils/cloudinary.js";
 
 
 //generateAccessAndRefreshToken
-
 const generateAccessAndRefreshToken = async (userId) => {
     try {
         const user = await User.findById(userId)
@@ -19,7 +18,7 @@ const generateAccessAndRefreshToken = async (userId) => {
 
         user.refreshToken = refreshToken
         await user.save({validateBeforeSave: false})
-        return {accessToken, refreshToken}
+    return {accessToken, refreshToken}
     } catch (error) {
         throw new apiError(500, "Something went wronge when genrate access or refresh token");
     }
@@ -82,7 +81,7 @@ const userRegister = asyncHandler(async (req, res) => {
     );
 })
 
-
+// login controller
 const loginUser = asyncHandler(async (req, res) => {
     //req.body - data
     //userfind karenge
@@ -131,6 +130,7 @@ const loginUser = asyncHandler(async (req, res) => {
       )
 })
 
+//logout controller
 const logoutUser = asyncHandler(async (req, res) => {
     await User.findByIdAndUpdate(
         req.user._id,
@@ -157,6 +157,7 @@ const logoutUser = asyncHandler(async (req, res) => {
     
 })
 
+//refereh access token controller
 const refreshAccessToken = asyncHandler(async (req, res)=>{
     const incomingToken = req.cookies?.refreshToken || req.body?.refreshToken
     if(!incomingToken){
@@ -197,10 +198,165 @@ const refreshAccessToken = asyncHandler(async (req, res)=>{
 
 })
 
+//current user controller
+const getCurrentUser = asyncHandler(async(req, res)=>{
+    return res
+            .status(200)
+            .json(
+                new apiResponse(
+                    200,
+                    {user: req.user._id},
+                    {new: true}
+                )
+            )
+})
+
+//change   Password
+const changePassword = asyncHandler(async(req, res)=>{
+     /* 
+     req.bod -> data,
+     validation on data
+     req.user._id se user fetch karenge,
+     fir user per validation lagayenge
+     current password ko varfied karenge 
+     new pasword ko set karenge 
+    res bhej denge
+    */
+   const {currentPassword, newPassword} = req.body;
+   if(!currentPassword || !newPassword){
+     throw new apiError(400, "All fields are required")
+   }
+   if(currentPassword === newPassword){
+     throw new apiError(400, "Current & New password both are same")
+   }
+   const user = User.findById(req.user._id)
+   if (!user) {
+            throw new apiError(404,"Unauthorized user")
+        }
+   const validatePassword = new user.isPasswrodCorrect(currentPassword)
+   if(!validatePassword){
+    throw new apiError(401, "Current password invalid")
+   }
+
+    user.password =  newPassword
+    await user.save({validateBeforeSave: false})
+    return res
+            .status(200)
+            .json(new apiResponse(200, {}, "Password changed successfully"))
+
+})
+
+//update account details
+const updateAccoutDetails = asyncHandler(async(req, res)=>{
+    /* 
+    req.body -> data
+    validate data
+    find user from req.user and update fileds
+    send res
+     */
+    const {fullname, email}= req.body;
+    if(!fullname || !email){
+     throw new apiError(400, "All fields are required")
+   }
+   const user = await User.findByIdAndUpdate(
+    req.user._id,
+    {
+        $set:{
+            fullname,
+            email
+        }
+    },
+    {new: true}
+   ).select("-password -refreshToken")
+   return res
+            .status(200)
+            .json(new apiResponse(200, user, "Account details changed successfully"))
+})
+
+//update user avatar
+const updatUserAvatar = asyncHandler(async(req, res)=>{
+    // req.file -> avatarLocalPath
+    //validate avatarLocalPath
+    //user fetched from req.user
+    // verify user
+    // update avatar in cloudinary
+    // send res
+    const avatarLocalPath = req.file.avatar.path
+    if(!avatarLocalPath){
+        throw new apiError(400, "Avatar are required")
+    }
+    const user =  await User.findById(req.user._id)
+    if (!user) {
+            throw new apiError(404,"Unauthorized user")
+        }
+    
+    if(!(user.avatar && user.avatar.includes("cloudinary"))){
+        throw new apiError(400,"Somthing went wrong while updaing user avatar")
+    }
+
+    const publicId = user.avatar.split("/").pop().split(".")[0]
+    const avatar = await updateToCloududinary(publicId, avatarLocalPath)
+    if (!avatar) {
+        throw new apiError(400, "Avatar not update try again")
+    }
+
+    return res
+            .status(200)
+            .json(
+                new apiResponse(200,{}, "Avatar Updated successfully")
+            )
+    
+})
+
+//update user cover image
+const updatUserCoverImage = asyncHandler(async(req, res)=>{
+    // req.file -> coverLocalPath
+    //validate coverImageLocalPath
+    //user fetched from req.user
+    // verify user
+    // update Cover Image in cloudinary
+    // send res
+    const coverImageLocalPath = req.file.coverImage.path
+    if(!coverImageLocalPath){
+        throw new apiError(400, "Cover Image are required")
+    }
+    const user =  await User.findById(req.user._id)
+    if (!user) {
+            throw new apiError(404,"Unauthorized user")
+        }
+    
+    if(user.coverImage && user.coverImage.includes("cloudinary")){
+        const publicId = user.coverImage.split("/").pop().split(".")[0]
+        const coverImage = await updateToCloududinary(publicId, coverImageLocalPath)
+        if (!coverImage) {
+            throw new apiError(400, "Cover Image not update try again")
+        }
+    }else if(!user.coverImage || user.coverImage ===""){
+        const coverImage = await uploadToCloudinary(coverImageLocalPath)
+        if (!coverImage) {
+            throw new apiError(400, "Cover Image not uploade, try again")
+        }   
+    }else{
+        throw new apiError(400,"Somthing went wrong while updaing user Cover Image")
+    }
+
+    return res
+            .status(200)
+            .json(
+                new apiResponse(200,{}, "Cover Image Updated successfully")
+            )
+    
+})
+
 export {
     userRegister,
     loginUser,
     logoutUser,
-    refreshAccessToken
+    refreshAccessToken,
+    getCurrentUser,
+    changePassword,
+    updateAccoutDetails,
+    updatUserAvatar,
+    updatUserCoverImage
 
 }
