@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import {User} from "../models/user.model.js"
 import { apiError } from "../utils/apiError.js";
 import { apiResponse } from "../utils/apiResponse.js";
@@ -49,15 +50,13 @@ const userRegister = asyncHandler(async (req, res) => {
         throw new apiError(401, "User already exist")
     }
 
-    const avatarLocalPath = req.files.avatar[0]?.path
-    const coverImageLocalPath = req.files.coverImage[0]?.path
+    const avatarLocalPath = req.file.avatar.path
 
     if (!avatarLocalPath) {
         throw new apiError(404, "Avatar is required")
     }
 
     const avatar = await uploadToCloudinary(avatarLocalPath)
-    const coverImage = await uploadToCloudinary(coverImageLocalPath);
     if(!avatar){
         throw new apiError(404, "Avatar is required");
     }
@@ -68,7 +67,7 @@ const userRegister = asyncHandler(async (req, res) => {
         password,
         fullname,
         avatar: avatar.url,
-        coverImage: coverImage?.url || ""
+        coverImage:""
     })
 
     const createdUser = await User.findOne(user._id).select("-password -refreshToken")
@@ -274,7 +273,7 @@ const updateAccoutDetails = asyncHandler(async(req, res)=>{
 })
 
 //update user avatar
-const updatUserAvatar = asyncHandler(async(req, res)=>{
+const updateUserAvatar = asyncHandler(async(req, res)=>{
     // req.file -> avatarLocalPath
     //validate avatarLocalPath
     //user fetched from req.user
@@ -310,7 +309,7 @@ const updatUserAvatar = asyncHandler(async(req, res)=>{
 })
 
 //update user cover image
-const updatUserCoverImage = asyncHandler(async(req, res)=>{
+const updateUserCoverImage = asyncHandler(async(req, res)=>{
     // req.file -> coverLocalPath
     //validate coverImageLocalPath
     //user fetched from req.user
@@ -423,6 +422,53 @@ const getUserChannelProfile = asyncHandler(async(req, res)=>{
             )
 })
 
+//get user watch history
+const getUserWatchHistory = asyncHandler(async(req, res)=>{
+    const user = await User.aggregate([
+        {
+            $match: new mongoose.Types.ObjectId(req.user?._id)
+        },
+        {
+            $lookup:{
+                from:"videos",
+                localField:"watchHistory",
+                foreignField:"_id",
+                pipeline:[
+                    {
+                        $lookup:{
+                            form:"users",
+                            localField:"owner",
+                            foreignField:"_id",
+                            pipeline:[
+                                {
+                                    $project:{
+                                        fullname:1,
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        $addFields:{
+                            owner:{
+                                $first:"$owner"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    ])
+    if(!user){
+        throw new apiError(404, "Watch history not fetch")
+    }
+    return res
+            .status(200)
+            .json(
+                new apiResponse(200 , user[0].watchHistory, "Watch history fetched successfully")
+            )
+})
+
 export {
     userRegister,
     loginUser,
@@ -431,8 +477,9 @@ export {
     getCurrentUser,
     changePassword,
     updateAccoutDetails,
-    updatUserAvatar,
-    updatUserCoverImage,
-    getUserChannelProfile
+    updateUserAvatar,
+    updateUserCoverImage,
+    getUserChannelProfile,
+    getUserWatchHistory
 
 }
