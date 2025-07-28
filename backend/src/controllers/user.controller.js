@@ -39,7 +39,7 @@ const userRegister = asyncHandler(async (req, res) => {
     //user ko validate karna ki db me add hua hai ya nhi fir usme se kuchh field ko hide karna
     //return res
     const { username, email, fullname, password } = req.body;
-    if (!username || !email || fullname || !password) {
+    if (!username || !email || !fullname || !password) {
         throw new apiError(400, "All fields are required")
     }
 
@@ -50,13 +50,15 @@ const userRegister = asyncHandler(async (req, res) => {
         throw new apiError(401, "User already exist")
     }
 
-    const avatarLocalPath = req.file.avatar.path
-
+    const avatarLocalPath = req.file?.path
+    console.log("Avatar file ",avatarLocalPath)
     if (!avatarLocalPath) {
-        throw new apiError(404, "Avatar is required")
+        throw new apiError(404, "Avatar is required, please upload avatar")
     }
 
+
     const avatar = await uploadToCloudinary(avatarLocalPath)
+    console.log("avatar file upload to cloudinary" , avatar)
     if(!avatar){
         throw new apiError(404, "Avatar is required");
     }
