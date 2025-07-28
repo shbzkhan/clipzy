@@ -18,6 +18,7 @@ const generateAccessAndRefreshToken = async (userId) => {
         const refreshToken = user.generateRefreshToken();
 
         user.refreshToken = refreshToken
+        console.log("generate access and refresh token ", user.refreshToken)
         await user.save({validateBeforeSave: false})
     return {accessToken, refreshToken}
     } catch (error) {
@@ -150,8 +151,8 @@ const logoutUser = asyncHandler(async (req, res) => {
 
     return res
       .status(200)
-      .clearCookie("accessToken", accessToken)
-      .clearCookie("refreshToken", refreshToken)
+      .clearCookie("accessToken", options)
+      .clearCookie("refreshToken", options)
       .json(new apiResponse(200, {}, "User logged Out"));
     
 })
