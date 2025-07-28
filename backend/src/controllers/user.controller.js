@@ -51,14 +51,12 @@ const userRegister = asyncHandler(async (req, res) => {
     }
 
     const avatarLocalPath = req.file?.path
-    console.log("Avatar file ",avatarLocalPath)
     if (!avatarLocalPath) {
         throw new apiError(404, "Avatar is required, please upload avatar")
     }
 
 
     const avatar = await uploadToCloudinary(avatarLocalPath)
-    console.log("avatar file upload to cloudinary" , avatar)
     if(!avatar){
         throw new apiError(404, "Avatar is required");
     }
