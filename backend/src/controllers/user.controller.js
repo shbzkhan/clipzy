@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import jwt from "jsonwebtoken"
 import {User} from "../models/user.model.js"
 import { apiError } from "../utils/apiError.js";
 import { apiResponse } from "../utils/apiResponse.js";
@@ -18,7 +19,6 @@ const generateAccessAndRefreshToken = async (userId) => {
         const refreshToken = user.generateRefreshToken();
 
         user.refreshToken = refreshToken
-        console.log("generate access and refresh token ", user.refreshToken)
         await user.save({validateBeforeSave: false})
     return {accessToken, refreshToken}
     } catch (error) {
@@ -163,24 +163,29 @@ const refreshAccessToken = asyncHandler(async (req, res)=>{
     if(!incomingToken){
         throw new apiError(401, "Refresh token not found")
     }
-
-    const decoded = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET)
+    const decoded = jwt.verify(incomingToken, process.env.REFRESH_TOKEN_SECRET)
+    console.log("decoded token",decoded)
     
         if(!decoded){
             throw new apiError(401, "Unauthorized")
         }
     
-        const user = await User.findById(decoded?._id).select("-password -refreshToken")
+        const user = await User.findById(decoded?._id).select("-password")
                 
         if (!user) {
             throw new apiError(401,"Invalid Refresh Token")
         }
 
         if (incomingToken !== user.refreshToken) {
-            throw new apiError(401,"Unauthorized")
+            throw new apiError(401,"Unauthorized, token not matched")
         }
 
         const { accessToken, newRefreshToken } = await generateAccessAndRefreshToken(user._id)
+
+        const options = {
+            httpOnly: true,
+            secure: true,
+        };
 
         return res
                 .status(200)
