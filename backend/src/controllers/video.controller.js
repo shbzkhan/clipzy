@@ -61,7 +61,128 @@ const publishAVideo = asyncHandler(async (req, res) => {
 
 const getVideoById = asyncHandler(async (req, res) => {
     const { videoId } = req.params
-    //TODO: get video by id
+    if(!isValidObjectId(videoId)){
+        throw new apiError(400, "Invalid video id")
+    }
+    if(!isValidObjectId(req.user._id)){
+        throw new apiError(400, "Invalid user id")
+    }
+
+    const video = await Video.aggregate([
+        {
+            $match:{
+                _id:  new mongoose.Types.ObjectId(videoId)
+            }
+        },
+        //like pipline
+        {
+            $lookup:{
+                from:"likes",
+                localField:"_id",
+                foreignField:"video",
+                as:"likes"
+            }
+        },
+        //owner find
+        {
+            from:"users",
+            localField:"owner",
+            foreignField:"_id",
+            as: "owner",
+            pipeline:[
+                // find video owner subscribers
+                {
+                    $lookup:{
+                        from:"subscriptions",
+                        localField:"_id",
+                        foreignField:"channel",
+                        as:"subscribers"
+                    }
+                },
+                // add owner subscriber count and channel subscribe or not
+                {
+                    $addFields:{
+                        subscribersCount:{
+                            $size:"$subscribers"
+                        },
+                        isSubscribed:{
+                            if:{$in:[req.user._id, "$subscribers.subscriber"]},
+                            then:true,
+                            else:false
+                        }
+                    }
+                },
+                //owner filed fetched
+                {
+                    $project:{
+                        fullname:1,
+                        avatar:1,
+                        subscribersCount: 1,
+                        isSubscribed: 1
+                    }
+                }
+            ]
+        },
+        // video extra filed addd
+        {
+            $addFields:{
+                likesCount:{
+                    $size:"$likes"
+                },
+                owner:{
+                    $first:"$owner"
+                },
+                isLiked:{
+                    if:{$in:[req.user._id, "$likes.likedBy"]},
+                    then:true,
+                    else:false
+                }
+            }
+        },
+        {
+            $project:{
+                videoFile:1,
+                title:1,
+                description:1,
+                owner:1,
+                likesCount:1,
+                isLiked:1,
+                views:1,
+                duration:1,
+                createdAt:1,
+                comment:1
+            }
+        }
+    ])
+    if(!video){
+        throw new apiError(404, "Video fetched failed")
+    }
+    //increased views
+    await Video.findByIdAndUpdate(
+        videoId,
+        {
+            $inc:{
+                views:1
+            }
+        }
+    )
+
+    //add view in watch history
+    await User.findByIdAndUpdate(
+        req.user._id,
+        {
+            $addToSet:{
+                watchHistory:videoId
+            }
+        }
+    )
+
+    return res
+            .status(200)
+            .json(
+                new apiResponse(200, video[0], "Video Fetched successfully")
+            )
+    
 })
 
 const updateVideo = asyncHandler(async (req, res) => {
