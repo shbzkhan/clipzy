@@ -164,7 +164,6 @@ const refreshAccessToken = asyncHandler(async (req, res)=>{
         throw new apiError(401, "Refresh token not found")
     }
     const decoded = jwt.verify(incomingToken, process.env.REFRESH_TOKEN_SECRET)
-    console.log("decoded token",decoded)
     
         if(!decoded){
             throw new apiError(401, "Unauthorized")
@@ -234,11 +233,11 @@ const changePassword = asyncHandler(async(req, res)=>{
    if(currentPassword === newPassword){
      throw new apiError(400, "Current & New password both are same")
    }
-   const user = User.findById(req.user._id)
+   const user = await User.findById(req.user._id)
    if (!user) {
             throw new apiError(404,"Unauthorized user")
         }
-   const validatePassword = new user.isPasswrodCorrect(currentPassword)
+   const validatePassword = await user.isPasswrodCorrect(currentPassword)
    if(!validatePassword){
     throw new apiError(401, "Current password invalid")
    }
@@ -286,7 +285,7 @@ const updateUserAvatar = asyncHandler(async(req, res)=>{
     // verify user
     // update avatar in cloudinary
     // send res
-    const avatarLocalPath = req.file.avatar.path
+    const avatarLocalPath = req.file?.path
     if(!avatarLocalPath){
         throw new apiError(400, "Avatar are required")
     }
@@ -322,7 +321,7 @@ const updateUserCoverImage = asyncHandler(async(req, res)=>{
     // verify user
     // update Cover Image in cloudinary
     // send res
-    const coverImageLocalPath = req.file.coverImage.path
+    const coverImageLocalPath = req.file?.path
     if(!coverImageLocalPath){
         throw new apiError(400, "Cover Image are required")
     }
