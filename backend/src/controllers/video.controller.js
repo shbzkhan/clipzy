@@ -4,7 +4,7 @@ import {Video} from "../models/video.model.js"
 import {apiError} from "../utils/ApiError.js"
 import {apiResponse} from "../utils/ApiResponse.js"
 import {asyncHandler} from "../utils/asyncHandler.js"
-import {uploadToCloudinary} from "../utils/cloudinary.js"
+import {updateToCloududinary, uploadToCloudinary} from "../utils/cloudinary.js"
 
 
 const getAllVideos = asyncHandler(async (req, res) => {
@@ -187,13 +187,66 @@ const getVideoById = asyncHandler(async (req, res) => {
 
 const updateVideo = asyncHandler(async (req, res) => {
     const { videoId } = req.params
-    //TODO: update video details like title, description, thumbnail
+    if(!isValidObjectId(videoId)){
+        throw new apiError(400, "Invalid Video Id")
+    }
+    if(!isValidObjectId(req.user._id)){
+        throw new apiError(400, "Invalid User Id")
+    }
+
+    //ham user se thumbnail lenge fir usko update karenge
+    //ham user se title or description bhi lenge taki in field ko update kar paayen
+    //fir ham video owner or user ko match karenge ki sam hai ya koi 3rd party
+    //agar user match ho jaata hai to ham phle video ka thumbnail update karenge
+    //fir title or body
+    //fir ham validate karenge update hua ya nhi
+    //res send kar denge
+    const {title, description} = req.body;
+    if([title || description].some(field=>field?.trim() === "")){
+        throw new apiError(400, "All fields are required")
+    }
+
+    const video = await Video.findById(videoId)
+    if(!video){
+        throw new apiError(404, "Video not found")
+    }
+
+    if(video.owner.toString() !== req.user._id.toString()){
+        throw new apiError(401, "Only video owner can update the video")
+    }
+    
+    const thumbnailLocalPath = req.file?.path
+    if(thumbnailLocalPath){
+        const publicId = video.thumbnail.split("/").pop().split(".")[0]
+        const thumbnail = await updateToCloududinary(publicId, thumbnailLocalPath)
+        if (!thumbnail.url) {
+        throw new apiError(400, "thumbnail not update try again")
+        }
+    }
+
+    video.title = title
+    video.description = description
+
+    await video.save()
+
+    return res
+            .status(200)
+            .json(
+                new apiResponse(
+                    200, 
+                    {},
+                    "Video updated successfully"
+                )
+            )
+
 
 })
 
 const deleteVideo = asyncHandler(async (req, res) => {
     const { videoId } = req.params
     //TODO: delete video
+
+
 })
 
 const togglePublishStatus = asyncHandler(async (req, res) => {
