@@ -19,7 +19,6 @@ const publishAVideo = asyncHandler(async (req, res) => {
      if ([title, description].some((field) => field?.trim() === "")) {
         throw new apiError(400, "All fields are required");
     }
-
     const videoFileLocalPath = req.files?.videoFile[0].path
     const thumbnailLocalPath = req.files?.thumbnail[0].path
     if(!videoFileLocalPath || !thumbnailLocalPath){
@@ -34,8 +33,7 @@ const publishAVideo = asyncHandler(async (req, res) => {
     if(!thumbnail){
         throw new apiError(404, "Thumbnail not uploaded")
     }
-
-    const user = await Video.create({
+    const video = await Video.create({
         videoFile:videoFile.url,
         thumbnail:thumbnail.url,
         title,
@@ -44,13 +42,13 @@ const publishAVideo = asyncHandler(async (req, res) => {
         owner:req.user._id,
     })
 
-    const videoUploaded = Video.findById(user._id)
+    const videoUploaded = await Video.findById(video._id)
     if(!videoUploaded){
         throw new apiError(404, "Video not published, please try again")
     }
 
     return res
-            .status(201)
+            .status(200)
             .json(
                 new apiResponse(
                     200,
