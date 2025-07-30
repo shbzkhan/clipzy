@@ -281,6 +281,39 @@ const publicIdOfThumbnail = video.thumbnail.split("/").pop().split(".")[0]
 
 const togglePublishStatus = asyncHandler(async (req, res) => {
     const { videoId } = req.params
+    if(!isValidObjectId(videoId)){
+        throw new apiError(400, "Invalid Video Id")
+    }
+    if(!isValidObjectId(req.user._id)){
+        throw new apiError(400, "Invalid User Id")
+    }
+    const video = await Video.findById(videoId)
+    if(!video){
+        throw new apiError(400, "Video not found")
+    }
+
+    if(video.owner.toString() !== req.user._id.toString()){
+        throw new apiError(401, "Only video owner can delete the video")
+    }
+
+    const toggledVideo = await Video.findByIdAndUpdate(
+        videoId,
+        {
+            isPublished: !video.isPublished
+        },
+        {
+            new: true
+        }
+    )
+    if(!toggledVideo){
+        throw new apiError(404, "Toggle published video failed")
+    }
+
+    return res
+            .status(200)
+            .json(
+                new apiResponse(200, toggledVideo.isPublished, "Toggle published successfully")
+            )
 })
 
 export {

@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken"
 import {User} from "../models/user.model.js"
 
 import { asyncHandler } from "../utils/asyncHandler.js"
-import { updateOnCloudinary, uploadToCloudinary } from "../utils/cloudinary.js";
+import { updateOnCloudinary, uploadOnCloudinary } from "../utils/cloudinary.js";
 import { apiError } from "../utils/ApiError.js";
 import { apiResponse } from "../utils/ApiResponse.js";
 
@@ -58,7 +58,7 @@ const userRegister = asyncHandler(async (req, res) => {
     }
 
 
-    const avatar = await uploadToCloudinary(avatarLocalPath)
+    const avatar = await uploadOnCloudinary(avatarLocalPath)
     if(!avatar){
         throw new apiError(404, "Avatar is required");
     }
@@ -338,7 +338,7 @@ const updateUserCoverImage = asyncHandler(async(req, res)=>{
             throw new apiError(400, "Cover Image not update try again")
         }
     }else if(!user.coverImage || user.coverImage ===""){
-        const coverImage = await uploadToCloudinary(coverImageLocalPath)
+        const coverImage = await uploadOnCloudinary(coverImageLocalPath)
         if (!coverImage.url) {
             throw new apiError(400, "Cover Image not uploade, try again")
         }   

@@ -17,9 +17,12 @@ app.use(cors({
 
 //import route statement
 import userRouter from "./routes/user.routes.js"
+import videoRouter from "./routes/video.routes.js"
+
 
 //router declaration
 app.use("/api/v1/users", userRouter)
+app.use("/api/v1/videos", videoRouter)
 
 
 
