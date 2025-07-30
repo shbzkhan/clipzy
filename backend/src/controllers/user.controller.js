@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken"
 import {User} from "../models/user.model.js"
 
 import { asyncHandler } from "../utils/asyncHandler.js"
-import { updateToCloududinary, uploadToCloudinary } from "../utils/cloudinary.js";
+import { updateOnCloudinary, uploadToCloudinary } from "../utils/cloudinary.js";
 import { apiError } from "../utils/ApiError.js";
 import { apiResponse } from "../utils/ApiResponse.js";
 
@@ -300,7 +300,7 @@ const updateUserAvatar = asyncHandler(async(req, res)=>{
     }
 
     const publicId = user.avatar.split("/").pop().split(".")[0]
-    const avatar = await updateToCloududinary(publicId, avatarLocalPath)
+    const avatar = await updateOnCloudinary(publicId, avatarLocalPath)
     if (!avatar.url) {
         throw new apiError(400, "Avatar not update try again")
     }
@@ -333,7 +333,7 @@ const updateUserCoverImage = asyncHandler(async(req, res)=>{
     
     if(user.coverImage && user.coverImage.includes("cloudinary")){
         const publicId = user.coverImage.split("/").pop().split(".")[0]
-        const coverImage = await updateToCloududinary(publicId, coverImageLocalPath)
+        const coverImage = await updateOnCloudinary(publicId, coverImageLocalPath)
         if (!coverImage.url) {
             throw new apiError(400, "Cover Image not update try again")
         }

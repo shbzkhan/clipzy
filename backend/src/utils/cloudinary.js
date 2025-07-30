@@ -7,7 +7,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 //upload image or video on cloudinary
-const uploadToCloudinary = async (localPath) => {
+const uploadOnCloudinary = async (localPath) => {
     try {
         const response = await cloudinary.uploader.upload(localPath, {
             resource_type: "auto"
@@ -21,7 +21,7 @@ const uploadToCloudinary = async (localPath) => {
     }
 }
 
-const updateToCloududinary =async(publicId, localPath)=>{
+const updateOnCloudinary =async(publicId, localPath)=>{
 try {
         const response = await cloudinary.uploader.upload(localPath, {
             public_id: publicId,
@@ -37,8 +37,22 @@ try {
     }
 }
 
+const deleteOnCloudinary = async(publicId, resource_type = "image")=>{
+    try {
+        if(!publicId) return null
+        const response = await cloudinary.uploader.destroy(publicId,{
+            resource_type:`${resource_type}`
+        })
+        return response
+    } catch (error) {
+        console.log("File not deleted from cloudinary", error)
+        return error
+    }
+}
+
 
 export{
-    uploadToCloudinary,
-    updateToCloududinary
+    uploadOnCloudinary,
+    updateOnCloudinary,
+    deleteOnCloudinary
 }
