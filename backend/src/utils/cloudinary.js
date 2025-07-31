@@ -27,7 +27,6 @@ try {
             overwrite: true,
             invalidate: true
         })
-        console.log("FILE UPDATED ", response)
         fs.unlinkSync(localPath);
         return response
     } catch (error) {

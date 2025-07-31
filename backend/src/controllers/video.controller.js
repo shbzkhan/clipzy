@@ -67,6 +67,7 @@ const getVideoById = asyncHandler(async (req, res) => {
     if(!isValidObjectId(req.user._id)){
         throw new apiError(400, "Invalid user id")
     }
+    console.log("get video by id ",videoId)
 
     const video = await Video.aggregate([
         {
@@ -85,12 +86,14 @@ const getVideoById = asyncHandler(async (req, res) => {
         },
         //owner find
         {
+        $lookup:{
             from:"users",
             localField:"owner",
             foreignField:"_id",
             as: "owner",
             pipeline:[
                 // find video owner subscribers
+                
                 {
                     $lookup:{
                         from:"subscriptions",
@@ -106,9 +109,11 @@ const getVideoById = asyncHandler(async (req, res) => {
                             $size:"$subscribers"
                         },
                         isSubscribed:{
-                            if:{$in:[req.user._id, "$subscribers.subscriber"]},
+                            $cond:{
+                            if:{$in:[req.user?._id, "$subscribers.subscriber"]},
                             then:true,
                             else:false
+                            }
                         }
                     }
                 },
@@ -122,6 +127,7 @@ const getVideoById = asyncHandler(async (req, res) => {
                     }
                 }
             ]
+        }
         },
         // video extra filed addd
         {
@@ -133,9 +139,11 @@ const getVideoById = asyncHandler(async (req, res) => {
                     $first:"$owner"
                 },
                 isLiked:{
-                    if:{$in:[req.user._id, "$likes.likedBy"]},
+                    $cond:{
+                    if:{$in:[req.user?._id, "$likes.likedBy"]},
                     then:true,
                     else:false
+                    }
                 }
             }
         },
@@ -157,6 +165,7 @@ const getVideoById = asyncHandler(async (req, res) => {
     if(!video){
         throw new apiError(404, "Video fetched failed")
     }
+    console.log("get video by id ",video)
     //increased views
     await Video.findByIdAndUpdate(
         videoId,
