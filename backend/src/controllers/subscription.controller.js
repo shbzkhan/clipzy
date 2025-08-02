@@ -44,11 +44,148 @@ const toggleSubscription = asyncHandler(async (req, res) => {
 // controller to return subscriber list of a channel
 const getUserChannelSubscribers = asyncHandler(async (req, res) => {
     const {channelId} = req.params
+    if(!isValidObjectId(channelId)){
+        throw new apiError(400, "Invalid Channel ID")
+    }
+    const subscribers =  await Subscription.aggregate([
+        {
+            $match:{
+            channel:new mongoose.Types.ObjectId(channelId)
+            }
+        },
+        {
+            $lookup:{
+                from:"users",
+                localField:"subscriber",
+                foreignField:"_id",
+                as:"subscribers",
+                pipeline:[
+                    {
+                        $lookup:{
+                            from:"subscriptions",
+                            localField:"_id",
+                            foreignField:"channel",
+                            as:"subscribedToSbscriber"
+                        }
+                    },
+                    
+                    {
+                        $addFields:{
+                            subscribesCount:{
+                               $size:"$subscribedToSbscriber" 
+                            },
+                            isSubscribed:{
+                                $cond:{
+                                    if:{$in:[channelId, "$subscribedToSbscriber.subscriber"]},
+                                    then:true,
+                                    else:false
+                                }
+                            }
+                        }
+                    }
+                ]
+
+            }
+        },
+        {
+            $unwind:"$subscribers"
+        },
+        {
+            $project:{
+                _id:0,
+                subscribes:{
+                    fullname:1,
+                    avatar:1,
+                    username:1,
+                    subscribesCount:1,
+                    isSubscribed:1
+                }
+            }
+        }
+    ])
+
+    if(!subscribers){
+        throw new apiError(404, "Subscribers not found")
+    }
+
+    return res
+            .status(200)
+            .json(
+                new apiResponse(200, subscribers, "Subscribers fetched successfully")
+            )
 })
 
 // controller to return channel list to which user has subscribed
 const getSubscribedChannels = asyncHandler(async (req, res) => {
     const { subscriberId } = req.params
+    const subscribedChannels = await Subscription.aggregate([
+        {
+            $match:{
+                subscriber: new mongoose.Types.ObjectId(subscriberId)
+            }
+        },
+        {
+            $lookup:{
+                from:"users",
+                localField:"channel",
+                foreignField:"_id",
+                as:"subscribedTo",
+                pipeline:[
+                    {
+                        $lookup:{
+                            from:"videos",
+                            localField:"_id",
+                            foreignField:"owner",
+                            as:"videos"
+                        }
+                    },
+                    {
+                        $addFields:{
+                           lastVideo:{
+                             $last:"$videos"
+                           }
+                        }
+                    },
+                    //yaha project wala karke bhi test karna hai api ko
+                ]
+            }
+        },
+        {
+            $unwind:"$subscribedTo"
+        },
+        {
+            $project:{
+                _id:0,
+                subscribedTo:{
+                    _id:1,
+                    username:1,
+                    fullname:1,
+                    avatar:1,
+                    subscribedTo:{
+                        _id:1,
+                        thumbnail:1,
+                        videoFile:1,
+                        owner:1,
+                        title:1,
+                        description:1,
+                        duration:1,
+                        createdAt:1,
+                        views:1
+                    }
+                }
+            }
+        }
+    ])
+
+    if(!subscribedChannels){
+        throw new apiError(404, "Subscribed Channels not found")
+    }
+
+    return res
+            .status(200)
+            .json(
+                new apiResponse(200, subscribedChannels, "Subscribed Channel fetched successfully")
+            )
 })
 
 export {
