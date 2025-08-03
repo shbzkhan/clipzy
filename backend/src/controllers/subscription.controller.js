@@ -35,9 +35,11 @@ const toggleSubscription = asyncHandler(async (req, res) => {
     return res
             .status(200)
             .json(
+               new apiResponse( 
                 200,
                 {subscribed:true},
                 "Subscribed"
+                )
             )
 })
 
@@ -71,7 +73,7 @@ const getUserChannelSubscribers = asyncHandler(async (req, res) => {
                     
                     {
                         $addFields:{
-                            subscribesCount:{
+                            subscribersCount:{
                                $size:"$subscribedToSbscriber" 
                             },
                             isSubscribed:{
@@ -93,7 +95,7 @@ const getUserChannelSubscribers = asyncHandler(async (req, res) => {
         {
             $project:{
                 _id:0,
-                subscribes:{
+                subscribers:{
                     fullname:1,
                     avatar:1,
                     username:1,
@@ -107,11 +109,12 @@ const getUserChannelSubscribers = asyncHandler(async (req, res) => {
     if(!subscribers){
         throw new apiError(404, "Subscribers not found")
     }
+    console.log( "Subscriber",subscribers)
 
     return res
             .status(200)
             .json(
-                new apiResponse(200, subscribers, "Subscribers fetched successfully")
+                new apiResponse(200, subscribers, "Subscribers111111 fetched successfully")
             )
 })
 
