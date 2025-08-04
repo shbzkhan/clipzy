@@ -115,7 +115,7 @@ const getLikedVideos = asyncHandler(async (req, res) => {
                 likedBy: new mongoose.Types.ObjectId(req.user._id)
             }
         },
-        {
+        { 
             $lookup:{
                 from:"videos",
                 localField:"video",
@@ -157,11 +157,11 @@ const getLikedVideos = asyncHandler(async (req, res) => {
                 createdAt: -1,
             },
         },
-
+{
+        $replaceRoot: { newRoot: "$videos" }
+    },
         {
-            project:{
-                _id:0,
-                videos:{
+            $project:{
                     _id:1,
                     title:1,
                     description:1,
@@ -174,14 +174,14 @@ const getLikedVideos = asyncHandler(async (req, res) => {
                     owner:1,
                 }
             }
-        }
+        
 
     ])
 
     if(!likedVideo){
         throw new apiError(404, "Liked video not fetch")
     }
-
+// console.log(likedVideo)
     return res
             .status(200)
             .json(
