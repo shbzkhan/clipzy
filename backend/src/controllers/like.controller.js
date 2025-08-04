@@ -75,7 +75,7 @@ const toggleCommentLike = asyncHandler(async (req, res) => {
 
 const toggleTweetLike = asyncHandler(async (req, res) => {
     const {tweetId} = req.params
-    //TODO: toggle like on tweet
+
      if(!isValidObjectId(tweetId)){
         throw new apiError(400, 'Invalid tweet id')
     }
@@ -109,7 +109,84 @@ const toggleTweetLike = asyncHandler(async (req, res) => {
 )
 
 const getLikedVideos = asyncHandler(async (req, res) => {
-    //TODO: get all liked videos
+    const likedVideo = await Like.aggregate([
+        {
+            $match:{
+                likedBy: new mongoose.Types.ObjectId(req.user._id)
+            }
+        },
+        {
+            $lookup:{
+                from:"videos",
+                localField:"video",
+                foreignField:"_id",
+                as:"videos",
+                pipeline:[
+                    {
+                        $lookup:{
+                             from:"users",
+                             localField:"owner",
+                             foreignField:"_id",
+                             as:"owner",
+                             pipeline:[
+                                {
+                                    $project:{
+                                        fullname:1,
+                                        username:1,
+                                        avatar:1
+                                    }
+                                }
+                             ]
+                        },
+                    },
+                    {
+                        $addFields:{
+                                owner:{
+                                $first:"$owner"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            $unwind:"$videos"
+        },
+        {
+            $sort: {
+                createdAt: -1,
+            },
+        },
+
+        {
+            project:{
+                _id:0,
+                videos:{
+                    _id:1,
+                    title:1,
+                    description:1,
+                    videoFile:1,
+                    thumbnail:1,
+                    views:1,
+                    duration: 1,
+                    createdAt: 1,
+                    isPublished: 1,
+                    owner:1,
+                }
+            }
+        }
+
+    ])
+
+    if(!likedVideo){
+        throw new apiError(404, "Liked video not fetch")
+    }
+
+    return res
+            .status(200)
+            .json(
+                new apiResponse(200, likedVideo, "Liked video fetched successfully")
+            )
 })
 
 export {
