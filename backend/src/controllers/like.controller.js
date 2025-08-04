@@ -158,9 +158,7 @@ const getLikedVideos = asyncHandler(async (req, res) => {
             },
         },
         {
-            $replaceRoot:{ 
-                newRoot: "$videos" 
-            }
+            $replaceWith:"$videos"
         },
         {
             $project:{

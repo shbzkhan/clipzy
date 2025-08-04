@@ -93,9 +93,7 @@ const getUserChannelSubscribers = asyncHandler(async (req, res) => {
             $unwind:"$subscribers"
         },
         {
-            $replaceRoot:{ 
-                newRoot: "$subscribers" 
-            }
+            $replaceWith:"$subscribers"
         },
         {
             $project:{
@@ -111,8 +109,7 @@ const getUserChannelSubscribers = asyncHandler(async (req, res) => {
     if(!subscribers){
         throw new apiError(404, "Subscribers not found")
     }
-    console.log( "Subscriber",subscribers)
-
+    
     return res
             .status(200)
             .json(
@@ -159,9 +156,7 @@ const getSubscribedChannels = asyncHandler(async (req, res) => {
             $unwind:"$subscribedTo"
         },
         {
-            $replaceRoot:{ 
-                newRoot: "$subscribedTo" 
-            }
+            $replaceWith:"$subscribedTo"
         },
         {
             $project:{
