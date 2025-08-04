@@ -40,7 +40,36 @@ const toggleVideoLike = asyncHandler(async (req, res) => {
 
 const toggleCommentLike = asyncHandler(async (req, res) => {
     const {commentId} = req.params
-    //TODO: toggle like on comment
+    
+    if(!isValidObjectId(commentId)){
+        throw new apiError(400, 'Invalid comment id')
+    }
+
+    const isLikedComment = await Like.findOne({
+        likedBy:req.user._id,
+        comment: commentId
+    })
+
+    if(isLikedComment){
+        await Like.findByIdAndDelete(isLikedComment._id)
+
+        return res
+                .status(200)
+                .json(
+                    new apiResponse(200, {liked:false}, "Unliked successfully on comment")
+                )
+    }
+
+    await Like.create({
+        likedBy:req.user._id,
+        comment: commentId
+    })
+
+    return res
+            .status(201)
+            .json(
+                new apiResponse(201, {liked:true},"Liked successfully on comment")
+            )
 
 })
 
