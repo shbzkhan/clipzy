@@ -35,7 +35,7 @@ const getUserPlaylists = asyncHandler(async (req, res) => {
         throw new apiError(404, "Invalid User Id")
     }
 
-    const playlist = await Playlist.find({owner:userId})
+    const playlist = await Playlist.find({owner:userId}).sort({updatedAt: -1})
 
     return res
             .status(200)
@@ -106,12 +106,49 @@ const addVideoToPlaylist = asyncHandler(async (req, res) => {
 
     return res
             .status(200)
-            .json(new apiResponse(200, updatePlaylist, "Playlist fetched"))
+            .json(new apiResponse(200, updatePlaylist, "Video add in playlist"))
 })
 
 const removeVideoFromPlaylist = asyncHandler(async (req, res) => {
     const {playlistId, videoId} = req.params
-    // TODO: remove video from playlist
+    if(!playlistId || !videoId){
+        throw new apiError(404, "Playlist and Video Id required")
+    }
+    if(!isValidObjectId(playlistId)){
+        throw new apiError(404, "Invalid Playlist Id")
+    }
+    if(!isValidObjectId(videoId)){
+        throw new apiError(404, "Invalid Video Id")
+    }
+
+    const playlist = await Playlist.findById(playlistId)
+
+        if(!playlist){
+            throw new apiError(404, "Playlist not found")
+        }
+
+    if(playlist.owner.toString() !== req.user._id){
+        throw new apiError(401, "Only playlist owner can remove videos")
+    }
+
+    const updatedPlaylist = await Playlist.findByIdAndUpdate(
+                    playlistId,
+                    {
+                      $pull:{
+                        videos:videoId
+                      }  
+                    },
+                    {
+                        new:true
+                    }
+    )
+    if(!updatedPlaylist){
+        throw new apiError("Video not remove from playlist")
+    }
+
+    return res
+            .status(200)
+            .json(new apiResponse(200, updatePlaylist, "Video remove from playlist"))
 
 })
 
