@@ -10,7 +10,7 @@ const getVideoComments = asyncHandler(async (req, res) => {
     const {videoId} = req.params
     const {page = 1, limit = 10} = req.query
 
-    const commentAggregation = await Comment.aggregate([
+    const commentAggregation = Comment.aggregate([
         {
             $match:{
                 video:new mongoose.Types.ObjectId(videoId)
@@ -70,19 +70,20 @@ const getVideoComments = asyncHandler(async (req, res) => {
         }
     ])
 
-    const options ={
-        page:parseInt(page, 10),
-        limit:parseInt(limit, 10)
-    }
+const options = {
+    page: parseInt(page, 10),
+    limit: parseInt(limit, 10)
+};
 
-    const comment = Comment.aggregatePaginate(
-        commentAggregation,
-        options
-    )
-    
-    return res
-            .status(200)
-            .json(new apiResponse(200, comment, "fetch comment of video successfully"))
+const comments = await Comment.aggregatePaginate(
+    commentAggregation,
+    options
+);
+
+return res
+    .status(200)
+    .json(new apiResponse(200, comments, "Comments fetched successfully"));
+
 })
 
 const addComment = asyncHandler(async (req, res) => {
