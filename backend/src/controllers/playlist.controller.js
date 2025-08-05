@@ -35,7 +35,7 @@ const getUserPlaylists = asyncHandler(async (req, res) => {
         throw new apiError(404, "Invalid User Id")
     }
 
-    const playlist = await Playlist.find({owner:userId}).sort({updatedAt: -1})
+    const playlist = await Playlist.find({owner:userId}).sort({updatedAt: -1}).select("-videos -description")
 
     return res
             .status(200)
