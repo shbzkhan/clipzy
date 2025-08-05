@@ -10,6 +10,79 @@ const getVideoComments = asyncHandler(async (req, res) => {
     const {videoId} = req.params
     const {page = 1, limit = 10} = req.query
 
+    const commentAggregation = await Comment.aggregate([
+        {
+            $match:{
+                video:new mongoose.Types.ObjectId(videoId)
+            }
+        },
+        {
+            $lookup:{
+                from:"likes",
+                localField:"_id",
+                foreignField:"comment",
+                as:"likes"
+            }
+        },
+        {
+            $lookup:{
+                from:"users",
+                localField:"owner",
+                foreignField:"_id",
+                as:"owner",
+                pipeline:[
+                    {
+                        $project:{
+                            fullname:1,
+                            username:1,
+                            avatar:1
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            $addFields:{
+                owner:{
+                    $first:"$owner"
+                },
+                likes:{
+                    $size:"$likes"
+                },
+                isLike:{
+                    $cond:{
+                        if:{$in:[req.user._id, "$likes.likedBy"]},
+                        then:true,
+                        else:false
+                    }
+                }
+            }
+        },
+        {
+            $project:{
+                _id:1,
+                content:1,
+                likes:1,
+                isLike:1,
+                owner:1,
+                createdAt:1
+            }
+        }
+    ])
+
+    const options ={
+        page:parseInt(page, 10),
+        limit:parseInt(limit, 10)
+    }
+
+    const comment = Comment.aggregatePaginate(
+        commentAggregation,
+        options
+    )
+    
+    return res
+            .status(200)
+            .json(new apiResponse(200, comment, "fetch comment of video successfully"))
 })
 
 const addComment = asyncHandler(async (req, res) => {
