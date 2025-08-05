@@ -28,7 +28,18 @@ const createPlaylist = asyncHandler(async (req, res) => {
 
 const getUserPlaylists = asyncHandler(async (req, res) => {
     const {userId} = req.params
-    //TODO: get user playlists
+    if(!userId){
+        throw new apiError(404, "User Id required")
+    }
+    if(!isValidObjectId(userId)){
+        throw new apiError(404, "Invalid User Id")
+    }
+
+    const playlist = await Playlist.find({owner:userId})
+
+    return res
+            .status(200)
+            .json(new apiResponse(200, playlist, "Playlist fetched"))
 
 })
 
