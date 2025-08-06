@@ -295,7 +295,7 @@ const updatePlaylist = asyncHandler(async (req, res) => {
         {
             new: true
         }
-    )
+    ).select("-videos")
 
     if(!updatedPlaylist){
         throw new apiError("Playlist not update")
