@@ -464,6 +464,7 @@ const getUserWatchHistory = asyncHandler(async(req, res)=>{
                                 {
                                     $project:{
                                          fullname: 1,
+                                         avatar:1
                                     }
                                 }
                             ]

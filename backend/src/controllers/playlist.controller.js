@@ -43,24 +43,84 @@ const getUserPlaylists = asyncHandler(async (req, res) => {
 
 })
 
+
 const getPlaylistById = asyncHandler(async (req, res) => {
     const {playlistId} = req.params
 
-    if(!playlistId){
-        throw new apiError(404, "Playlist Id required")
-    }
     if(!isValidObjectId(playlistId)){
         throw new apiError(404, "Invalid Playlist Id")
     }
+    const userPlaylist = await Playlist.aggregate([
+        {
+            $match:{
+                _id: new mongoose.Types.ObjectId(playlistId)
+            }
+        },
+        {
+            $lookup:{
+                from:"videos",
+                localField:"videos",
+                foreignField:"_id",
+                as:"videos",
+                pipeline:[
+                    {
+                        $lookup:{
+                            from:"users",
+                            localField:"owner",
+                            foreignField:"_id",
+                            as:"owner",
+                            pipeline:[
+                                {
+                                    $project:{
+                                        fullname:1,
+                                        avatar:1
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        $addFields:{
+                            owner:{
+                                $first:"$owner"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            $lookup:{
+                from:"users",
+                localField:"owner",
+                foreignField:"_id",
+                as:"owner",
+                pipeline:[
+                    {
+                        $project:{
+                            fullname:1,
+                            avatar:1
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            $addFields:{
+                owner:{
+                    $first:"$owner"
+                }
+            }
+        }
+    ])
 
-    const playlist = await Playlist.findById(playlistId)
-        if(!playlist){
-            throw new apiError(404, "Playlist not found")
+    if(!userPlaylist){
+            throw new apiError(404, "User Playlist not fetch")
         }
 
     return res
             .status(200)
-            .json(new apiResponse(200, playlist, "Playlist fetched"))
+            .json(new apiResponse(200, {userPlaylist}, "Playlist fetched"))
 })
 
 const addVideoToPlaylist = asyncHandler(async (req, res) => {
