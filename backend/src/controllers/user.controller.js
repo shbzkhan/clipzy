@@ -452,7 +452,7 @@ const getUserWatchHistory = asyncHandler(async(req, res)=>{
                 from:"videos",
                 localField:"watchHistory",
                 foreignField:"_id",
-                as:"watchHistory",
+                as:"watchHistorys",
                 pipeline:[
                     {
                         $lookup:{
@@ -479,6 +479,30 @@ const getUserWatchHistory = asyncHandler(async(req, res)=>{
                     }
                 ]
             }
+        }
+        ,
+        {
+            $addFields:{
+                watchHistory:{
+                    $map:{
+                        input:{ $reverseArray: "$watchHistory" },
+                        as:"id",
+                        in:{
+                            $first:{
+                                $filter:{
+                                    input:"$watchHistorys",
+                                    as:"video",
+                                     cond: { $eq: ["$$video._id", "$$id"] }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },{
+             $project: {
+                    watchHistorys: 0
+                }
         }
     ])
    

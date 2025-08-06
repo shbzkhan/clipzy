@@ -61,7 +61,7 @@ const getPlaylistById = asyncHandler(async (req, res) => {
                 from:"videos",
                 localField:"videos",
                 foreignField:"_id",
-                as:"videos",
+                as:"videoss",
                 pipeline:[
                     {
                         $lookup:{
@@ -109,8 +109,27 @@ const getPlaylistById = asyncHandler(async (req, res) => {
             $addFields:{
                 owner:{
                     $first:"$owner"
+                },
+                videos:{
+                    $map:{
+                        input:{ $reverseArray: "$videos" },
+                        as:"id",
+                        in:{
+                            $first:{
+                                $filter:{
+                                    input:"$videoss",
+                                    as:"video",
+                                     cond: { $eq: ["$$video._id", "$$id"] }
+                                }
+                            }
+                        }
+                    }
                 }
             }
+        },{
+             $project: {
+                    videoss: 0
+                }
         }
     ])
 
@@ -120,7 +139,7 @@ const getPlaylistById = asyncHandler(async (req, res) => {
 
     return res
             .status(200)
-            .json(new apiResponse(200, {userPlaylist}, "Playlist fetched"))
+            .json(new apiResponse(200, userPlaylist[0], "Playlist fetched"))
 })
 
 const addVideoToPlaylist = asyncHandler(async (req, res) => {
