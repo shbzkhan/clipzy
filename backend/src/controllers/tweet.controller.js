@@ -33,6 +33,84 @@ const createTweet = asyncHandler(async (req, res) => {
 
 const getUserTweets = asyncHandler(async (req, res) => {
     // get user tweets
+     const { userId } = req.params;
+
+    if (!isValidObjectId(userId)) {
+        throw new apiError(400, "Invalid userId");
+    }
+
+    const tweet = await Tweet.aggregate([
+        {
+            $match:{
+                owner:new mongoose.Types.ObjectId(userId)
+            }
+        },
+        {
+            $lookup:{
+                from:"users",
+                localField:"owner",
+                foreignField:"_id",
+                as:"owner",
+                pipeline:[
+                    {
+                        $project:{
+                            fullname:1,
+                            username:1,
+                            avatar:1
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            $lookup:{
+                from:"likes",
+                localField:"_id",
+                foreignField:"tweet",
+                as:"likes",
+                pipeline:{
+                    $project:{
+                        likedBy:1
+                    }
+                }
+            }
+        },
+        {
+            $addFields:{
+                likeCount:{
+                    $size:"$likes"
+                },
+                owner:{
+                    $first:"$owner"
+                },
+                isLiked:{
+                    $cond:{
+                        if:{$in:[req.user._id, "$likes.likedBy"]},
+                        then:true,
+                        else:false
+                    }
+                }
+            }
+        },
+        {
+            $sort:{
+                createdAt:-1
+            }
+        },
+        {
+            $project:{
+                content:1,
+                owner:1,
+                likeCount:1,
+                isLiked:1,
+                createdAt:1
+            }
+        }
+    ])
+
+    return res
+        .status(200)
+        .json(new apiResponse(200, tweet, "Tweets fetched successfully"));
 })
 
 const updateTweet = asyncHandler(async (req, res) => {
