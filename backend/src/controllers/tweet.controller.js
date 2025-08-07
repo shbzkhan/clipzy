@@ -38,7 +38,7 @@ const getUserTweets = asyncHandler(async (req, res) => {
     if (!isValidObjectId(userId)) {
         throw new apiError(400, "Invalid userId");
     }
-
+    console.log(userId)
     const tweet = await Tweet.aggregate([
         {
             $match:{
@@ -68,11 +68,13 @@ const getUserTweets = asyncHandler(async (req, res) => {
                 localField:"_id",
                 foreignField:"tweet",
                 as:"likes",
-                pipeline:{
+                pipeline:[
+                    {
                     $project:{
                         likedBy:1
                     }
                 }
+                ]
             }
         },
         {
@@ -85,7 +87,7 @@ const getUserTweets = asyncHandler(async (req, res) => {
                 },
                 isLiked:{
                     $cond:{
-                        if:{$in:[req.user._id, "$likes.likedBy"]},
+                        if:{$in:[req.user?._id, "$likes.likedBy"]},
                         then:true,
                         else:false
                     }
