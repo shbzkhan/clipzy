@@ -1,12 +1,34 @@
 import mongoose, { isValidObjectId } from "mongoose"
 import {Tweet} from "../models/tweet.model.js"
 import {User} from "../models/user.model.js"
-import {ApiError} from "../utils/ApiError.js"
-import {ApiResponse} from "../utils/ApiResponse.js"
+import {apiError} from "../utils/ApiError.js"
+import {apiResponse} from "../utils/ApiResponse.js"
 import {asyncHandler} from "../utils/asyncHandler.js"
 
 const createTweet = asyncHandler(async (req, res) => {
     //create tweet
+    const {content} = req.body
+    if(!content){
+        throw new apiError(400, "Content field is required")
+    }
+
+    if(!isValidObjectId(req.user._id)){
+        throw new apiError(401,"Invalid User id")
+    }
+
+    const tweet = await Tweet.create({
+        content,
+        owner:req.user._id
+    })
+
+    if(!tweet){
+        throw new apiError(404, "Tweet not Published")
+    }
+
+    return res
+            .status(201)
+            .json(new apiResponse(201, tweet, "Tweet Published"))
+
 })
 
 const getUserTweets = asyncHandler(async (req, res) => {
