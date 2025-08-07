@@ -37,6 +37,40 @@ const getUserTweets = asyncHandler(async (req, res) => {
 
 const updateTweet = asyncHandler(async (req, res) => {
     //update tweet
+    const {content} = req.body
+    const {tweetId} = req.params
+
+    if(!content){
+        throw new apiError(400, "Content field is required")
+    }
+
+    if(!isValidObjectId(req.user._id)){
+        throw new apiError(401,"Invalid User id")
+    }
+    if(!isValidObjectId(tweetId)){
+        throw new apiError(401,"Invalid Tweet id")
+    }
+
+    const tweet = await Tweet.findByIdAndUpdate(
+        tweetId,
+        {
+            $set:{
+                content
+            }
+        },
+        {
+            new: true
+        }
+    )
+
+    if(!tweet){
+        throw new apiError(404, "Tweet not update")
+    }
+
+    return res
+            .status(201)
+            .json(new apiResponse(201, tweet, "Tweet updated successfully"))
+
 })
 
 const deleteTweet = asyncHandler(async (req, res) => {
