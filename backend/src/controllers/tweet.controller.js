@@ -51,7 +51,17 @@ const updateTweet = asyncHandler(async (req, res) => {
         throw new apiError(401,"Invalid Tweet id")
     }
 
-    const tweet = await Tweet.findByIdAndUpdate(
+    const tweet = await Tweet.findById(tweetId);
+
+    if (!tweet) {
+        throw new apiError(404, "Tweet not found");
+    }
+
+    if (tweet?.owner.toString() !== req.user?._id.toString()) {
+        throw new apiError(400, "only owner can edit thier tweet");
+    }
+
+    const updatedTweet = await Tweet.findByIdAndUpdate(
         tweetId,
         {
             $set:{
@@ -63,18 +73,46 @@ const updateTweet = asyncHandler(async (req, res) => {
         }
     )
 
-    if(!tweet){
+    if(!updatedTweet){
         throw new apiError(404, "Tweet not update")
     }
 
     return res
             .status(201)
-            .json(new apiResponse(201, tweet, "Tweet updated successfully"))
+            .json(new apiResponse(201, updatedTweet, "Tweet updated successfully"))
 
 })
 
 const deleteTweet = asyncHandler(async (req, res) => {
     //delete tweet
+    const {tweetId} = req.params
+
+    if(!isValidObjectId(req.user._id)){
+        throw new apiError(401,"Invalid User id")
+    }
+    if(!isValidObjectId(tweetId)){
+        throw new apiError(401,"Invalid Tweet id")
+    }
+
+    const tweet = await Tweet.findById(tweetId);
+
+    if (!tweet) {
+        throw new apiError(404, "Tweet not found");
+    }
+
+    if (tweet?.owner.toString() !== req.user?._id.toString()) {
+        throw new apiError(400, "only owner can delete thier tweet");
+    }
+
+    const deletedTweet = await Tweet.findByIdAndDelete(tweetId)
+
+    if(!deletedTweet){
+        throw new apiError(404, "Tweet not delete")
+    }
+
+    return res
+            .status(200)
+            .json(new apiResponse(200, {tweetId}, "Tweet deleted successfully"))
 })
 
 export {
