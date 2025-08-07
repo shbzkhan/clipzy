@@ -67,7 +67,6 @@ const getVideoById = asyncHandler(async (req, res) => {
     if(!isValidObjectId(req.user._id)){
         throw new apiError(400, "Invalid user id")
     }
-    console.log("get video by id ",videoId)
 
     const video = await Video.aggregate([
         {
@@ -165,7 +164,6 @@ const getVideoById = asyncHandler(async (req, res) => {
     if(!video){
         throw new apiError(404, "Video fetched failed")
     }
-    console.log("get video by id ",video)
     //increased views
     await Video.findByIdAndUpdate(
         videoId,

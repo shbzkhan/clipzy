@@ -304,7 +304,6 @@ const updateUserAvatar = asyncHandler(async(req, res)=>{
     if (!avatar.url) {
         throw new apiError(400, "Avatar not update try again")
     }
-    console.log("Avatar public id ", avatar.public_id)
 
     return res
             .status(200)

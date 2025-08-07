@@ -38,7 +38,7 @@ const getUserTweets = asyncHandler(async (req, res) => {
     if (!isValidObjectId(userId)) {
         throw new apiError(400, "Invalid userId");
     }
-    console.log(userId)
+    
     const tweet = await Tweet.aggregate([
         {
             $match:{
