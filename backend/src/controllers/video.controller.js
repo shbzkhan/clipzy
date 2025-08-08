@@ -84,7 +84,6 @@ const getAllVideos = asyncHandler(async (req, res) => {
         }
     }
 )
-console.dir(pipeline, { depth: null });
 
     const videoAggregate = Video.aggregate(pipeline)
 
