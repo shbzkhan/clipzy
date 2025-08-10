@@ -1,7 +1,8 @@
 export type RootStackParamList = {
     MainTabs:undefined,
     About:undefined,
-    Splash:undefined
+    Splash:undefined,
+    Search:undefined
 }
 export type TabNavigatorParamList = {
     Home:undefined,

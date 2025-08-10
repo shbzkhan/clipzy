@@ -7,7 +7,7 @@ type IconTypes = {
     name:iconsName,
     color:string,
     size?:number,
-    focused:any
+    focused?:any
 }
 const Icon:FC<IconTypes> = ({ name, color, size, focused }) => {
   const CustomIcon = icons[name];

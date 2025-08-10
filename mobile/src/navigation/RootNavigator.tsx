@@ -4,6 +4,7 @@ import About from '../screens/About';
 import Splash from '../screens/Splash';
 import { RootStackParamList } from '../types';
 import { StatusBar } from 'react-native';
+import Search from '../screens/Search';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -18,6 +19,7 @@ const RootNavigator = () => {
       <Stack.Screen name="Splash" component={Splash} />
       <Stack.Screen name="MainTabs" component={TabNavigator} />
       <Stack.Screen name="About" component={About} />
+      <Stack.Screen name="Search" component={Search} />
     </Stack.Navigator>
     </>
   )
