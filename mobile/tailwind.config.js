@@ -13,7 +13,7 @@ module.exports = {
 
       },
        colors:{
-        "primary": {
+        primary: {
            50: "#EBF5FF",
           100: "#DBEAFE",
           200: "#BEDBEF",
@@ -25,9 +25,12 @@ module.exports = {
           800: "#1E40AF",
           900: "#1E3A8A",
         },
+        secondary: "#F5F5F7",
+        tertiary: "#EEEEEE",
         accent:{
           100: "#FBFBFD"
         },
+        white: "#FFFFFF",
         black:{
           DEFAULT: "#000000",
           100: "#8C8E98",
@@ -35,7 +38,19 @@ module.exports = {
           300: "#191d31",
         },
         danger: "#F75555",
-      }
+         gray: {
+            50: "#FAFAFA",
+            100: "#F4F4F5",
+            200: "#E4E4E7",
+            300: "#D4D4D8",
+            400: "#A1A1AA",
+            500: "#71717A",
+            600: "#52525B",
+            700: "#3F3F46",
+            800: "#27272A",
+            900: "#18181B",
+        },
+      },
     },
   },
   plugins: [],

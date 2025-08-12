@@ -1,8 +1,6 @@
 import { View, Text, TouchableOpacity } from 'react-native'
 import React, { FC } from 'react'
 import Icon from '../constants/Icons'
-import { navigate } from '../navigation/NavigationUtils'
-
 interface CustomIconsTypes{
     name:any,
     color?:string,

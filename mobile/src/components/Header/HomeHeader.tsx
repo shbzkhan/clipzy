@@ -4,7 +4,7 @@ import Logo from '../../constants/Logo'
 import CustomIcon from '../CustomIcon'
 import { navigate } from '../../navigation/NavigationUtils'
 
-const Header = () => {
+const HomeHeader = () => {
   return (
     <View className=' h-14 w-full flex-row gap-1 items-center justify-between border-b px-4 border-gray-200'>
       <View className='flex-row gap-1 items-center'>
@@ -26,4 +26,4 @@ const Header = () => {
   )
 }
 
-export default Header
+export default HomeHeader
