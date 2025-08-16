@@ -52,23 +52,23 @@ const userRegister = asyncHandler(async (req, res) => {
         throw new apiError(401, "User already exist")
     }
 
-    const avatarLocalPath = req.file?.path
-    if (!avatarLocalPath) {
-        throw new apiError(404, "Avatar is required, please upload avatar")
-    }
+    // const avatarLocalPath = req.file?.path
+    // if (!avatarLocalPath) {
+    //     throw new apiError(404, "Avatar is required, please upload avatar")
+    // }
 
 
-    const avatar = await uploadOnCloudinary(avatarLocalPath)
-    if(!avatar){
-        throw new apiError(404, "Avatar is required");
-    }
+    // const avatar = await uploadOnCloudinary(avatarLocalPath)
+    // if(!avatar){
+    //     throw new apiError(404, "Avatar is required");
+    // }
 
     const user = await User.create({
         username,
         email,
         password,
         fullname,
-        avatar: avatar.url,
+        avatar: "",
         coverImage:""
     })
 
@@ -78,7 +78,7 @@ const userRegister = asyncHandler(async (req, res) => {
 
     }
     return res.status(201).json(
-        new apiResponse(201, createdUser, "User register succesfully")
+        new apiResponse(201, createdUser, "User registered succesfully")
     );
 })
 

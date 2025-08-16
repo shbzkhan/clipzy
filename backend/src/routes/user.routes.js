@@ -18,7 +18,7 @@ import { auth } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
-router.route("/register").post(upload.single("avatar"),userRegister)
+router.route("/register").post(userRegister)
 router.route("/login").post(loginUser)
 router.route("/logout").post(auth,logoutUser)
 router.route("/refresh-token").post(auth,refreshAccessToken)
