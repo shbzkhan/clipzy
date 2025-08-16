@@ -7,6 +7,7 @@ import CustomTextInput from '../components/CustomTextInput'
 import Logo from '../constants/Logo'
 import CustomButton from '../components/CustomButton'
 import { navigate, replace, resetAndNavigate } from '../navigation/NavigationUtils'
+import { ToastShow } from '../utils/Tost'
 
 
 const Login = () => {
@@ -74,7 +75,7 @@ const SignupSchema = Yup.object().shape({
 
                 <CustomButton
                 title='Login'
-                handlePress={()=>replace("MainTabs")}
+                handlePress={()=>ToastShow(values.email, "danger")}
                 containerStyles='mt-4'
                 />
                 <View className='mx-auto mt-3 flex-row items-center gap-1'>

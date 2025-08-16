@@ -7,6 +7,8 @@ import { StatusBar } from 'react-native';
 import Search from '../screens/Search';
 import Register from '../screens/Register';
 import Login from '../screens/Login';
+import Video from '../screens/Video';
+import Channel from '../screens/Channel';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -24,6 +26,8 @@ const RootNavigator = () => {
       <Stack.Screen name="Search" component={Search} />
       <Stack.Screen name="Register" component={Register} />
       <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="Video" component={Video} />
+      <Stack.Screen name="Channel" component={Channel} />
     </Stack.Navigator>
     </>
   )

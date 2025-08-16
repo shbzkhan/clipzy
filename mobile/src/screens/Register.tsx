@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, KeyboardAvoidingView, Platform, TouchableOpacity } from 'react-native'
+import { View, Text, ScrollView, KeyboardAvoidingView, Platform, TouchableOpacity, Alert } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Formik } from 'formik'
@@ -6,13 +6,29 @@ import * as Yup from "yup"
 import CustomTextInput from '../components/CustomTextInput'
 import Logo from '../constants/Logo'
 import CustomButton from '../components/CustomButton'
-import { goBack, navigate } from '../navigation/NavigationUtils'
+import { navigate } from '../navigation/NavigationUtils'
+import { useRegisterMutation } from '../redux/api/authApi'
+import { ToastShow } from '../utils/Tost'
+import { UserProps } from '../types/auth'
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
 
 
 const Register = () => {
+const [register,{isLoading}] = useRegisterMutation()
+    const handleLogin = async(newUser:UserProps,{ resetForm }:any)=>{
+       try {
+         const user = await register(newUser).unwrap()
+         ToastShow(user.message, "success")
+         resetForm()
+       } catch (err) {
+         const error = err as FetchBaseQueryError
+         const errorMsg = error.data as {message:string}
+        ToastShow(errorMsg.message, "danger")
+       }
+    }
 
 const SignupSchema = Yup.object().shape({
-                    name: Yup.string().required('Name is required'),
+                    fullname: Yup.string().required('Name is required'),
                     username: Yup.string().min(4, 'Minimum 4 characters').required('Name is required'),
                     email: Yup.string().email('Invalid email').required('Email is required'),
                     password: Yup.string().min(6, 'Minimum 6 characters').required('Password is required'),
@@ -43,7 +59,7 @@ const SignupSchema = Yup.object().shape({
                 email:"",
                 password:""
             }}
-            onSubmit={()=>console.log("hello")}
+            onSubmit={handleLogin}
             validationSchema={SignupSchema}
         >
             {({
@@ -52,7 +68,8 @@ const SignupSchema = Yup.object().shape({
                 handleSubmit,
                 values,
                 errors,
-                touched 
+                touched,
+                resetForm
             })=>(
                 
                 <View className='gap-4'>
@@ -84,6 +101,7 @@ const SignupSchema = Yup.object().shape({
                 <CustomButton
                 title='Register'
                 handlePress={handleSubmit}
+                isLoading={isLoading}
                 containerStyles='mt-4'
                 />
                 <View className='mx-auto mt-3 flex-row items-center gap-1'>

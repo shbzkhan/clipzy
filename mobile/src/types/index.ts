@@ -4,7 +4,9 @@ export type RootStackParamList = {
     Splash:undefined,
     Search:undefined,
     Register:undefined,
-    Login:undefined
+    Login:undefined,
+    Video:undefined
+    Channel:undefined
 }
 export type TabNavigatorParamList = {
     Home:undefined,
