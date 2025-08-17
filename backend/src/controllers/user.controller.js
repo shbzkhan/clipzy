@@ -90,21 +90,20 @@ const loginUser = asyncHandler(async (req, res) => {
     //generate access and refress token
     //cookies me store karenge
     //return res
-    const { username, email, password } = req.body
+    const { email, password } = req.body
     
-    if (!username && !email) {
-        throw new apiError(400, "Username or email are required")
+    if (!email) {
+        throw new apiError(400, "email are required")
     }
 
-    const user = await User.findOne({
-        $or:[{username},{email}]
-    })
+    const user = await User.findOne({email})
 
     if (!user) {
         throw new apiError(404, "Invalid user credantials");
     }
 
-    const validatePassword = user.isPasswrodCorrect(password)
+    const validatePassword = await user.isPasswrodCorrect(password)
+
     if (!validatePassword) {
         throw new apiError(401, "Invalid user credantials");
     }
