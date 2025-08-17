@@ -1,11 +1,14 @@
-export interface UserProps {
-    fullname:string
-    username:string
+export interface LoginUser {
     email:string
     password:string
 }
+export interface RegisterUser extends LoginUser {
+    fullname:string
+    username:string
+    
+}
 
-export interface UserData extends UserProps {
+export interface UserData extends RegisterUser {
   _id: string
   avatar: string
   coverImage: string

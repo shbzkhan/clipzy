@@ -6,18 +6,37 @@ import * as Yup from "yup"
 import CustomTextInput from '../components/CustomTextInput'
 import Logo from '../constants/Logo'
 import CustomButton from '../components/CustomButton'
-import { navigate, replace, resetAndNavigate } from '../navigation/NavigationUtils'
+import { goBack, navigate } from '../navigation/NavigationUtils'
 import { ToastShow } from '../utils/Tost'
+import { useLoginMutation } from '../redux/api/authApi'
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
+import { LoginUser } from '../types/auth'
+import { useDispatch } from 'react-redux'
+import { userData } from '../redux/slice/userSlice'
 
 
 const Login = () => {
+    const [login,{isLoading}] = useLoginMutation()
+    const dispatch = useDispatch();
+        
+        const handleLogin = async(user:LoginUser,{ resetForm }:any)=>{
+           try {
+             const userLoggedIn = await login(user).unwrap()
+             ToastShow(userLoggedIn.message, "success")
+             dispatch(userData(userLoggedIn.data))
+             goBack()
+             resetForm()
+           } catch (err) {
+             const error = err as FetchBaseQueryError
+             console.log(err)
+             const errorMsg = error.data as {message:string}
+            ToastShow(errorMsg.message, "danger")
+           }
+        }
 
 const SignupSchema = Yup.object().shape({
-                    name: Yup.string().required('Name is required'),
-                    username: Yup.string().min(4, 'Minimum 4 characters').required('Name is required'),
                     email: Yup.string().email('Invalid email').required('Email is required'),
                     password: Yup.string().min(6, 'Minimum 6 characters').required('Password is required'),
-                    terms: Yup.boolean().oneOf([true], 'You must accept the terms')
 });
   return (
     <SafeAreaView className=' bg-white flex-1'>
@@ -39,17 +58,14 @@ const SignupSchema = Yup.object().shape({
             </View>
         <Formik
             initialValues={{
-                fullname:"",
-                username:"",
                 email:"",
                 password:""
             }}
-            onSubmit={()=>console.log("hello")}
+            onSubmit={handleLogin}
             validationSchema={SignupSchema}
             // validateOnChange={false}
         >
             {({
-                isSubmitting,
                 handleChange,
                 handleSubmit,
                 values,
@@ -75,7 +91,8 @@ const SignupSchema = Yup.object().shape({
 
                 <CustomButton
                 title='Login'
-                handlePress={()=>ToastShow(values.email, "danger")}
+                handlePress={handleSubmit}
+                isLoading={isLoading}
                 containerStyles='mt-4'
                 />
                 <View className='mx-auto mt-3 flex-row items-center gap-1'>

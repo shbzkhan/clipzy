@@ -21,7 +21,7 @@ const AuthBox = ({name}:any) => {
             <CustomButton
             title='Register'
             containerStyles='w-64 h-12 bg-transparent border-2 border-primary-600 mt-2'
-            textStyles='text-primary-700'
+            textStyles='text-primary-500'
             handlePress={()=>navigate("Register")}
             />
         </View>

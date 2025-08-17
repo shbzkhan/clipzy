@@ -9,13 +9,14 @@ import CustomButton from '../components/CustomButton'
 import { navigate } from '../navigation/NavigationUtils'
 import { useRegisterMutation } from '../redux/api/authApi'
 import { ToastShow } from '../utils/Tost'
-import { UserProps } from '../types/auth'
+import { RegisterUser } from '../types/auth'
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
 
 
 const Register = () => {
-const [register,{isLoading}] = useRegisterMutation()
-    const handleLogin = async(newUser:UserProps,{ resetForm }:any)=>{
+    const [register,{isLoading}] = useRegisterMutation()
+    
+    const handleRegister = async(newUser:RegisterUser,{ resetForm }:any)=>{
        try {
          const user = await register(newUser).unwrap()
          ToastShow(user.message, "success")
@@ -59,17 +60,15 @@ const SignupSchema = Yup.object().shape({
                 email:"",
                 password:""
             }}
-            onSubmit={handleLogin}
+            onSubmit={handleRegister}
             validationSchema={SignupSchema}
         >
             {({
-                isSubmitting,
                 handleChange,
                 handleSubmit,
                 values,
                 errors,
                 touched,
-                resetForm
             })=>(
                 
                 <View className='gap-4'>
