@@ -7,6 +7,8 @@ export type RootStackParamList = {
     Login:undefined,
     Video:undefined
     Channel:undefined
+    SearchHistory:undefined
+    SearchVideo:undefined
 }
 export type TabNavigatorParamList = {
     Home:undefined,

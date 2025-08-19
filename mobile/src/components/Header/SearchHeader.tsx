@@ -3,11 +3,10 @@ import React from 'react'
 import { goBack, navigate } from '../../navigation/NavigationUtils'
 import Icon from '../../constants/Icons'
 import SearchInput from '../SearchInput'
-import { ToastShow } from '../../utils/Tost'
 
 const SearchHeader = ({setSearch}:{setSearch:any}) => {
   return (
-    <View className='flex-row border-b border-gray-100 items-center py-1'>
+    <View className='flex-row items-center py-1'>
         <TouchableOpacity
         onPress={()=>goBack()}
         >
@@ -15,7 +14,7 @@ const SearchHeader = ({setSearch}:{setSearch:any}) => {
         </TouchableOpacity>
         <View className='flex-1'>
       <SearchInput
-      handlePress={()=>ToastShow("hello", "danger")}
+      handlePress={()=>navigate("SearchVideo")}
       />
       </View>
 

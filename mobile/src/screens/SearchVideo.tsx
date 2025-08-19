@@ -5,6 +5,7 @@ import HomeHeader from '../components/Header/HomeHeader'
 import { goBack, navigate } from '../navigation/NavigationUtils'
 import VideoCard from '../components/VideoCard'
 import Slider from '../components/Header/Slider'
+import SearchHeader from '../components/Header/SearchHeader'
 
 
 const Video =[
@@ -80,7 +81,7 @@ const Video =[
 },
 ]
 
-const Home = () => {
+const SearchVideo = () => {
   // const navigation = useNavigation()
   const insets = useSafeAreaInsets();
 
@@ -88,7 +89,7 @@ const Home = () => {
   return (
      <SafeAreaView className='flex-1 bg-white'>
       <View className='gap-3'>
-      <HomeHeader/>
+      <SearchHeader/>
       <Slider/>
       </View>
     <FlatList
@@ -107,4 +108,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export default SearchVideo
