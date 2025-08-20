@@ -68,7 +68,7 @@ const userRegister = asyncHandler(async (req, res) => {
         email,
         password,
         fullname,
-        avatar: "",
+        avatar: `https://api.dicebear.com/9.x/initials/png?seed=${fullname}`,
         coverImage:""
     })
 
