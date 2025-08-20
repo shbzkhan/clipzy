@@ -3,12 +3,13 @@ import React, { FC, useState } from 'react'
 import CustomIcon from './CustomIcon'
 
 interface searchInputProps{
-    initialQuery?:string
+    query?:string
     handlePress:()=>void
+    handleChange:()=>void
 }
 
-const SearchInput:FC<searchInputProps> = ({initialQuery, handlePress}) => {
-    const [query, setQuery] = useState(initialQuery || '')
+const SearchInput:FC<searchInputProps> = ({handleChange, handlePress, query}) => {
+    // const [query, setQuery] = useState(initialQuery || '')
   return (
     <View className="border-1 border-gray-100 w-full h-12 px-4 bg-secondary  rounded-xl items-center flex-row space-x-4">
     <TextInput
@@ -16,7 +17,7 @@ const SearchInput:FC<searchInputProps> = ({initialQuery, handlePress}) => {
     value={query}
     placeholder="Search for a video topic"
     placeholderTextColor="#9E9E9E"
-    onChangeText={(e)=> setQuery(e)}
+    onChangeText={handleChange}
     
     />
       <CustomIcon 

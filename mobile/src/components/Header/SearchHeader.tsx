@@ -4,7 +4,7 @@ import { goBack, navigate } from '../../navigation/NavigationUtils'
 import Icon from '../../constants/Icons'
 import SearchInput from '../SearchInput'
 
-const SearchHeader = ({setSearch}:{setSearch:any}) => {
+const SearchHeader = ({setSearch, search}:{setSearch:any, search:string}) => {
   return (
     <View className='flex-row items-center py-1'>
         <TouchableOpacity
@@ -14,7 +14,8 @@ const SearchHeader = ({setSearch}:{setSearch:any}) => {
         </TouchableOpacity>
         <View className='flex-1'>
       <SearchInput
-      handlePress={()=>navigate("SearchVideo")}
+      handleChange={(e)=>setSearch(e)}
+      handlePress={()=>navigate("SearchVideo", {search})}
       />
       </View>
 

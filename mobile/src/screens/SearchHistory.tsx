@@ -10,6 +10,7 @@ const Search = () => {
     <SafeAreaView className='flex-1 bg-white'>
       <SearchHeader
       setSearch={setSearch}
+      search={search}
       />
       <Text>{search}</Text>
       

@@ -36,7 +36,7 @@ const VideoCard:FC<videoCardProps> = ({_id, title, thumbnail, avatar, fullname, 
         >
            <Image
         source={{uri:avatar}}
-        className='w-12 h-12 rounded-full'
+        className='w-12 h-12 rounded-full '
         resizeMode='cover'
         /> 
         </TouchableOpacity>

@@ -1,13 +1,4 @@
-import {FlatList, View, Text } from 'react-native'
-import React, { FC, useState } from 'react'
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
-import { goBack, navigate } from '../navigation/NavigationUtils'
-import VideoCard from '../components/VideoCard'
-import Slider from '../components/Header/Slider'
-import SearchHeader from '../components/Header/SearchHeader'
-
-
-const Video =[
+export const Video =[
   {
   _id:1,
   fullname:"Shahbaz Khan",
@@ -79,39 +70,3 @@ const Video =[
   time:"30.07"
 },
 ]
-
-const SearchVideo = ({route}) => {
-  // const navigation = useNavigation()
-  const insets = useSafeAreaInsets();
-  const {search} = route.params
-  console.log(search)
-
-  
-  return (
-     <SafeAreaView className='flex-1 bg-white'>
-      <View className='gap-3'>
-      <SearchHeader/>
-      <Slider/>
-      </View>
-    <FlatList
-    data={Video}
-    keyExtractor={video =>video._id}
-    showsVerticalScrollIndicator={false}
-    contentContainerStyle={[{ paddingBottom: insets.bottom + 56,}]}
-    contentContainerClassName = "gap-6 pt-2"
-    renderItem={({item})=>(
-      <VideoCard {...item} />
-    )}
-
-    ListHeaderComponent={
-      <View>
-        <Text>{search}</Text>
-      </View>
-    }
-
-    />
-    </SafeAreaView>
-  )
-}
-
-export default SearchVideo
