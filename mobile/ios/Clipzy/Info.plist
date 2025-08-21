@@ -53,6 +53,12 @@
 		<string>CormorantGaramond-Regular.ttf</string>
 		<string>Tinos-Bold.ttf</string>
 		<string>Tinos-Regular.ttf</string>
+		<string>Rubik-Bold.ttf</string>
+		<string>Rubik-ExtraBold.ttf</string>
+		<string>Rubik-Light.ttf</string>
+		<string>Rubik-Medium.ttf</string>
+		<string>Rubik-Regular.ttf</string>
+		<string>Rubik-SemiBold.ttf</string>
 	</array>
 </dict>
 </plist>

@@ -15,6 +15,12 @@
 		3214C20A768B40BA90C5FA7A /* CormorantGaramond-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2C2A833B0B42440B884EDC73 /* CormorantGaramond-Regular.ttf */; };
 		D843AF9D0E824B0AB3977057 /* Tinos-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2586E9335D1E4FC1A1A27826 /* Tinos-Bold.ttf */; };
 		7EDDA093146740858AC4B7D6 /* Tinos-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 47D21E756AA24540BCAEBD3C /* Tinos-Regular.ttf */; };
+		3EA34B22FFC4454FAB7C90FF /* Rubik-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7644A83357E54E0E92E9205D /* Rubik-Bold.ttf */; };
+		EC86F857961046459BF057CA /* Rubik-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D09147EBC8FD48DC89A224B3 /* Rubik-ExtraBold.ttf */; };
+		ACB9BD7003A7465388B91554 /* Rubik-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8725571A096146F2A6C2D021 /* Rubik-Light.ttf */; };
+		1EA726256C0C49ABBAFC3EA1 /* Rubik-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 40A78904033546DAB4ED9D19 /* Rubik-Medium.ttf */; };
+		C76D9032D5EB455F96251F43 /* Rubik-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 67711C70472545D2AB6C9703 /* Rubik-Regular.ttf */; };
+		DF0FFF3036FE48ACB776ADF1 /* Rubik-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A38C808D139447C6883EDF0D /* Rubik-SemiBold.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +49,12 @@
 		2C2A833B0B42440B884EDC73 /* CormorantGaramond-Regular.ttf */ = {isa = PBXFileReference; name = "CormorantGaramond-Regular.ttf"; path = "../src/assets/fonts/CormorantGaramond-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		2586E9335D1E4FC1A1A27826 /* Tinos-Bold.ttf */ = {isa = PBXFileReference; name = "Tinos-Bold.ttf"; path = "../src/assets/fonts/Tinos-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		47D21E756AA24540BCAEBD3C /* Tinos-Regular.ttf */ = {isa = PBXFileReference; name = "Tinos-Regular.ttf"; path = "../src/assets/fonts/Tinos-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		7644A83357E54E0E92E9205D /* Rubik-Bold.ttf */ = {isa = PBXFileReference; name = "Rubik-Bold.ttf"; path = "../src/assets/fonts/Rubik-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		D09147EBC8FD48DC89A224B3 /* Rubik-ExtraBold.ttf */ = {isa = PBXFileReference; name = "Rubik-ExtraBold.ttf"; path = "../src/assets/fonts/Rubik-ExtraBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		8725571A096146F2A6C2D021 /* Rubik-Light.ttf */ = {isa = PBXFileReference; name = "Rubik-Light.ttf"; path = "../src/assets/fonts/Rubik-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		40A78904033546DAB4ED9D19 /* Rubik-Medium.ttf */ = {isa = PBXFileReference; name = "Rubik-Medium.ttf"; path = "../src/assets/fonts/Rubik-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		67711C70472545D2AB6C9703 /* Rubik-Regular.ttf */ = {isa = PBXFileReference; name = "Rubik-Regular.ttf"; path = "../src/assets/fonts/Rubik-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		A38C808D139447C6883EDF0D /* Rubik-SemiBold.ttf */ = {isa = PBXFileReference; name = "Rubik-SemiBold.ttf"; path = "../src/assets/fonts/Rubik-SemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +144,12 @@
 				2C2A833B0B42440B884EDC73 /* CormorantGaramond-Regular.ttf */,
 				2586E9335D1E4FC1A1A27826 /* Tinos-Bold.ttf */,
 				47D21E756AA24540BCAEBD3C /* Tinos-Regular.ttf */,
+				7644A83357E54E0E92E9205D /* Rubik-Bold.ttf */,
+				D09147EBC8FD48DC89A224B3 /* Rubik-ExtraBold.ttf */,
+				8725571A096146F2A6C2D021 /* Rubik-Light.ttf */,
+				40A78904033546DAB4ED9D19 /* Rubik-Medium.ttf */,
+				67711C70472545D2AB6C9703 /* Rubik-Regular.ttf */,
+				A38C808D139447C6883EDF0D /* Rubik-SemiBold.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -210,6 +228,12 @@
 				3214C20A768B40BA90C5FA7A /* CormorantGaramond-Regular.ttf in Resources */,
 				D843AF9D0E824B0AB3977057 /* Tinos-Bold.ttf in Resources */,
 				7EDDA093146740858AC4B7D6 /* Tinos-Regular.ttf in Resources */,
+				3EA34B22FFC4454FAB7C90FF /* Rubik-Bold.ttf in Resources */,
+				EC86F857961046459BF057CA /* Rubik-ExtraBold.ttf in Resources */,
+				ACB9BD7003A7465388B91554 /* Rubik-Light.ttf in Resources */,
+				1EA726256C0C49ABBAFC3EA1 /* Rubik-Medium.ttf in Resources */,
+				C76D9032D5EB455F96251F43 /* Rubik-Regular.ttf in Resources */,
+				DF0FFF3036FE48ACB776ADF1 /* Rubik-SemiBold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
