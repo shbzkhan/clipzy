@@ -12,7 +12,7 @@ import VideoCardLoader from '../components/Skeleton/VideoCardLoader'
 const Home = () => {
   // const navigation = useNavigation()
   const insets = useSafeAreaInsets();
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   
 
   

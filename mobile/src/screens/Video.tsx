@@ -5,6 +5,7 @@ import { Video } from '../utils/domyData'
 import VideoCard from '../components/VideoCard'
 import CustomButton from '../components/CustomButton'
 import SubscribedButton from '../components/SubscribedButton'
+import VideoPlayer from '../components/VideoPlayer'
 
 interface videoDetailsProps{
   route:any
@@ -15,16 +16,9 @@ const video = route.params
   console.log(video)
   return (
     <SafeAreaView className='flex-1'>
-      <TouchableOpacity className='h-[200px]'
-      activeOpacity={0.4}
-      >
-      <Image
-              source={{uri:"https://lickd.co/wp-content/uploads/2022/11/Canva-YouTube-Thumbnail-creator.jpeg"}}
-              className='w-full h-[200px]'
-              resizeMode='cover'
-              />
-      </TouchableOpacity>
-      <FlatList
+      <VideoPlayer/>
+
+    <FlatList
     data={Video}
     keyExtractor={video =>video._id}
     showsVerticalScrollIndicator={false}
