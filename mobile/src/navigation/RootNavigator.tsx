@@ -10,12 +10,14 @@ import Login from '../screens/Login';
 import Video from '../screens/Video';
 import Channel from '../screens/Channel';
 import SearchVideo from '../screens/SearchVideo';
+// import { SheetProvider } from 'react-native-actions-sheet';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const RootNavigator = () => {
   return (
     <>
+    {/* <SheetProvider> */}
     <StatusBar barStyle={"dark-content"} />
     <Stack.Navigator
     screenOptions={{headerShown:false}}
@@ -31,6 +33,7 @@ const RootNavigator = () => {
       <Stack.Screen name="Channel" component={Channel} />
       <Stack.Screen name="SearchVideo" component={SearchVideo} />
     </Stack.Navigator>
+    {/* </SheetProvider> */}
     </>
   )
 }

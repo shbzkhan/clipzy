@@ -1,10 +1,10 @@
-import { View, TouchableOpacity, TextInput, Alert } from 'react-native'
+import { View, TouchableOpacity} from 'react-native'
 import React from 'react'
-import { goBack, navigate } from '../../navigation/NavigationUtils'
+import { goBack} from '../../navigation/NavigationUtils'
 import Icon from '../../constants/Icons'
 import SearchInput from '../SearchInput'
 
-const SearchHeader = ({setSearch, search}:{setSearch:any, search:string}) => {
+const SearchHeader = ({handlePress,handleChange}:any) => {
   return (
     <View className='flex-row items-center py-1'>
         <TouchableOpacity
@@ -14,8 +14,8 @@ const SearchHeader = ({setSearch, search}:{setSearch:any, search:string}) => {
         </TouchableOpacity>
         <View className='flex-1'>
       <SearchInput
-      handleChange={(e)=>setSearch(e)}
-      handlePress={()=>navigate("SearchVideo", {search})}
+      handleChange={handleChange}
+      handlePress={handlePress}
       />
       </View>
 

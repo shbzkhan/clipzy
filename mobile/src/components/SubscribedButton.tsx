@@ -9,10 +9,10 @@ interface SubscribeButtonProps {
 }
 const SubscribedButton:FC<SubscribeButtonProps> = ({handlePress, className, textStyle, isSubscribed}) => {
   return (
-    <TouchableOpacity className={`px-2 py-1 bg-primary-50 border border-primary-600 rounded-md ${className}`}
+    <TouchableOpacity className={`px-2 py-1 bg-primary-600 border border-primary-600 rounded-md ${className}`}
     onPress={handlePress}
     >
-        <Text className={`font-semibold ${textStyle}`}>{isSubscribed? "Subscribed": "Subscribe"}</Text>
+        <Text className={`font-rubik-semibold text-white ${textStyle}`}>{isSubscribed? "Subscribed": "Subscribe"}</Text>
     </TouchableOpacity> 
   )
 }

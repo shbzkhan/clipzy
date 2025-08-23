@@ -5,6 +5,7 @@ import { goBack, navigate } from '../navigation/NavigationUtils'
 import VideoCard from '../components/VideoCard'
 import Slider from '../components/Header/Slider'
 import SearchHeader from '../components/Header/SearchHeader'
+import { useRoute } from '@react-navigation/native'
 
 
 const Video =[
@@ -80,17 +81,22 @@ const Video =[
 },
 ]
 
-const SearchVideo = ({route}) => {
+const SearchVideo = () => {
   // const navigation = useNavigation()
   const insets = useSafeAreaInsets();
-  const {search} = route.params
-  console.log(search)
+  const data = useRoute()
+  const search = data.params
+
+  const [search, setSearchD] = useState<any>("");
 
   
   return (
      <SafeAreaView className='flex-1 bg-white'>
       <View className='gap-3'>
-      <SearchHeader/>
+      <SearchHeader
+      handleChange={(text)=>setSearchD(text)}
+      handlePress={()=>navigate(navigate("SearchVideo", search))}
+      />
       <Slider/>
       </View>
     <FlatList
@@ -104,8 +110,8 @@ const SearchVideo = ({route}) => {
     )}
 
     ListHeaderComponent={
-      <View>
-        <Text>{search}</Text>
+      <View className='px-4'>
+        <Text className='text-primary-600 text-rubik'>Search Result: <Text className='text-black/70 text-rubik'>{search}</Text></Text>
       </View>
     }
 

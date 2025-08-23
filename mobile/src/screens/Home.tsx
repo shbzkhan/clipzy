@@ -18,7 +18,7 @@ const Home = () => {
   
   return (
      <SafeAreaView className='h-flex bg-white'>
-      <View className='gap-4'>
+      <View className='gap-4 mb-2'>
       <HomeHeader/>  
       <Slider/>
       </View>

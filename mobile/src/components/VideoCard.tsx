@@ -27,7 +27,7 @@ const VideoCard:FC<videoCardProps> = ({_id, title, thumbnail, avatar, fullname, 
         resizeMode='cover'
         />
         <View className='bg-black/50 absolute right-2 bottom-2 px-1 rounded-md'>
-            <Text className='text-white '>{time}</Text>
+            <Text className='text-white font-rubik text-sm'>{time}</Text>
         </View>
       </View>
       <View className='px-3 flex-row gap-2  items-center'>
@@ -41,8 +41,8 @@ const VideoCard:FC<videoCardProps> = ({_id, title, thumbnail, avatar, fullname, 
         /> 
         </TouchableOpacity>
         <View className='flex-1'>
-            <Text className='text-black font-bold ' numberOfLines={2}>{title}</Text>
-            <Text className='text-gray-600 text-xs'>{`${fullname} . ${views} views . ${date} days ago`}</Text>
+            <Text className='text-black font-rubik-bold ' numberOfLines={2}>{title}</Text>
+            <Text className='text-gray-600 text-xs font-rubik'>{`${fullname} . ${views} views . ${date} days ago`}</Text>
         </View>
         <TouchableOpacity>
             <Icon name='EllipsisVertical' color='black'/>

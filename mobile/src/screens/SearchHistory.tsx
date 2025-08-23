@@ -1,18 +1,54 @@
-import {Text,} from 'react-native'
+import {FlatList, ScrollView, Text, TouchableOpacity, View,} from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import SearchHeader from '../components/Header/SearchHeader'
-
+import CustomIcon from '../components/CustomIcon'
+import Icon from '../constants/Icons'
+import { navigate } from '../navigation/NavigationUtils'
+interface SearchDataProps {
+  id?:string
+  text?:string
+}
 const Search = () => {
-  const [search, setSearch] = useState<string>("");
+  const [search, setSearch] = useState<any>("");
 
+  const [searchData, setSearchData] = useState<SearchDataProps[]>([])
+
+  const addSearch = ()=>{
+    navigate("SearchVideo", search)
+    if(search.trim === "") return
+    setSearchData([...searchData,{id:Date.now().toString(), text:search}])
+    setSearch(setSearch)
+  }
+
+  const removeSearch = (id:string)=>{
+    setSearchData(searchData.filter(text =>text.id !== id))
+  }
   return (
     <SafeAreaView className='flex-1 bg-white'>
       <SearchHeader
-      setSearch={setSearch}
-      search={search}
+      handleChange={(text:string)=>setSearch(text)}
+      handlePress={addSearch}
       />
-      <Text>{search}</Text>
+      <FlatList
+      data={searchData}
+      keyExtractor={(item)=>item.id}
+      contentContainerClassName='gap-3 mt-4'
+      renderItem={({item})=>(
+         <TouchableOpacity className='px-4 flex-row justify-between items-center'>
+              <View className='flex-row gap-6'>
+              <Icon name="History" size={26}/>
+              <Text className='font-rubik-medium text-xl'>{item.text}</Text>
+              </View>
+              <TouchableOpacity
+              onPress={()=>removeSearch(item.id)}
+              >
+              <Icon name="X" size={26} />
+              </TouchableOpacity>
+
+            </TouchableOpacity>
+      )}
+      />
       
     </SafeAreaView>
   )

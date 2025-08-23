@@ -3,13 +3,14 @@ import { FC } from 'react';
 
 type iconsName = keyof typeof icons
 
+
 type IconTypes = {
     name:iconsName,
-    color:string,
+    color?:string | "#60A5FA",
     size?:number,
     focused?:any
 }
-const Icon:FC<IconTypes> = ({ name, color, size, focused }) => {
+const Icon:FC<IconTypes> = ({ name, color="#60A5FA", size, focused }) => {
   const CustomIcon = icons[name];
 
   return <CustomIcon 
