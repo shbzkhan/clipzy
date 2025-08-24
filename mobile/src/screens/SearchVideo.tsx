@@ -85,7 +85,7 @@ const SearchVideo = () => {
   // const navigation = useNavigation()
   const insets = useSafeAreaInsets();
   const data = useRoute()
-  const search = data.params
+  const searchD = data.params
 
   const [search, setSearchD] = useState<any>("");
 
@@ -95,7 +95,7 @@ const SearchVideo = () => {
       <View className='gap-3'>
       <SearchHeader
       handleChange={(text)=>setSearchD(text)}
-      handlePress={()=>navigate(navigate("SearchVideo", search))}
+      handlePress={()=>navigate("SearchVideo", search)}
       />
       <Slider/>
       </View>
@@ -111,7 +111,7 @@ const SearchVideo = () => {
 
     ListHeaderComponent={
       <View className='px-4'>
-        <Text className='text-primary-600 text-rubik'>Search Result: <Text className='text-black/70 text-rubik'>{search}</Text></Text>
+        <Text className='text-primary-600 text-rubik'>Search Result: <Text className='text-black/70 text-rubik'>{searchD}</Text></Text>
       </View>
     }
 

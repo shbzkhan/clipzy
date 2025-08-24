@@ -39,7 +39,7 @@ const SignupSchema = Yup.object().shape({
     <SafeAreaView className=' bg-white flex-1'>
         <KeyboardAvoidingView
         behavior={Platform.OS ==="ios" ? "padding":"height"}
-        style={{flex:1}}
+        className='flex-1'
         >
         <ScrollView className='flex item-center px-4'>
             <View className='justify-center pb-4'>

@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
-import { View, Text, TouchableOpacity, Image, StatusBar, BackHandler } from 'react-native'
+import { View, Text, TouchableOpacity, Image, StatusBar, BackHandler, Platform } from 'react-native'
 import Video from 'react-native-video'
 import ImageIcon from '../constants/ImageIcon'
 import Slider from '@react-native-community/slider'
 import { format } from '../constants/TimeFormat'
 import Orientation from "react-native-orientation-locker"
 import { ActivityIndicator } from 'react-native-paper'
+import { Immersive } from 'react-native-immersive'
 
 const VideoPlayer = () => {
   const [clicked, setClicked] = useState<boolean>(true)
@@ -13,42 +14,51 @@ const VideoPlayer = () => {
   const [loading, setLoading] = useState<boolean>(true)
   const [buffuring, setBuffuring] = useState<boolean>(false)
   const ref = useRef([])
-  const [progress, setProgress] = useState(0)
-  const [fullScreen, setFullScreen] = useState<boolean>(false)
+  const [progress, setProgress] = useState<any>(0)
+  const [fullscreen, setFullscreen] = useState<boolean>(false)
 
-  useEffect(() => {
+useEffect(() => {
     const backAction = () => {
-      if (fullScreen) {
-        // Agar fullscreen me hai → portrait pe wapas le aao
-        Orientation.lockToPortrait();
-        StatusBar.setHidden(false, "slide");
-        setFullScreen(false);
-        return true; // Back press consume ho gaya
+      if (fullscreen) {
+        exitFullscreen(); // agar fullscreen hai to pehle exit kare
+        return true; // default back action cancel
       }
-      return false; // Normal back behavior
+      return false; // normal back kaam kare
     };
 
     const backHandler = BackHandler.addEventListener("hardwareBackPress", backAction);
-
     return () => backHandler.remove();
-  }, [fullScreen]);
+  }, [fullscreen]);
+
+  const enterFullscreen = () => {
+    setFullscreen(true);
+    Orientation.lockToLandscape();
+    if (Platform.OS === "android") {
+      Immersive.on();
+      Immersive.setImmersive(true);
+    }
+    StatusBar.setHidden(true);
+  };
+
+  const exitFullscreen = () => {
+    setFullscreen(false);
+    Orientation.lockToPortrait();
+    if (Platform.OS === "android") {
+      Immersive.off();
+      Immersive.setImmersive(false);
+    }
+    StatusBar.setHidden(false);
+  };
 
   const toggleFullscreen = () => {
-    if (fullScreen) {
-      Orientation.lockToPortrait();
-      StatusBar.setHidden(false, "slide");
-    } else {
-      Orientation.lockToLandscape();
-      StatusBar.setHidden(true, "slide");
-    }
-    setFullScreen(!fullScreen);
+    fullscreen ? exitFullscreen() : enterFullscreen();
   };
   return (
-    <View className={`w-full ${fullScreen?"h-screen":"h-[200px]"} relative`}>
+    <View className={`w-full ${fullscreen?"h-screen":"h-[200px]"} relative`}>
   <Video
   paused={paushed}
     source={{ uri: 'https://videos.pexels.com/video-files/1196530/1196530-hd_1920_1080_30fps.mp4' }}
-    style={{ width: '100%', height: fullScreen? "100%": 200 }}
+    style={{ width: '100%', height: fullscreen? "100%": 200 }}
     resizeMode="contain"
     ref={ref}
     onLoadStart={()=>setLoading(true)}
@@ -114,7 +124,7 @@ const VideoPlayer = () => {
         
         </View>
       }
-        <View className={`absolute ${fullScreen?"bottom-0":"-bottom-2"} w-full`}>
+        <View className={`absolute ${fullscreen?"bottom-6":"-bottom-2"} w-full`}>
           <View className='flex-row justify-between px-4 '>
             <View className='bg-black/30 flex-row px-2 py-1 rounded-full'>
                <Text className='text-white text-sm'>{format(progress.currentTime)} </Text>
@@ -124,7 +134,7 @@ const VideoPlayer = () => {
          onPress={toggleFullscreen}
           >
             <Image
-          source={fullScreen?ImageIcon.minimize: ImageIcon.fullscreen}
+          source={fullscreen?ImageIcon.minimize: ImageIcon.fullscreen}
           className='w-6 h-6'
           resizeMode='contain'
           tintColor="white"

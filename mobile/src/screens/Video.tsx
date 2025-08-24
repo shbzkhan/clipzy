@@ -11,6 +11,7 @@ import CustomVideoSliderCard from '../components/CustomVideoSliderCard'
 import { ToastShow } from '../utils/Tost'
 import { navigate } from '../navigation/NavigationUtils'
 import Slider from '../components/Header/Slider'
+import { SheetManager } from 'react-native-actions-sheet'
 
 interface videoDetailsProps{
   route:any
@@ -53,7 +54,15 @@ const video = route.params
 
     ListHeaderComponent={
       <View className='px-3 gap-2'>
-        <TouchableOpacity>
+        <TouchableOpacity
+        onPress={()=>{
+            SheetManager.show("description-sheet",{
+            payload:{
+              entityId:"hello",
+            }
+          })
+        }}
+        >
           <Text className='text-black font-rubik-bold text-xl' numberOfLines={2}>This is name of this area so that provide a simple name of this area of cercle</Text>
           <Text className='text-gray-600 text-xs font-rubik'>285k views  4w ago  #TheMemoryAboutYou <Text className='font-rubik-semibold text-black'>...more</Text></Text>
         </TouchableOpacity>
@@ -85,7 +94,15 @@ const video = route.params
             <CustomVideoSliderCard title="Thanks" icon="ShipWheel" handlePress={()=>ToastShow("Thanks for Click","success")}/>
           </ScrollView>
 
-          <TouchableOpacity className='bg-secondary px-4 py-3 rounded-xl gap-2 mt-3 mb-5'>
+          <TouchableOpacity className='bg-secondary px-4 py-3 rounded-xl gap-2 mt-3 mb-5'
+          onPress={()=>{
+            SheetManager.show("comment-sheet",{
+            payload:{
+              entityId:"hello",
+            }
+          })
+        }}
+          >
             <Text className='font-rubik-semibold'>Comments</Text>
             <View className='flex-row gap-2 items-center'>
               <View className='w-6 h-6 rounded-full'
