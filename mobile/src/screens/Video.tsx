@@ -12,6 +12,7 @@ import { ToastShow } from '../utils/Tost'
 import { navigate } from '../navigation/NavigationUtils'
 import Slider from '../components/Header/Slider'
 import { SheetManager } from 'react-native-actions-sheet'
+import UserLogo from '../components/UserLogo'
 
 interface videoDetailsProps{
   route:any
@@ -68,13 +69,9 @@ const video = route.params
         </TouchableOpacity>
         <TouchableOpacity className='flex-row items-center justify-between'>
           <View className='flex-row items-center gap-1'>
-          <View className='w-12 h-12 rounded-full'>
-            <Image
-              source={{uri:"https://api.dicebear.com/9.x/initials/png?seed=Z Khan"}}
-              className='w-12 h-12 rounded-full '
-              resizeMode='cover'
-              />
-          </View>
+          <UserLogo
+            uri={"https://api.dicebear.com/9.x/initials/png?seed=Z Khan"}
+          />
           <Text className='font-rubik-medium'>Shahbaz Khan</Text>
           <Text className='text-sm font-rubik text-gray-500'>348k</Text>
           </View>
@@ -105,14 +102,10 @@ const video = route.params
           >
             <Text className='font-rubik-semibold'>Comments</Text>
             <View className='flex-row gap-2 items-center'>
-              <View className='w-6 h-6 rounded-full'
-                      >
-                         <Image
-                      source={{uri:"https://api.dicebear.com/9.x/initials/png?seed=Shahbaz Khan"}}
-                      className='w-6 h-6 rounded-full '
-                      resizeMode='cover'
-                      /> 
-                </View>
+              <UserLogo
+                uri={"https://api.dicebear.com/9.x/initials/png?seed=Z Khan"}
+                heightAndWidth={6}
+              />
             <Text className='text-gray-500 font-rubik text-sm' >{comment.slice(0,45)+"..."}</Text>
             </View>
           </TouchableOpacity>

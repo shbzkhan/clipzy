@@ -7,7 +7,7 @@ interface CustomIconsTypes{
     size?:number
     className?:string,
     badge?:boolean,
-    handlePress:()=>void
+    handlePress?:()=>void
 }
 const CustomIcon:FC<CustomIconsTypes> = ({className, name, color = "#1D4ED8", size=20, badge=false, handlePress}) => {
   return (

@@ -35,3 +35,10 @@ export async function goBack(){
         navigationRef.dispatch(CommonActions.goBack())
     }
 }
+
+export async function pop(numberPop:number){
+    navigationRef.isReady()
+    if(navigationRef.isReady()){
+        navigationRef.dispatch(StackActions.pop(numberPop))
+    }
+}

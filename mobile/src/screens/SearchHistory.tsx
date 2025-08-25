@@ -4,7 +4,8 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import SearchHeader from '../components/Header/SearchHeader'
 import CustomIcon from '../components/CustomIcon'
 import Icon from '../constants/Icons'
-import { navigate } from '../navigation/NavigationUtils'
+import { goBack, navigate } from '../navigation/NavigationUtils'
+import SearchInput from '../components/SearchInput'
 interface SearchDataProps {
   id?:string
   text?:string
@@ -15,8 +16,9 @@ const Search = () => {
   const [searchData, setSearchData] = useState<SearchDataProps[]>([])
 
   const addSearch = ()=>{
+
+    if(search.trim() === "") return
     navigate("SearchVideo", search)
-    if(search.trim === "") return
     setSearchData([...searchData,{id:Date.now().toString(), text:search}])
     setSearch(setSearch)
   }
@@ -25,13 +27,17 @@ const Search = () => {
     setSearchData(searchData.filter(text =>text.id !== id))
   }
   return (
-    <SafeAreaView className='flex-1 bg-white'>
+    <SafeAreaView className='flex-1 bg-white px-4'>
       <SearchHeader
-      handleChange={(text:string)=>setSearch(text)}
-      handlePress={addSearch}
+      value={search}
+      backPress={()=>goBack()}
+      PressX={()=>setSearch("")}
+      onChangeText={(t)=>setSearch(t)}
+      onSubmitEditing={addSearch}
+      autoFocus={true}
       />
       <FlatList
-      data={searchData}
+      data={searchData.reverse()}
       keyExtractor={(item)=>item.id}
       contentContainerClassName='gap-3 mt-4'
       renderItem={({item})=>(
@@ -49,7 +55,6 @@ const Search = () => {
             </TouchableOpacity>
       )}
       />
-      
     </SafeAreaView>
   )
 }

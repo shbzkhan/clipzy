@@ -1,24 +1,31 @@
 import { View, TouchableOpacity} from 'react-native'
-import React from 'react'
-import { goBack} from '../../navigation/NavigationUtils'
+import React, { FC } from 'react'
 import Icon from '../../constants/Icons'
 import SearchInput from '../SearchInput'
+import CustomIcon from '../CustomIcon'
 
-const SearchHeader = ({handlePress,handleChange}:any) => {
+
+interface searchInputProps{
+    value?:string
+    PressX?:()=>void
+    backPress?:()=>void
+}
+const SearchHeader:FC<searchInputProps> = ({value, PressX, backPress,...props}) => {
   return (
-    <View className='flex-row items-center py-1'>
+    <View className='flex-row items-center py-1 gap-3'>
         <TouchableOpacity
-        onPress={()=>goBack()}
+        onPress={backPress}
         >
         <Icon name='ChevronLeft' color='#2563EB' size={40} />
         </TouchableOpacity>
-        <View className='flex-1'>
       <SearchInput
-      handleChange={handleChange}
-      handlePress={handlePress}
+      value={value}
+      PressX={PressX}
+      {...props}
       />
-      </View>
-
+      <TouchableOpacity>
+        <CustomIcon name="Mic"/>
+      </TouchableOpacity>
       </View>
   )
 }

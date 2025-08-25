@@ -1,102 +1,32 @@
-import {FlatList, View, Text } from 'react-native'
-import React, { FC, useState } from 'react'
+import {FlatList, View, Text, Pressable } from 'react-native'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
-import { goBack, navigate } from '../navigation/NavigationUtils'
+import { goBack, pop } from '../navigation/NavigationUtils'
 import VideoCard from '../components/VideoCard'
 import Slider from '../components/Header/Slider'
 import SearchHeader from '../components/Header/SearchHeader'
 import { useRoute } from '@react-navigation/native'
+import { Video } from '../utils/domyData'
 
 
-const Video =[
-  {
-  _id:1,
-  fullname:"Shahbaz Khan",
-  avatar:"https://api.dicebear.com/9.x/initials/png?seed=Shahbaz Khan",
-  title:"How to Make Think hair Look Thicker Naturally | Thin to Thick Hair Guide",
-  thumbnail:"https://lickd.co/wp-content/uploads/2022/11/Canva-YouTube-Thumbnail-creator.jpeg",
-  views:"5.3M",
-  date:"2",
-  time:"37.07"
-},
-  {
-  _id:2,
-  fullname:"Z Khan",
-  avatar:"https://api.dicebear.com/9.x/initials/png?seed=Z Khan",
-  title:"How to Make Think hair Look Thicker Naturally | Thin to Thick Hair Guide",
-  thumbnail:"https://lickd.co/wp-content/uploads/2022/11/Canva-YouTube-Thumbnail-creator.jpeg",
-  views:"5.2M",
-  date:"7",
-  time:"30.07"
-},
-  {
-  _id:3,
-  fullname:"z Khan",
-  avatar:"https://api.dicebear.com/9.x/initials/png?seed=Z Khan",
-  title:"How to Make Think hair Look Thicker Naturally | Thin to Thick Hair Guide",
-  thumbnail:"https://lickd.co/wp-content/uploads/2022/11/Canva-YouTube-Thumbnail-creator.jpeg",
-  views:"5.2M",
-  date:"7",
-  time:"30.07"
-},
-  {
-  _id:4,
-  fullname:"z Khan",
-  avatar:"https://api.dicebear.com/9.x/initials/png?seed=Z Khan",
-  title:"How to Make Think hair Look Thicker Naturally | Thin to Thick Hair Guide",
-  thumbnail:"https://lickd.co/wp-content/uploads/2022/11/Canva-YouTube-Thumbnail-creator.jpeg",
-  views:"5.2M",
-  date:"7",
-  time:"30.07"
-},
-  {
-  _id:5,
-  fullname:"z Khan",
-  avatar:"https://api.dicebear.com/9.x/initials/png?seed=Z Khan",
-  title:"How to Make Think hair Look Thicker Naturally | Thin to Thick Hair Guide",
-  thumbnail:"https://lickd.co/wp-content/uploads/2022/11/Canva-YouTube-Thumbnail-creator.jpeg",
-  views:"5.2M",
-  date:"7",
-  time:"30.07"
-},
-  {
-  _id:6,
-  fullname:"z Khan",
-  avatar:"https://api.dicebear.com/9.x/initials/png?seed=Z Khan",
-  title:"How to Make Think hair Look Thicker Naturally | Thin to Thick Hair Guide",
-  thumbnail:"https://lickd.co/wp-content/uploads/2022/11/Canva-YouTube-Thumbnail-creator.jpeg",
-  views:"5.2M",
-  date:"7",
-  time:"30.07"
-},
-  {
-  _id:7,
-  fullname:"z Khan",
-  avatar:"https://api.dicebear.com/9.x/initials/png?seed=Z Khan",
-  title:"How to Make Think hair Look Thicker Naturally | Thin to Thick Hair Guide",
-  thumbnail:"https://lickd.co/wp-content/uploads/2022/11/Canva-YouTube-Thumbnail-creator.jpeg",
-  views:"5.2M",
-  date:"7",
-  time:"30.07"
-},
-]
 
 const SearchVideo = () => {
   // const navigation = useNavigation()
   const insets = useSafeAreaInsets();
   const data = useRoute()
-  const searchD = data.params
+  const searchD = data.params as string
 
-  const [search, setSearchD] = useState<any>("");
 
   
   return (
      <SafeAreaView className='flex-1 bg-white'>
-      <View className='gap-3'>
-      <SearchHeader
-      handleChange={(text)=>setSearchD(text)}
-      handlePress={()=>navigate("SearchVideo", search)}
-      />
+      <View className='gap-3 pb-2'>
+        <Pressable className='px-4' onPress={()=>goBack()}>
+       <SearchHeader
+       value={searchD}
+       editable={false}
+       backPress={()=>pop(2)}
+       />
+       </Pressable>
       <Slider/>
       </View>
     <FlatList

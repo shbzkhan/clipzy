@@ -2,6 +2,7 @@ import { View, Text, TouchableOpacity, Image } from 'react-native'
 import React, { FC } from 'react'
 import Icon from '../constants/Icons'
 import { navigate } from '../navigation/NavigationUtils'
+import UserLogo from './UserLogo'
 
 
 interface videoCardProps{
@@ -31,15 +32,10 @@ const VideoCard:FC<videoCardProps> = ({_id, title, thumbnail, avatar, fullname, 
         </View>
       </View>
       <View className='px-3 flex-row gap-2  items-center'>
-        <TouchableOpacity className='w-12 h-12 rounded-full'
-        onPress={()=>navigate("Channel")}
-        >
-           <Image
-        source={{uri:avatar}}
-        className='w-12 h-12 rounded-full '
-        resizeMode='cover'
-        /> 
-        </TouchableOpacity>
+        <UserLogo
+        uri={avatar}
+        />
+
         <View className='flex-1'>
             <Text className='text-black font-rubik-bold ' numberOfLines={2}>{title}</Text>
             <Text className='text-gray-600 text-xs font-rubik'>{`${fullname} . ${views} views . ${date} days ago`}</Text>
