@@ -8,10 +8,10 @@ import { navigate } from '../navigation/NavigationUtils'
 
 const AuthBox = ({name}:any) => {
   return (
-    <SafeAreaView className='flex-1 bg-primary-50 justify-center items-center px-4'>
+    <SafeAreaView className='flex-1 bg-primary-50 justify-center items-center px-4 dark:bg-dark'>
         <View className='justify-center items-center gap-4'>
             <Icon name='Lock' color='#3B82FE' size={70} />
-            <Text className='font-extrabold text-3xl'>Welcome to {name}</Text>
+            <Text className='font-extrabold text-3xl dark:text-white'>Welcome to {name}</Text>
             <Text className='font-medium text-gray-400 px-12 text-center leading-6'>Log in or sign up to unlock personalized feature, watch history, video and manage your account</Text>
             <CustomButton
             title='Log In'
@@ -21,7 +21,7 @@ const AuthBox = ({name}:any) => {
             <CustomButton
             title='Register'
             containerStyles='w-64 h-12 bg-transparent border-2 border-primary-600 mt-2'
-            textStyles='text-primary-700'
+            textStyles='text-primary-700 dark:text-white'
             handlePress={()=>navigate("Register")}
             />
         </View>

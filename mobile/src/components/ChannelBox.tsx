@@ -9,7 +9,7 @@ const ChannelBox = ({item}) => {
         uri={item.item.avatar}
         heightAndWidth={16}
         />
-        <Text className='text-nowrap text-sm'>{`${item.item.fullname.slice(0,5)}..`}</Text>
+        <Text className='text-nowrap text-sm font-rubik dark:text-white'>{`${item.item.fullname.slice(0,5)}..`}</Text>
         </TouchableOpacity>
   )
 }

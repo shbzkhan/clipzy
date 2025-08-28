@@ -13,11 +13,11 @@ interface CustomVideoSliderProps {
 }
 const CustomVideoSliderCard:FC<CustomVideoSliderProps> = ({icon, title, handlePress, focused}) => {
   return (
-    <TouchableOpacity className='bg-secondary px-4 py-2 rounded-lg flex-row items-center gap-1'
+    <TouchableOpacity className='bg-secondary px-4 py-2 rounded-lg flex-row items-center gap-1 dark:bg-dark-100'
     onPress={handlePress}
     >
-        <Icon name={icon} color='#60A5FA' size={20} focused={focused}/>
-      <Text className='font-rubik-medium '>{title}</Text>
+      <Icon name={icon} color='#60A5FA' size={20} focused={focused}/>
+      <Text className='font-rubik-medium dark:text-white'>{title}</Text>
     </TouchableOpacity>
   )
 }

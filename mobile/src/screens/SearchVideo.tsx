@@ -18,7 +18,7 @@ const SearchVideo = () => {
 
   
   return (
-     <SafeAreaView className='flex-1 bg-white'>
+     <SafeAreaView className='flex-1 bg-white dark:bg-dark'>
       <View className='gap-3 pb-2'>
         <Pressable className='px-4' onPress={()=>goBack()}>
        <SearchHeader
@@ -41,7 +41,7 @@ const SearchVideo = () => {
 
     ListHeaderComponent={
       <View className='px-4'>
-        <Text className='text-primary-600 text-rubik'>Search Result: <Text className='text-black/70 text-rubik'>{searchD}</Text></Text>
+        <Text className='text-primary-600 text-rubik'>Search Result: <Text className='text-black/70 text-rubik dark:text-white'>{searchD}</Text></Text>
       </View>
     }
 

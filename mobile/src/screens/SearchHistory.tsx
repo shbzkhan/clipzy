@@ -27,7 +27,7 @@ const Search = () => {
     setSearchData(searchData.filter(text =>text.id !== id))
   }
   return (
-    <SafeAreaView className='flex-1 bg-white px-4'>
+    <SafeAreaView className='flex-1 bg-white px-4 dark:bg-dark'>
       <SearchHeader
       value={search}
       backPress={()=>goBack()}
@@ -41,10 +41,10 @@ const Search = () => {
       keyExtractor={(item)=>item.id}
       contentContainerClassName='gap-3 mt-4'
       renderItem={({item})=>(
-         <TouchableOpacity className='px-4 flex-row justify-between items-center'>
+         <TouchableOpacity className='pl-3 flex-row justify-between items-center'>
               <View className='flex-row gap-6'>
               <Icon name="History" size={26}/>
-              <Text className='font-rubik-medium text-xl'>{item.text}</Text>
+              <Text className='font-rubik-medium text-xl dark:text-white'>{item.text}</Text>
               </View>
               <TouchableOpacity
               onPress={()=>removeSearch(item.id)}

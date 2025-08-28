@@ -3,6 +3,7 @@ import React, { FC } from 'react'
 import Icon from '../constants/Icons'
 import { navigate } from '../navigation/NavigationUtils'
 import UserLogo from './UserLogo'
+import { useColorScheme } from 'nativewind'
 
 
 interface videoCardProps{
@@ -17,6 +18,7 @@ interface videoCardProps{
     time:string
 }
 const VideoCard:FC<videoCardProps> = ({_id, title, thumbnail, avatar, fullname, views, time, date }) => {
+   const { colorScheme} = useColorScheme();
   return (
     <TouchableOpacity className='gap-4'
      onPress={()=>navigate("Video",{id:_id})}
@@ -37,11 +39,11 @@ const VideoCard:FC<videoCardProps> = ({_id, title, thumbnail, avatar, fullname, 
         />
 
         <View className='flex-1'>
-            <Text className='text-black font-rubik-bold ' numberOfLines={2}>{title}</Text>
-            <Text className='text-gray-600 text-xs font-rubik'>{`${fullname} . ${views} views . ${date} days ago`}</Text>
+            <Text className='text-black font-rubik-bold dark:text-white' numberOfLines={2}>{title}</Text>
+            <Text className='text-gray-600 text-xs font-rubik dark:text-gray-300'>{`${fullname} . ${views} views . ${date} days ago`}</Text>
         </View>
         <TouchableOpacity>
-            <Icon name='EllipsisVertical' color='black'/>
+            <Icon name='EllipsisVertical' color={colorScheme === "dark"? "white": "black"}/>
         </TouchableOpacity>
       </View>
     </TouchableOpacity>

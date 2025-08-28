@@ -13,17 +13,18 @@ const CommentBox = () => {
     setComment((prevComment)=>prevComment + emoji)
   }
   return (
-    <View className={`bg-gray-900 border-t border-gray-500 w-full px-4 py-2 gap-2  ${isFocused && "pb-14"}`}>
+    <View className={`bg-dark border-t border-gray-500 w-full px-4 py-2 gap-2 ${isFocused && "pb-14"}`}>
         <View className='flex-row gap-2 '>
         <UserLogo
                 uri={"https://api.dicebear.com/9.x/initials/png?seed=Z Khan"}
                 heightAndWidth={9}
               />
         <TextInput
-        className='bg-gray-600 px-4 rounded-lg flex-1 font-rubik min-h-11 text-white'
+        className='bg-dark-100 px-4 rounded-lg flex-1 font-rubik min-h-11 text-white'
         value={comment}
         multiline
-        placeholder='Write Comment'
+        placeholder='Write Comment'   
+        placeholderTextColor="#9E9E9E"
         textAlignVertical='center'
         onChangeText={(text)=>setComment(text)}
         onFocus={() => setIsFocused(true)}

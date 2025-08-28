@@ -10,9 +10,10 @@ import { FlatList } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import UserLogo from '../UserLogo'
 import CommentBox from '../CommentBox'
+import { colorScheme, useColorScheme } from 'nativewind'
 
 const CommentSheet = (props:SheetProps<"comment-sheet">) => {
-
+const {colorScheme} = useColorScheme();
   return (
     <ActionSheet 
     id={props.sheetId}
@@ -93,7 +94,7 @@ const styles = StyleSheet.create({
     backgroundColor:"#52525B"
   },
   container:{
-    backgroundColor:"#121212",
+    backgroundColor:"#0c263b",
     height: "76%"
   },
 

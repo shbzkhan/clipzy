@@ -33,6 +33,11 @@ module.exports = {
         },
         secondary: "#F5F5F7",
         tertiary: "#EEEEEE",
+        dark:{
+          DEFAULT:"#0c263b",
+          100:"#09122C",
+          200:"#7743DB"
+        },
         accent:{
           100: "#FBFBFD"
         },
@@ -42,6 +47,7 @@ module.exports = {
           100: "#8C8E98",
           200: "#666876",
           300: "#191d31",
+          400:"#171617"
         },
         danger: "#F75555",
          gray: {
@@ -59,5 +65,6 @@ module.exports = {
       },
     },
   },
+  darkMode: "class",
   plugins: [],
 }

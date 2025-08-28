@@ -15,11 +15,11 @@ const Slider = () => {
       {
         SliderData.map(item=>(
             <TouchableOpacity
-            className='px-3 py-2 bg-secondary rounded-md'
+            className='px-3 py-2 bg-secondary rounded-md dark:bg-dark-100'
             key={item._id}
             onPress={()=>setSelectedSlider(item.name)}
             >
-                <Text className={`${selectedSlider === item.name && "text-primary-600"} font-rubik-medium text-md`}>{item.name}</Text>
+                <Text className={`${selectedSlider === item.name && "text-primary-600 dark:text-primary-600"} font-rubik-medium text-md dark:text-white`}>{item.name}</Text>
             </TouchableOpacity>
         ))
       }

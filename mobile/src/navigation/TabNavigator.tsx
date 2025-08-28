@@ -8,17 +8,26 @@ import { TabNavigatorParamList } from '../types';
 import Icon from '../constants/Icons';
 import { Image } from 'react-native';
 import { useSelector } from 'react-redux';
+import { useColorScheme } from 'nativewind';
 
 const Tab = createBottomTabNavigator<TabNavigatorParamList>();
+
+
 const TabNavigator = () => {
+  const { colorScheme} = useColorScheme();
   const user = useSelector((state:any)=>state.user.user)
   return (
      <Tab.Navigator
      screenOptions={{
       headerShown:false,
-      tabBarActiveTintColor:"#2563EB",
-      tabBarInactiveTintColor:"#000000"
+      tabBarActiveTintColor:colorScheme === "dark" ? "white":"#2563EB",
+      tabBarInactiveTintColor:colorScheme === "dark" ? "white":"#000000",
+      tabBarStyle:{
+        backgroundColor: colorScheme === "dark" ? "#0c263b":"white",
+        
+      }
      }}
+     
      initialRouteName='Home'
      >
       <Tab.Screen name="Home" component={Home} 

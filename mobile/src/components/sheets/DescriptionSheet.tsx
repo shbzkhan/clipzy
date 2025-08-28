@@ -21,7 +21,7 @@ const DescriptionSheet = (props:SheetProps<"comment-sheet">) => {
     containerStyle={styles.container}
     >
       
-    <SafeAreaView className='bg-[#121212] h-full'>
+    <SafeAreaView className='h-full'>
       
       <View className='flex-row justify-between px-4 border-b border-gray-500 py-4'>
         <Text className='text-white font-rubik-bold text-xl'>
@@ -51,7 +51,7 @@ const DescriptionSheet = (props:SheetProps<"comment-sheet">) => {
                 </View>
             </View>
         </View>
-        <View className='p-4 bg-gray-800 rounded-2xl'>
+        <View className='p-4 bg-dark-100 rounded-2xl'>
         <Text className='text-white font-rubik text-lg'>{desc}</Text>
         {/* <TextInput
         className='w-full bg-white'
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     backgroundColor:"#52525B"
   },
   container:{
-    backgroundColor:"#121212",
+    backgroundColor:"#0c263b",
     height: "76%"
   },
 

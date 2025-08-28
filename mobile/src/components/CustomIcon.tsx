@@ -11,7 +11,7 @@ interface CustomIconsTypes{
 }
 const CustomIcon:FC<CustomIconsTypes> = ({className, name, color = "#1D4ED8", size=20, badge=false, handlePress}) => {
   return (
-    <TouchableOpacity className={`bg-primary-50 h-9 w-9 justify-center items-center border border-primary-600 rounded-md relative ${className}`}
+    <TouchableOpacity className={`bg-primary-50 h-9 w-9 justify-center items-center border border-primary-600 rounded-md relative dark:bg-primary-600 ${className}`}
     onPress={handlePress}
     >
         <Icon name={name} color={color} size={size}/>

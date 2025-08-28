@@ -39,7 +39,7 @@ const video = route.params
 
   let comment = "Waiting for the blink it zomato and other video with new names"
   return (
-    <SafeAreaView className='flex-1 bg-white'>
+    <SafeAreaView className='flex-1 bg-white dark:bg-dark'>
       <VideoPlayer/>
 
     <FlatList
@@ -54,7 +54,7 @@ const video = route.params
     )}
 
     ListHeaderComponent={
-      <View className='px-3 gap-2'>
+      <View className='px-3 gap-4'>
         <TouchableOpacity
         onPress={()=>{
             SheetManager.show("description-sheet",{
@@ -64,16 +64,16 @@ const video = route.params
           })
         }}
         >
-          <Text className='text-black font-rubik-bold text-xl' numberOfLines={2}>This is name of this area so that provide a simple name of this area of cercle</Text>
-          <Text className='text-gray-600 text-xs font-rubik'>285k views  4w ago  #TheMemoryAboutYou <Text className='font-rubik-semibold text-black'>...more</Text></Text>
+          <Text className='text-black font-rubik-bold text-xl dark:text-white' numberOfLines={2}>This is name of this area so that provide a simple name of this area of cercle</Text>
+          <Text className='text-gray-600 text-xs font-rubik dark:text-gray-300'>285k views  4w ago  #TheMemoryAboutYou <Text className='font-rubik-semibold text-black dark:text-white'>...more</Text></Text>
         </TouchableOpacity>
         <TouchableOpacity className='flex-row items-center justify-between'>
           <View className='flex-row items-center gap-1'>
           <UserLogo
             uri={"https://api.dicebear.com/9.x/initials/png?seed=Z Khan"}
           />
-          <Text className='font-rubik-medium'>Shahbaz Khan</Text>
-          <Text className='text-sm font-rubik text-gray-500'>348k</Text>
+          <Text className='font-rubik-medium dark:text-white'>Shahbaz Khan</Text>
+          <Text className='text-sm font-rubik text-gray-500 dark:text-gray-300'>348k</Text>
           </View>
           <SubscribedButton
           isSubscribed={false}
@@ -91,7 +91,7 @@ const video = route.params
             <CustomVideoSliderCard title="Thanks" icon="ShipWheel" handlePress={()=>ToastShow("Thanks for Click","success")}/>
           </ScrollView>
 
-          <TouchableOpacity className='bg-secondary px-4 py-3 rounded-xl gap-2 mt-3 mb-5'
+          <TouchableOpacity className='bg-secondary px-4 py-3 rounded-xl gap-2 mt-3 mb-5 dark:bg-dark-100'
           onPress={()=>{
             SheetManager.show("comment-sheet",{
             payload:{
@@ -100,13 +100,13 @@ const video = route.params
           })
         }}
           >
-            <Text className='font-rubik-semibold'>Comments</Text>
+            <Text className='font-rubik-semibold dark:text-white'>Comments</Text>
             <View className='flex-row gap-2 items-center'>
               <UserLogo
                 uri={"https://api.dicebear.com/9.x/initials/png?seed=Z Khan"}
                 heightAndWidth={6}
               />
-            <Text className='text-gray-500 font-rubik text-sm' >{comment.slice(0,45)+"..."}</Text>
+            <Text className='text-gray-500 font-rubik text-sm dark:text-gray-300' >{comment.slice(0,45)+"..."}</Text>
             </View>
           </TouchableOpacity>
           <Slider/>

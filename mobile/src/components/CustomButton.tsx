@@ -24,7 +24,7 @@ const CustomButton:FC<Props> = ({title, handlePress, isLoading, containerStyles,
         color='white'
         />
         :
-        <Text className={`text-white font-cormorantgaramond-medium text-xl  ${textStyles}`}>{title}</Text>}
+        <Text className={`font-cormorantgaramond-medium text-xl  ${textStyles ?textStyles :"text-white"}`}>{title}</Text>}
     </TouchableOpacity>
   )
 }

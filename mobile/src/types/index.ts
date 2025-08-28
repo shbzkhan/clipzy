@@ -1,3 +1,4 @@
+import { Appearance } from 'react-native';
 export type RootStackParamList = {
     MainTabs:undefined,
     About:undefined,
@@ -9,6 +10,7 @@ export type RootStackParamList = {
     Channel:undefined
     SearchHistory:undefined
     SearchVideo:undefined
+    Appearance:undefined
 }
 export type TabNavigatorParamList = {
     Home:undefined,
