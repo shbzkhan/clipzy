@@ -19,6 +19,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import {useColorScheme} from "nativewind"
 import { setTheme } from '../redux/slice/themeSlice';
 import AppearanceToggle from '../screens/Appearance';
+import WatchHistory from '../screens/WatchHistory';
+import Playlist from '../screens/Playlist';
+import YourVideo from '../screens/YourVideo';
+import UserDetail from '../screens/UserDetail';
+import Notification from '../screens/Notification';
+import Download from '../screens/Download';
 
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -92,6 +98,12 @@ const RootNavigator = () => {
       <Stack.Screen name="Channel" component={Channel} />
       <Stack.Screen name="SearchVideo" component={SearchVideo} />
       <Stack.Screen name="Appearance" component={AppearanceToggle} />
+      <Stack.Screen name="WatchHistory" component={WatchHistory} />
+      <Stack.Screen name="Playlist" component={Playlist} />
+      <Stack.Screen name="YourVideo" component={YourVideo} />
+      <Stack.Screen name="Download" component={Download} />
+      <Stack.Screen name="UserDetail" component={UserDetail} />
+      <Stack.Screen name="Notification" component={Notification} />
     </Stack.Navigator>
     </SheetProvider>
     </ToastProvider>

@@ -84,7 +84,7 @@ const Subscriptions = () => {
   const insets = useSafeAreaInsets();
 
   return (
-     <SafeAreaView className='h-flex bg-white dark:bg-dark'>
+     <SafeAreaView className='bg-white dark:bg-dark'>
       <HomeHeader/>
     <FlatList
     data={Video}

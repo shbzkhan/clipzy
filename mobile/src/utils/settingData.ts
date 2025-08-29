@@ -2,32 +2,32 @@ export const settingData = [
   {
     title: "Edit Profile",
     icon: "UserRoundPen",
-    href:"Appearance"
+    href:"UserDetail"
   },
   {
     title: "Your Videos",
     icon: "Heart",
-    href:"Appearance"
+    href:"YourVideo"
   },
   {
     title: "Profile",
     icon: "CircleUser",
-    href:"Appearance"
+    href:"UserDetail"
   },
   {
     title: "Notifications",
     icon: "Bell",
-    href:"Appearance"
+    href:"Notification"
   },
   {
     title: "Watch History",
     icon: "Clock4",
-    href:"Appearance"
+    href:"WatchHistory"
   },
   {
     title: "Playlist",
     icon: "ListVideo",
-    href:"Appearance"
+    href:"Playlist"
   },
   {
     title: "Appearance",
@@ -37,6 +37,6 @@ export const settingData = [
   {
     title: "Downloads",
     icon: "ArrowDownToLine",
-    href:"Appearance"
+    href:"Download"
   },
 ];

@@ -11,6 +11,12 @@ export type RootStackParamList = {
     SearchHistory:undefined
     SearchVideo:undefined
     Appearance:undefined
+    WatchHistory:undefined
+    Playlist:undefined
+    YourVideo:undefined
+    Download:undefined
+    UserDetail:undefined
+    Notification:undefined
 }
 export type TabNavigatorParamList = {
     Home:undefined,

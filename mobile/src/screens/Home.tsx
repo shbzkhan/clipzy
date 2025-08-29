@@ -17,7 +17,7 @@ const Home = () => {
 
   
   return (
-     <SafeAreaView className='h-flex bg-white dark:bg-dark'>
+     <SafeAreaView className='bg-white dark:bg-dark'>
       <View className='gap-4 mb-2'>
       <HomeHeader/>  
       <Slider/>
@@ -26,7 +26,7 @@ const Home = () => {
     data={!loading?Video:[1,1,1,1]}
     keyExtractor={(video) =>video._id}
     showsVerticalScrollIndicator={false}
-    contentContainerStyle={[{ paddingBottom: insets.bottom + 56,}]}
+    contentContainerStyle={[{ paddingBottom: insets.bottom + 60,}]}
     contentContainerClassName = "gap-6 pt-2"
     renderItem={({item})=>(
       !loading?

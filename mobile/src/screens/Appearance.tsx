@@ -18,7 +18,7 @@ const AppearanceToggle = () => {
   if(user || user != null) return <AuthBox name="Your Subscription"/>
   return (
     <SafeAreaView className='flex-1 px-4 bg-white dark:bg-dark'>
-      <CustomHeader/>
+      <CustomHeader title='Appearance'/>
       <Text className='font-rubik-bold text-xl my-4 dark:text-white'>Theme Switch</Text>
       <TouchableOpacity className='flex-row justify-between text-center bg-secondary p-3 rounded-md mb-4 dark:bg-dark-100'>
         <Text className='font-rubik-medium text-lg dark:text-white'>Dark Mode</Text>

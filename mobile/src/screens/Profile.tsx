@@ -1,8 +1,7 @@
-import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native'
+import { View, Text, ScrollView,TouchableOpacity } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import  {settingData}  from '../utils/settingData'
-import Icon from '../constants/Icons';
 import { navigate } from '../navigation/NavigationUtils';
 import CustomIcon from '../components/CustomIcon';
 import SettingsItem from '../components/SettingsItem';
@@ -26,7 +25,7 @@ const Profile = () => {
         />
         </View>
 
-        <TouchableOpacity className='flex-row items-center gap-4 my-5 '>
+        <TouchableOpacity className='flex-row items-center gap-4 my-5'>
             <UserLogo
             uri={"https://api.dicebear.com/9.x/initials/png?seed=Shahbaz Khan"}
             heightAndWidth={24}
@@ -41,11 +40,13 @@ const Profile = () => {
         <View className='flex flex-col mt-5'>
           <SettingsItem
             icon={"UserRoundPen"}
+            onPress={()=>navigate("UserDetail")}
             title='Edit Profile'
           />
 
           <SettingsItem
             icon={"SquarePlay"}
+            onPress={()=>navigate("YourVideo")}
             title='Your Video'
           />
         </View>
@@ -56,7 +57,7 @@ const Profile = () => {
                 <SettingsItem
                 key = {index}
                 icon={item.icon}
-                onPress={()=>navigate("Appearance")}
+                onPress={()=>navigate(item.href)}
                 {...item}
                 />
               )
