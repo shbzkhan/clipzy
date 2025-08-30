@@ -1,10 +1,10 @@
 import { View, Text } from 'react-native'
 import React, { useState } from 'react'
-import VideoListCard from '../components/VideoListCard'
 import CustomHeader from '../components/Header/CustomHeader'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Video } from '../utils/domyData'
 import { FlatList } from 'react-native'
+import PlaylistCard from '../components/PlaylistCard'
 
 const Playlist = () => {
   const [loading, setLoading] = useState(false)
@@ -18,7 +18,7 @@ const Playlist = () => {
             contentContainerClassName = "gap-6 pt-2 pb-14"
             renderItem={({item})=>(
             //   !loading?
-              <VideoListCard {...item} />
+              <PlaylistCard {...item} />
             //   :
             //   <VideoCardLoader/>
             )}

@@ -17,6 +17,7 @@ export type RootStackParamList = {
     Download:undefined
     UserDetail:undefined
     Notification:undefined
+    PlaylistVideo:undefined
 }
 export type TabNavigatorParamList = {
     Home:undefined,

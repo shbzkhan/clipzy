@@ -25,6 +25,7 @@ import YourVideo from '../screens/YourVideo';
 import UserDetail from '../screens/UserDetail';
 import Notification from '../screens/Notification';
 import Download from '../screens/Download';
+import PlaylistVideo from '../screens/PlaylistVideo';
 
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -104,6 +105,7 @@ const RootNavigator = () => {
       <Stack.Screen name="Download" component={Download} />
       <Stack.Screen name="UserDetail" component={UserDetail} />
       <Stack.Screen name="Notification" component={Notification} />
+      <Stack.Screen name="PlaylistVideo" component={PlaylistVideo} />
     </Stack.Navigator>
     </SheetProvider>
     </ToastProvider>
