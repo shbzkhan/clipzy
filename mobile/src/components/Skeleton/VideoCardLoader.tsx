@@ -2,9 +2,9 @@ import { View } from 'react-native'
 import LinearGradient from "react-native-linear-gradient"
 import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder'
 
-const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient)
 
 const VideoCardLoader = () => {
+  const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient)
   return (
     <View className="gap-4">
       {/* Thumbnail */}

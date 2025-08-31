@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import Icon from '../constants/Icons'
 import CustomButton from './CustomButton'
 import { navigate } from '../navigation/NavigationUtils'
+import { SheetManager } from 'react-native-actions-sheet'
 
 
 const AuthBox = ({name}:any) => {
@@ -16,7 +17,13 @@ const AuthBox = ({name}:any) => {
             <CustomButton
             title='Log In'
             containerStyles='w-64 h-12'
-            handlePress={()=>navigate("Login")}
+            handlePress={()=>{
+                        SheetManager.show("login-sheet",{
+                        payload:{
+                          entityId:"hello",
+                        }
+                      })
+                    }}
             />
             <CustomButton
             title='Register'

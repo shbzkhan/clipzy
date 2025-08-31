@@ -36,7 +36,7 @@ const SignupSchema = Yup.object().shape({
                     terms: Yup.boolean().oneOf([true], 'You must accept the terms')
 });
   return (
-    <SafeAreaView className=' bg-white flex-1'>
+    <SafeAreaView className=' bg-white dark:bg-dark flex-1'>
         <KeyboardAvoidingView
         behavior={Platform.OS ==="ios" ? "padding":"height"}
         className='flex-1'
@@ -50,7 +50,7 @@ const SignupSchema = Yup.object().shape({
                 imageStyle='h-10 w-12'
                 />
             </View>
-                <Text className='text-black font-tinos-bold text-4xl pt-4'>CLIPZY</Text>
+                <Text className='text-primary-600 font-tinos-bold text-4xl pt-4'>CLIPZY</Text>
                 <Text className='text-gray-300 text-xl'>Create a new account</Text>
             </View>
         <Formik

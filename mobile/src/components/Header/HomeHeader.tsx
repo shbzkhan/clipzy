@@ -16,7 +16,7 @@ const HomeHeader = () => {
       <CustomIcon
        name="Bell" 
        badge={true} 
-       handlePress={()=>navigate("Search")}/>
+       handlePress={()=>navigate("Notification")}/>
 
       <CustomIcon 
       name="Search"

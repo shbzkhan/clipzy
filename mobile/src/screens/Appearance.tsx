@@ -10,12 +10,9 @@ import {setTheme } from '../redux/slice/themeSlice'
 
 
 const AppearanceToggle = () => {
-      const {colorScheme} = useColorScheme();
+    const {colorScheme} = useColorScheme();
   
   const dispatch = useDispatch()
-  const user = useSelector((state:RootState)=>state.user.user)
-
-  if(user || user != null) return <AuthBox name="Your Subscription"/>
   return (
     <SafeAreaView className='flex-1 px-4 bg-white dark:bg-dark'>
       <CustomHeader title='Appearance'/>

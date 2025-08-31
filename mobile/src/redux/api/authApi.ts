@@ -4,7 +4,7 @@ import { ApiResponse, LoginUser, RegisterUser, UserData} from "../../types/auth"
 export const authApi = createApi({
     reducerPath:"auth",
     baseQuery:fetchBaseQuery({
-        baseUrl:"http://10.77.253.250:4000/api/v1/users/"
+        baseUrl:"http://10.222.46.250:4000/api/v1/users/"
     }),
     endpoints:(builder)=>({
         //register new user

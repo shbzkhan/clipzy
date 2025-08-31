@@ -1,4 +1,4 @@
-import { View, Text, ScrollView,TouchableOpacity } from 'react-native'
+import { View, Text, ScrollView,TouchableOpacity, Alert } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import  {settingData}  from '../utils/settingData'
@@ -6,10 +6,23 @@ import { navigate } from '../navigation/NavigationUtils';
 import CustomIcon from '../components/CustomIcon';
 import SettingsItem from '../components/SettingsItem';
 import UserLogo from '../components/UserLogo';
+import Icon from '../constants/Icons';
+import { useDispatch, useSelector } from 'react-redux';
+import AuthBox from '../components/AuthBox';
+import { clearUser } from '../redux/slice/userSlice';
+import { RootState } from '../redux/store';
 
 
 const Profile = () => {
+const dispatch = useDispatch();
+const user = useSelector((state:RootState)=>state.user.user)
+console.log(user)
 
+const logout = async()=>{
+dispatch(clearUser())
+}
+
+  if(!user) return <AuthBox name="Video Creation"/>
   return (
     <SafeAreaView className='h-full bg-white dark:bg-dark'>
       <ScrollView
@@ -17,7 +30,7 @@ const Profile = () => {
       contentContainerClassName='pb-32 px-4'
       >
         <View className='flex flex-row justify-between items-center 2'>
-          <Text className='text-2xl font-rubik-bold dark:text-white' >Profile</Text>
+          <Text className='text-2xl font-rubik-bold dark:text-white' >{user.username.toUpperCase()}</Text>
 
          <CustomIcon
           name="Search"
@@ -25,15 +38,17 @@ const Profile = () => {
         />
         </View>
 
-        <TouchableOpacity className='flex-row items-center gap-4 my-5'>
+        <TouchableOpacity className='flex-row items-center gap-4 my-5'
+        onPress={()=>navigate("UserDetail")}
+        >
             <UserLogo
-            uri={"https://api.dicebear.com/9.x/initials/png?seed=Shahbaz Khan"}
+            uri={user.avatar}
             heightAndWidth={24}
             />
             
             <View className=''>
-            <Text className='text-3xl font-rubik-bold dark:text-white'>Shahbaz Khan</Text>
-            <Text className='text-gray-600 dark:text-gray-300'>@shbzkhan</Text>
+            <Text className='text-3xl font-rubik-bold dark:text-white'>{user.fullname}</Text>
+            <Text className='text-gray-600 dark:text-gray-300'>@{user.username}</Text>
           </View>
         </TouchableOpacity>
 
@@ -65,13 +80,12 @@ const Profile = () => {
         </View>
 
         <View className='flex flex-col mt-5 border-t pt-5 border-primary-200 dark:border-secondary'>
-          <SettingsItem
-          icon={"Heart"}
-          title='Logout'
-          textStyle='text-danger'
-          showArrow={false}
-          // onPress={handleLogout}
-          />
+          <TouchableOpacity className='bg-red-100/50 dark:bg-red-100/10 py-4 justify-center items-center flex-row gap-3 rounded-md border-2 border-danger'
+          onPress={logout}
+          >
+            <Icon name='LogOut' color='red'/>
+            <Text className='text-danger font-rubik-semibold text-lg'>Logout</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </SafeAreaView>

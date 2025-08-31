@@ -7,26 +7,27 @@ import { Video } from '../utils/domyData'
 import { FlatList } from 'react-native'
 import CustomButton from '../components/CustomButton'
 import { navigate } from '../navigation/NavigationUtils'
+import VideoListCardLoader from '../components/Skeleton/VideoListCardLoader'
 
 interface playlistProps{
   route:any
 }
 const PlaylistVideo:FC<playlistProps> = ({route}) => {
     const video = route.params
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   return (
     <SafeAreaView className='flex-1 bg-white dark:bg-dark'>
       <CustomHeader title='Likes Playlist' />
         <FlatList
-            data={!loading?Video:[1,1,1,1]}
-            keyExtractor={(video) =>video._id.toString()}
+            data={!loading?Video:[1,2,3,4]}
+            keyExtractor={(video) =>video._id}
             showsVerticalScrollIndicator={false}
             contentContainerClassName = "gap-6 pt-2 pb-14"
             renderItem={({item})=>(
-            //   !loading?
+              !loading?
               <VideoListCard {...item} />
-            //   :
-            //   <VideoCardLoader/>
+              :
+              <VideoListCardLoader/>
             )}
             ListHeaderComponent={
                 <View>

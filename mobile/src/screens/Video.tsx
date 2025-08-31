@@ -13,12 +13,14 @@ import { navigate } from '../navigation/NavigationUtils'
 import Slider from '../components/Header/Slider'
 import { SheetManager } from 'react-native-actions-sheet'
 import UserLogo from '../components/UserLogo'
+import VideoCardLoader from '../components/Skeleton/VideoCardLoader'
 
 interface videoDetailsProps{
   route:any
 }
 const VideoDetails:FC<videoDetailsProps> = ({route}) => {
   const insets = useSafeAreaInsets();
+   const [loading, setLoading] = useState(true)
 const video = route.params
   console.log(video)
   const [isLiked, setIsLiked] = useState<boolean>(false)
@@ -43,14 +45,16 @@ const video = route.params
       <VideoPlayer/>
 
     <FlatList
-    data={Video}
+    data={!loading?Video:[1,1,1,1]}
     keyExtractor={video =>video._id}
     showsVerticalScrollIndicator={false}
     contentContainerStyle={[{ paddingBottom: insets.bottom + 56,}]}
     contentContainerClassName = "gap-6 pt-2"
     renderItem={({item})=>(
+       !loading?
       <VideoCard {...item} />
-      // <VideoCardLoader/>
+      :
+      <VideoCardLoader/>
     )}
 
     ListHeaderComponent={

@@ -6,6 +6,8 @@ import Slider from '../components/Header/Slider'
 import SearchHeader from '../components/Header/SearchHeader'
 import { useRoute } from '@react-navigation/native'
 import { Video } from '../utils/domyData'
+import VideoCardLoader from '../components/Skeleton/VideoCardLoader'
+import { useState } from 'react'
 
 
 
@@ -13,8 +15,8 @@ const SearchVideo = () => {
   // const navigation = useNavigation()
   const insets = useSafeAreaInsets();
   const data = useRoute()
-  const searchD = data.params as string
-
+  const searchD = data.params
+const [loading, setLoading] = useState(false)
 
   
   return (
@@ -30,13 +32,16 @@ const SearchVideo = () => {
       <Slider/>
       </View>
     <FlatList
-    data={Video}
+    data={!loading?Video:[1,2,3,4]}
     keyExtractor={video =>video._id}
     showsVerticalScrollIndicator={false}
     contentContainerStyle={[{ paddingBottom: insets.bottom + 56,}]}
     contentContainerClassName = "gap-6 pt-2"
     renderItem={({item})=>(
+      !loading?
       <VideoCard {...item} />
+      :
+      <VideoCardLoader/>
     )}
 
     ListHeaderComponent={

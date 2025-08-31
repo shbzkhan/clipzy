@@ -21,6 +21,7 @@ const Login = () => {
         
         const handleLogin = async(user:LoginUser,{ resetForm }:any)=>{
            try {
+            console.log("login")
              const userLoggedIn = await login(user).unwrap()
              ToastShow(userLoggedIn.message, "success")
              dispatch(userData(userLoggedIn.data))
