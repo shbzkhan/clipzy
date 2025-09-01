@@ -1,12 +1,15 @@
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken"
 import {User} from "../models/user.model.js"
-
 import { asyncHandler } from "../utils/asyncHandler.js"
 import { updateOnCloudinary, uploadOnCloudinary } from "../utils/cloudinary.js";
 import { apiError } from "../utils/ApiError.js";
 import { apiResponse } from "../utils/ApiResponse.js";
+import {OAuth2Client} from "google-auth-library"
+import { generateUniqueUsername } from "../utils/usernameGenrator.js";
 
+//googleClientId
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 //generateAccessAndRefreshToken
 const generateAccessAndRefreshToken = async (userId) => {
@@ -113,6 +116,55 @@ const loginUser = asyncHandler(async (req, res) => {
     const loginUser = await User.findById(user._id).select(
       "-password -refreshToken"
     );
+    const options ={
+        httpOnly: true,
+        secure: true
+    }
+
+    return res
+      .status(200)
+      .cookie("accessToken", accessToken, options)
+      .cookie("refreshToken", refreshToken, options)
+      .json(
+          new apiResponse(
+              200,
+              {user:loginUser, accessToken, refreshToken},
+              "User logged In")
+      )
+})
+
+//google login
+const goolgeLogin = asyncHandler(async (req, res)=>{
+    const { idToken } = req.body
+    if(!idToken){
+        throw new apiError(400, "id-token is required")
+    }
+    const ticket = await googleClient.verifyIdToken({
+        idToken,
+        audience: process.env.GOOGLE_CLIENT_ID,
+    })
+    const payload = ticket.getPayload()
+    
+    let user = await User.findOne({email:payload.email})
+
+    if(!user){
+        const baseName = payload.name ? payload.name.split(" ")[0].toLowerCase() : "user";
+        let username = await generateUniqueUsername(baseName);
+        user = await User.create({
+            googleId:payload.sub,
+            fullname:payload.name,
+            email:payload.email,
+            avatar:payload.picture,
+            username
+        })
+    }
+
+    const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id)
+
+    const loginUser = await User.findById(user._id).select(
+      "-password -refreshToken"
+    )
+
     const options ={
         httpOnly: true,
         secure: true
@@ -294,20 +346,36 @@ const updateUserAvatar = asyncHandler(async(req, res)=>{
             throw new apiError(404,"Unauthorized user")
         }
     
-    if(!(user.avatar && user.avatar.includes("cloudinary"))){
-        throw new apiError(400,"Somthing went wrong while updaing user avatar")
-    }
+    if(user.avatar && user.avatar.includes("cloudinary")){
+        const publicId = user.avatar.split("/").pop().split(".")[0]
+        const avatar = await updateOnCloudinary(publicId, avatarLocalPath)
+        if (!avatar.url) {
+            throw new apiError(400, "Avatar Image not update try again")
+        }
+    }else if(!user.avatar || user.avatar ===""){
+        const avatar = await uploadOnCloudinary(avatarLocalPath)
+        if (!avatar.url) {
+            throw new apiError(400, "Avatar Image not uploade, try again")
+        }   
+        await User.findByIdAndUpdate(
+            req.user._id,
+            {
+                $set:{
+                    avatar: avatar.url,
+                }
+            },{
+                new:true
+            }
+        )
 
-    const publicId = user.avatar.split("/").pop().split(".")[0]
-    const avatar = await updateOnCloudinary(publicId, avatarLocalPath)
-    if (!avatar.url) {
-        throw new apiError(400, "Avatar not update try again")
+    }else{
+        throw new apiError(400,"Somthing went wrong while updaing user avatar Image")
     }
 
     return res
             .status(200)
             .json(
-                new apiResponse(200,{}, "Avatar Updated successfully")
+                new apiResponse(200,{}, "Avatar Image Updated successfully")
             )
     
 })
@@ -518,6 +586,7 @@ const getUserWatchHistory = asyncHandler(async(req, res)=>{
 export {
     userRegister,
     loginUser,
+    goolgeLogin,
     logoutUser,
     refreshAccessToken,
     getCurrentUser,
