@@ -32,7 +32,7 @@ const LoginSheet = (props:SheetProps<"login-sheet">) => {
                try {
                  const userLoggedIn = await login(user).unwrap()
                  ToastShow(userLoggedIn.message, "success")
-                 dispatch(userData(userLoggedIn.data))
+                 dispatch(userData(userLoggedIn.data.user))
                  await AsyncStorage.setItem("token", userLoggedIn.data.accessToken)
                  resetForm()
                  SheetManager.hide(props.sheetId)
@@ -99,6 +99,8 @@ const LoginSheet = (props:SheetProps<"login-sheet">) => {
                 />
                 <CustomTextInput
                 label="Password"
+                returnKeyType='send'
+                onSubmitEditing={handleSubmit}
                 value={values.password}
                 onChangeText={handleChange("password")}
                 errors={touched.password && errors.password}

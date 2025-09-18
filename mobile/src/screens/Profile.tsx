@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import AuthBox from '../components/AuthBox';
 import { clearUser } from '../redux/slice/userSlice';
 import { RootState } from '../redux/store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const Profile = () => {
@@ -18,8 +19,9 @@ const dispatch = useDispatch();
 const user = useSelector((state:RootState)=>state.user.user)
 
 const logout = async()=>{
-dispatch(clearUser())
-}
+  await AsyncStorage.removeItem("token")
+    dispatch(clearUser())
+  }
 
   if(!user) return <AuthBox name="Video Creation"/>
   return (
