@@ -6,11 +6,12 @@ import * as Yup from "yup"
 import CustomTextInput from '../components/CustomTextInput'
 import Logo from '../constants/Logo'
 import CustomButton from '../components/CustomButton'
-import { navigate } from '../navigation/NavigationUtils'
+import { goBack} from '../navigation/NavigationUtils'
 import { useRegisterMutation } from '../redux/api/authApi'
 import { ToastShow } from '../utils/Tost'
 import { RegisterUser } from '../types/auth'
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
+import { SheetManager } from 'react-native-actions-sheet'
 
 
 const Register = () => {
@@ -107,7 +108,14 @@ const SignupSchema = Yup.object().shape({
                     <Text className='text-gray-300 font-tinos text-xl'>Already have a account?</Text>
                     <TouchableOpacity
                     className=''
-                    onPress={()=>navigate("Login")}
+                    onPress={()=>{
+                        goBack()
+                        SheetManager.show("login-sheet",{
+                            payload:{
+                            entityId:"hello",
+                            }
+                      })
+                    }}
                     >
                         <Text className='text-primary-600 font-tinos text-xl'>Sign in</Text>
                     </TouchableOpacity>

@@ -21,7 +21,6 @@ const Login = () => {
         
         const handleLogin = async(user:LoginUser,{ resetForm }:any)=>{
            try {
-            console.log("login")
              const userLoggedIn = await login(user).unwrap()
              ToastShow(userLoggedIn.message, "success")
              dispatch(userData(userLoggedIn.data))
@@ -29,7 +28,6 @@ const Login = () => {
              resetForm()
            } catch (err) {
              const error = err as FetchBaseQueryError
-             console.log(err)
              const errorMsg = error.data as {message:string}
             ToastShow(errorMsg.message, "danger")
            }

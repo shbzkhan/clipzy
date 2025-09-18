@@ -5,7 +5,6 @@ export type RootStackParamList = {
     Splash:undefined,
     Search:undefined,
     Register:undefined,
-    Login:undefined,
     Video:undefined
     Channel:undefined
     SearchHistory:undefined

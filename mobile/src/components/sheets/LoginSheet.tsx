@@ -18,25 +18,30 @@ import { ToastShow } from '../../utils/Tost'
 import { userData } from '../../redux/slice/userSlice'
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
 import { useColorScheme } from 'nativewind'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const LoginSheet = (props:SheetProps<"login-sheet">) => {
     const {colorScheme} = useColorScheme()
+    const [error, setError] = useState("")
+    const [isError, setIsError] = useState(false)
     const [login,{isLoading}] = useLoginMutation()
         const dispatch = useDispatch();
             
             const handleLogin = async(user:LoginUser,{ resetForm }:any)=>{
+                setIsError(false)
                try {
                  const userLoggedIn = await login(user).unwrap()
                  ToastShow(userLoggedIn.message, "success")
                  dispatch(userData(userLoggedIn.data))
-                 goBack()
+                 await AsyncStorage.setItem("token", userLoggedIn.data.accessToken)
                  resetForm()
                  SheetManager.hide(props.sheetId)
                } catch (err) {
                  const error = err as FetchBaseQueryError
-                 console.log(err)
                  const errorMsg = error.data as {message:string}
                 ToastShow(errorMsg.message, "danger")
+                setIsError(true)
+                setError(errorMsg.message)
                }
             }
     
@@ -54,23 +59,15 @@ const LoginSheet = (props:SheetProps<"login-sheet">) => {
     keyboardHandlerEnabled={true}
     indicatorStyle={styles.indicator}
     enableGesturesInScrollView={true}
-    containerStyle={[
-        styles.container,
-        { backgroundColor: colorScheme === "light" ? "#FFFFFF" : "#0c263b" },
-      ]}
+    containerStyle={{ backgroundColor: colorScheme === "light" ? "#FFFFFF" : "#0c263b" }}
     >
       
-    <SafeAreaView className='bg-dark'>
+    <SafeAreaView>
         <KeyboardAvoidingView
         behavior={Platform.OS ==="ios" ? "padding":"height"}
         >
-        <View className='flex-row justify-between px-4 border-b border-gray-500 py-4'>
-            <Text className='text-white font-rubik-bold text-xl'>Login</Text>
-            <TouchableOpacity
-            onPress={()=>SheetManager.hide(props.sheetId)}
-            >
-              <Icon name="X" color='white'/>
-            </TouchableOpacity>
+        <View className='flex-row justify-center px-4 border-b border-gray-500 py-4 mb-6'>
+            <Text className='text-primary-600 font-rubik-bold text-2xl dark:text-white'>Login</Text>
         </View>
         <ScrollView className='flex item-center px-4'>
             <View className='justify-center pb-4'>
@@ -113,7 +110,8 @@ const LoginSheet = (props:SheetProps<"login-sheet">) => {
                 isLoading={isLoading}
                 containerStyles='mt-4'
                 />
-                <View className='mx-auto mt-3 flex-row items-center gap-1'>
+                {isError && <Text className='text-center text-danger'>{error}</Text>}
+                <View className='mx-auto mt-3 flex-row items-center gap-1 pb-3'>
                     <Text className='text-gray-300 font-tinos text-xl'>Create a new account?</Text>
                     <TouchableOpacity
                     className=''
@@ -143,9 +141,7 @@ const styles = StyleSheet.create({
     top:4,
     backgroundColor:"#52525B"
   },
-  container:{
-    height: "40%"
-  },
+  
 
 })
 

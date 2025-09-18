@@ -8,9 +8,10 @@ interface SettingsItemProps {
   onPress?: ()=>void;
   textStyle?: string;
   showArrow?: boolean;
+  iconColor?:string
 }
 
-const SettingsItem = ({icon, title, onPress, textStyle, showArrow = true}: SettingsItemProps)=>{
+const SettingsItem = ({icon, title, onPress, textStyle,iconColor, showArrow = true}: SettingsItemProps)=>{
 return (
   <TouchableOpacity
   onPress={onPress}
@@ -20,9 +21,10 @@ return (
       <Icon
       name={icon}
       size={20}
+      color={iconColor}
       />
       <Text
-      className={`text-lg font-rubik-medium text-black-300 dark:text-white ${textStyle}`}
+      className={`text-lg font-rubik-medium text-black-300 ${textStyle} dark:text-white`}
       >{title}</Text>
     </View>
     {showArrow && (

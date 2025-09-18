@@ -4,6 +4,7 @@ import backward from "../assets/images/backward.png"
 import forward from "../assets/images/forward.png"
 import fullscreen from "../assets/images/fullscreen.png"
 import minimize from "../assets/images/minimize.png"
+import google from "../assets/images/google.png"
 
 export default {
     play,
@@ -11,5 +12,6 @@ export default {
     backward,
     forward,
     fullscreen,
-    minimize
+    minimize,
+    google
 }

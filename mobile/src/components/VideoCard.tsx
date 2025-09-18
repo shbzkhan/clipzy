@@ -42,9 +42,6 @@ const VideoCard:FC<videoCardProps> = ({_id, title, thumbnail, avatar, fullname, 
             <Text className='text-black font-rubik-bold dark:text-white' numberOfLines={2}>{title}</Text>
             <Text className='text-gray-600 text-xs font-rubik dark:text-gray-300'>{`${fullname} . ${views} views . ${date} days ago`}</Text>
         </View>
-        <TouchableOpacity>
-            <Icon name='EllipsisVertical' color={colorScheme === "dark"? "white": "black"}/>
-        </TouchableOpacity>
       </View>
     </TouchableOpacity>
   )

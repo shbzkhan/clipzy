@@ -15,7 +15,6 @@ interface ThemeButton {
 const ThemeButton:FC<ThemeButton> = ({themeName, handlePress, icon, title}) => {
     const {colorScheme} = useColorScheme();
     const mode = useSelector((state:RootState)=>state.theme.mode)
-  console.log("theme",colorScheme)
   return (
     <TouchableOpacity className='flex-row text-center bg-secondary p-3 gap-2 rounded-md dark:bg-dark-100'
     onPress={handlePress}

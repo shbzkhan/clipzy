@@ -23,7 +23,7 @@ const TabNavigator = () => {
       tabBarActiveTintColor:colorScheme === "dark" ? "white":"#2563EB",
       tabBarInactiveTintColor:colorScheme === "dark" ? "white":"#000000",
       tabBarStyle:{
-        backgroundColor: colorScheme === "dark" ? "#0c263b":"white",
+        backgroundColor: colorScheme === "dark" ? "#071825":"white",
         
       }
      }}

@@ -16,7 +16,6 @@ import { RootState } from '../redux/store';
 const Profile = () => {
 const dispatch = useDispatch();
 const user = useSelector((state:RootState)=>state.user.user)
-console.log(user)
 
 const logout = async()=>{
 dispatch(clearUser())
@@ -30,7 +29,7 @@ dispatch(clearUser())
       contentContainerClassName='pb-32 px-4'
       >
         <View className='flex flex-row justify-between items-center 2'>
-          <Text className='text-2xl font-rubik-bold dark:text-white' >{user.username.toUpperCase()}</Text>
+          <Text className='text-2xl font-rubik-bold dark:text-white' >Profile</Text>
 
          <CustomIcon
           name="Search"
@@ -47,8 +46,8 @@ dispatch(clearUser())
             />
             
             <View className=''>
-            <Text className='text-3xl font-rubik-bold dark:text-white'>{user.fullname}</Text>
-            <Text className='text-gray-600 dark:text-gray-300'>@{user.username}</Text>
+            <Text className='text-2xl font-rubik-bold dark:text-white' numberOfLines={1}>{user.fullname}</Text>
+            <Text className='text-gray-600 dark:text-gray-300 text-sm'>@{user.username}</Text>
           </View>
         </TouchableOpacity>
 
@@ -77,6 +76,7 @@ dispatch(clearUser())
                 />
               )
             )}
+            
         </View>
 
         <View className='flex flex-col mt-5 border-t pt-5 border-primary-200 dark:border-secondary'>

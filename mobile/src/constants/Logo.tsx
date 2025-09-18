@@ -9,12 +9,12 @@ interface logoProps {
 const Logo = ({containerStyle, imageStyle}:logoProps) => {
   return (
     <View className={`bg-primary-600 h-8 w-12 flex justify-center items-center rounded-lg ${containerStyle}`}>
-        <Image
-          source={require("../assets/images/clipzylogo.png")}
-          className={`h-6 w-6 ${imageStyle}`}
-          tintColor="#FFFFFF"
-          resizeMode="center"
-        />
+      <Image
+        source={require("../assets/images/clipzylogo.png")}
+        className={`h-6 w-6 ${imageStyle}`}
+        tintColor="#FFFFFF"
+        resizeMode="center"
+      />
       </View>
   )
 }

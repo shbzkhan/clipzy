@@ -1827,6 +1827,24 @@
     use-latest-callback "^0.2.4"
     use-sync-external-store "^1.5.0"
 
+"@react-navigation/elements@^2.6.4":
+  version "2.6.4"
+  resolved "https://registry.yarnpkg.com/@react-navigation/elements/-/elements-2.6.4.tgz#f1dc8548b1289588fabcd2f0342c1391c689a49f"
+  integrity sha512-O3X9vWXOEhAO56zkQS7KaDzL8BvjlwZ0LGSteKpt1/k6w6HONG+2Wkblrb057iKmehTkEkQMzMLkXiuLmN5x9Q==
+  dependencies:
+    color "^4.2.3"
+    use-latest-callback "^0.2.4"
+    use-sync-external-store "^1.5.0"
+
+"@react-navigation/material-top-tabs@^7.3.7":
+  version "7.3.7"
+  resolved "https://registry.yarnpkg.com/@react-navigation/material-top-tabs/-/material-top-tabs-7.3.7.tgz#16e8efaf7bc3be89c2c1e5a4f48124149ec0db3a"
+  integrity sha512-lVgcJON9kqCETE628/E5da0jbSB1QxHdYaKetxAIEFCgcANebcg1wU80P2B3PBFp2qRrLfrPS9oHTUfaUIjLSA==
+  dependencies:
+    "@react-navigation/elements" "^2.6.4"
+    color "^4.2.3"
+    react-native-tab-view "^4.1.3"
+
 "@react-navigation/native-stack@^7.3.24":
   version "7.3.24"
   resolved "https://registry.yarnpkg.com/@react-navigation/native-stack/-/native-stack-7.3.24.tgz#16f777a059272427fb35dea9a83619565ff27250"
@@ -6059,7 +6077,7 @@ prompts@^2.0.1, prompts@^2.4.2:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@^15.8.1:
+prop-types@^15.6.2, prop-types@^15.8.1:
   version "15.8.1"
   resolved "https://registry.npmjs.org/prop-types/-/prop-types-15.8.1.tgz"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -6218,10 +6236,23 @@ react-native-immersive@^2.0.0:
   resolved "https://registry.yarnpkg.com/react-native-immersive/-/react-native-immersive-2.0.0.tgz#01e8e8d7bf0e4e8392d3690fb8c62cafca5aa971"
   integrity sha512-9TL05nTHN/x9sN1wbUlBoGyzH4NCuZ/7WEEUp5CvOoKuUABvdYosov0O0SAMbm/5J913RRoy98VB6tGNi9lRSw==
 
+react-native-iphone-x-helper@^1.0.3:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.3.1.tgz#20c603e9a0e765fd6f97396638bdeb0e5a60b010"
+  integrity sha512-HOf0jzRnq2/aFUcdCJ9w9JGzN3gdEg0zFE4FyYlp4jtidqU03D5X7ZegGKfT1EWteR0gPBGp9ye5T5FvSWi9Yg==
+
 react-native-is-edge-to-edge@^1.2.1:
   version "1.2.1"
   resolved "https://registry.npmjs.org/react-native-is-edge-to-edge/-/react-native-is-edge-to-edge-1.2.1.tgz"
   integrity sha512-FLbPWl/MyYQWz+KwqOZsSyj2JmLKglHatd3xLZWskXOpRaio4LfEDEz8E/A6uD8QoTHW6Aobw1jbEwK7KMgR7Q==
+
+react-native-keyboard-aware-scroll-view@^0.9.5:
+  version "0.9.5"
+  resolved "https://registry.yarnpkg.com/react-native-keyboard-aware-scroll-view/-/react-native-keyboard-aware-scroll-view-0.9.5.tgz#e2e9665d320c188e6b1f22f151b94eb358bf9b71"
+  integrity sha512-XwfRn+T/qBH9WjTWIBiJD2hPWg0yJvtaEw6RtPCa5/PYHabzBaWxYBOl0usXN/368BL1XktnZPh8C2lmTpOREA==
+  dependencies:
+    prop-types "^15.6.2"
+    react-native-iphone-x-helper "^1.0.3"
 
 react-native-linear-gradient@^2.8.3:
   version "2.8.3"
@@ -6277,6 +6308,13 @@ react-native-svg@^15.12.1:
     css-select "^5.1.0"
     css-tree "^1.1.3"
     warn-once "0.1.1"
+
+react-native-tab-view@^4.1.3:
+  version "4.1.3"
+  resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-4.1.3.tgz#d7b67a5ce09af2b7268395c978fc565561f8cf9f"
+  integrity sha512-COj2HBeM4IqKCAadUdZAUWrFyO8++wlgObsgOt6xrwqdEnu9HX/74uesC0MGlgwIalFffXqTh5F3CC3pUjFPug==
+  dependencies:
+    use-latest-callback "^0.2.4"
 
 react-native-toast-notifications@^3.4.0:
   version "3.4.0"

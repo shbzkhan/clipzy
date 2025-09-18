@@ -34,9 +34,13 @@ module.exports = {
         secondary: "#F5F5F7",
         tertiary: "#EEEEEE",
         dark:{
-          DEFAULT:"#0c263b",
-          100:"#09122C",
-          200:"#7743DB"
+          DEFAULT:"#071825",
+          50:"#22272B",
+          100:"#44484E",
+          200:"#09122C",
+          300:"#0B1014",
+          400:"#0c263b",
+          500:"#7743DB",
         },
         accent:{
           100: "#FBFBFD"

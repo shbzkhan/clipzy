@@ -20,7 +20,6 @@ const Search = () => {
     const data = await AsyncStorage.getItem("search-history");
     if (data) {
       const parsedData = JSON.parse(data);
-      console.log("parsed search-history", parsedData);
       setSearchData(parsedData);
     }
   } catch (error) {
@@ -32,7 +31,6 @@ const filterdata = ()=>{
 
 }
   useEffect(()=>{
-    console.log("searchHistory called"); 
     searchHistory()
   },[search])
 

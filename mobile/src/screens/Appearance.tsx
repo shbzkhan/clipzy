@@ -21,7 +21,7 @@ const AppearanceToggle = () => {
         <Text className='font-rubik-medium text-lg dark:text-white'>Dark Mode</Text>
         <Switch 
         value={colorScheme === "dark"}
-        trackColor={{false: '#black', true: 'white'}}
+        trackColor={{false: 'black', true: 'white'}}
         thumbColor={colorScheme === "dark" ? '#2563EB' : '#EBF5FF'}
         onValueChange={()=>dispatch(setTheme(colorScheme === "dark" ? "light" : "dark"))}
 

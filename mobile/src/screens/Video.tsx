@@ -22,7 +22,6 @@ const VideoDetails:FC<videoDetailsProps> = ({route}) => {
   const insets = useSafeAreaInsets();
    const [loading, setLoading] = useState(true)
 const video = route.params
-  console.log(video)
   const [isLiked, setIsLiked] = useState<boolean>(false)
   const [like, setLike] =useState<number>(435)
 

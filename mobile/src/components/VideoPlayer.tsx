@@ -66,7 +66,6 @@ useEffect(() => {
     onBuffer={({isBuffering})=>setBuffuring(isBuffering)}
     onProgress={(x) => {
     setProgress(x);
-    console.log(x)
     if (x.currentTime === x.seekableDuration) {
       setPaushed(true)
     }

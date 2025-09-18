@@ -16,7 +16,7 @@ const Icon:FC<IconTypes> = ({ name, color="#60A5FA", size, focused }) => {
   const CustomIcon = icons[name];
 
   return <CustomIcon 
-             color={focused ? "#60A5FA":colorScheme==='dark'?"white":color} 
+            color={focused ? "#60A5FA":colorScheme==='dark'?"white":color} 
             fill={focused ? color : "none"}         
             size={size} 
         />;

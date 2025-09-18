@@ -4,7 +4,6 @@ import { SliderData } from '../../constants/SliderData'
 
 const Slider = () => {
     const [selectedSlider, setSelectedSlider] = useState<string>("All")
-    console.log(selectedSlider)
     
   return (
     <ScrollView 

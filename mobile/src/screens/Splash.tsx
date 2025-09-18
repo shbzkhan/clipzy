@@ -1,8 +1,22 @@
 import { View, Text, Image, StatusBar } from 'react-native'
 import React, { FC, useEffect } from 'react'
 import { resetAndNavigate } from '../navigation/NavigationUtils';
+import { useCurrentUserQuery } from '../redux/api/authApi';
+import { useDispatch } from 'react-redux';
+import { userData } from '../redux/slice/userSlice';
 
 const Splash:FC = () => {
+const dispatch = useDispatch()
+const {data} = useCurrentUserQuery()
+  useEffect(()=>{
+    if(data){
+    const user = data.data.user
+   dispatch(userData(user))
+}
+  },[data, dispatch])
+  
+
+
     useEffect(()=>{
         const timeoutId = setTimeout(() => {
             resetAndNavigate("MainTabs")
