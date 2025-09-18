@@ -114,7 +114,7 @@ const loginUser = asyncHandler(async (req, res) => {
     const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id)
 
     const loginUser = await User.findById(user._id).select(
-      "-password -refreshToken"
+      "-password -refreshToken -watchHistory"
     );
     const options ={
         httpOnly: true,
@@ -143,14 +143,20 @@ const goolgeLogin = asyncHandler(async (req, res)=>{
         idToken,
         audience: process.env.GOOGLE_CLIENT_ID,
     })
+    if(!ticket){
+        throw new apiError(400, "Error ticket, Please try again later")
+    }
+
     const payload = ticket.getPayload()
+    if(!payload){
+        throw new apiError(400, "Error payload, Please try again later")
+    }
     
     let user = await User.findOne({email:payload.email})
 
     if(!user){
-        const baseName = payload.name ? payload.name.split(" ")[0].toLowerCase() : "user";
-        let username = await generateUniqueUsername(baseName);
-        user = await User.create({
+        const username = payload.email.split("@")[0]
+       user = await User.create({
             googleId:payload.sub,
             fullname:payload.name,
             email:payload.email,
@@ -162,9 +168,8 @@ const goolgeLogin = asyncHandler(async (req, res)=>{
     const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id)
 
     const loginUser = await User.findById(user._id).select(
-      "-password -refreshToken"
+      "-password -refreshToken -watchHistory"
     )
-
     const options ={
         httpOnly: true,
         secure: true
