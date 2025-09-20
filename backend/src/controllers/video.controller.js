@@ -101,8 +101,8 @@ const getAllVideos = asyncHandler(async (req, res) => {
 })
 
 const publishAVideo = asyncHandler(async (req, res) => {
-    const { title, description} = req.body
-     if ([title, description].some((field) => field?.trim() === "")) {
+    const { title} = req.body
+     if (title.trim() === "") {
         throw new apiError(400, "All fields are required");
     }
     const videoFileLocalPath = req.files?.videoFile[0].path
@@ -114,16 +114,17 @@ const publishAVideo = asyncHandler(async (req, res) => {
     const videoFile = await uploadOnCloudinary(videoFileLocalPath)
     const thumbnail = await uploadOnCloudinary(thumbnailLocalPath)
     if(!videoFile){
+        await deleteOnCloudinary(thumbnail.public_id)
         throw new apiError(404, "Video not uploaded")
     }
     if(!thumbnail){
+        await deleteOnCloudinary(videoFile.public_id, "video")
         throw new apiError(404, "Thumbnail not uploaded")
     }
     const video = await Video.create({
         videoFile:videoFile.url,
         thumbnail:thumbnail.url,
         title,
-        description,
         duration: videoFile.duration,
         owner:req.user._id,
     })
