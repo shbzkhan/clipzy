@@ -6,9 +6,10 @@ import Profile from '../screens/Profile';
 import Post from '../screens/Post';
 import { TabNavigatorParamList } from '../types';
 import Icon from '../constants/Icons';
-import { Image } from 'react-native';
+import { Image, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useColorScheme } from 'nativewind';
+import { navigate } from './NavigationUtils';
 
 const Tab = createBottomTabNavigator<TabNavigatorParamList>();
 
@@ -18,15 +19,15 @@ const TabNavigator = () => {
   const user = useSelector((state:any)=>state.user.user)
   return (
      <Tab.Navigator
-     screenOptions={{
-      headerShown:false,
+     screenOptions={({route})=>({
+       headerShown:false,
       tabBarActiveTintColor:colorScheme === "dark" ? "white":"#2563EB",
       tabBarInactiveTintColor:colorScheme === "dark" ? "white":"#000000",
       tabBarStyle:{
         backgroundColor: colorScheme === "dark" ? "#071825":"white",
         
       }
-     }}
+     })}
      
      initialRouteName='Home'
      >
@@ -38,10 +39,19 @@ const TabNavigator = () => {
         
       }}
       />
-      <Tab.Screen name="Post" component={Post} 
+      <Tab.Screen name="Post" component={Home}
+      listeners={{
+        tabPress:e=>{
+          e.preventDefault()
+        }
+      } }
       options={{
         tabBarIcon:({focused,size})=>{
-          return <Icon name='MonitorUp' color={"#2563EB"} focused={focused} size={size} />
+          return (
+          <TouchableOpacity onPress={()=>navigate("Posts")} activeOpacity={0.5}>
+            <Icon name='MonitorUp' color={"#2563EB"} focused={focused} size={size} />
+          </TouchableOpacity>
+        )
         }
       }}
       />

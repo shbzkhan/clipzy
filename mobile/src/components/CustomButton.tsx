@@ -11,9 +11,10 @@ interface Props {
     textStyles?:string
     icon?:any
     widthAndHeight?:string
+    tintColor?:string
 }
 
-const CustomButton:FC<Props> = ({title, handlePress, isLoading, containerStyles, textStyles, icon, widthAndHeight = 6 }) => {
+const CustomButton:FC<Props> = ({title, handlePress, isLoading, containerStyles, textStyles, icon, tintColor, widthAndHeight = 6 }) => {
   return (
     <TouchableOpacity
     onPress={handlePress}
@@ -26,6 +27,7 @@ const CustomButton:FC<Props> = ({title, handlePress, isLoading, containerStyles,
       source={icon}
       className={`w-${widthAndHeight} h-${widthAndHeight}`}
       resizeMode='contain'
+      tintColor={tintColor}
       />
        }
       

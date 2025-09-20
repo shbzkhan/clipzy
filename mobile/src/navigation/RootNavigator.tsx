@@ -26,6 +26,8 @@ import UserDetail from '../screens/UserDetail';
 import Notification from '../screens/Notification';
 import Download from '../screens/Download';
 import PlaylistVideo from '../screens/PlaylistVideo';
+import Post from '../screens/Post';
+import UploadVideo from '../screens/UploadVideo';
 
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -90,6 +92,7 @@ const RootNavigator = () => {
     initialRouteName='Splash'
     >
       <Stack.Screen name="Splash" component={Splash} />
+      <Stack.Screen name="Posts" component={Post} />
       <Stack.Screen name="MainTabs" component={TabNavigator} />
       <Stack.Screen name="About" component={About} />
       <Stack.Screen name="SearchHistory" component={Search} />
@@ -105,6 +108,7 @@ const RootNavigator = () => {
       <Stack.Screen name="UserDetail" component={UserDetail} />
       <Stack.Screen name="Notification" component={Notification} />
       <Stack.Screen name="PlaylistVideo" component={PlaylistVideo} />
+      <Stack.Screen name="UploadVideo" component={UploadVideo} />
     </Stack.Navigator>
     </SheetProvider>
     </ToastProvider>
