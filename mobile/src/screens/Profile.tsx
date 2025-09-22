@@ -25,7 +25,7 @@ const logout = async()=>{
 
   if(!user) return <AuthBox name="Video Creation"/>
   return (
-    <SafeAreaView className='h-full bg-white dark:bg-dark'>
+    <SafeAreaView className='flex-1 bg-white dark:bg-dark'>
       <ScrollView
       showsVerticalScrollIndicator={false}
       contentContainerClassName='pb-32 px-4'
@@ -82,12 +82,21 @@ const logout = async()=>{
         </View>
 
         <View className='flex flex-col mt-5 border-t pt-5 border-primary-200 dark:border-secondary'>
-          <TouchableOpacity className='bg-red-100/50 dark:bg-red-100/10 py-4 justify-center items-center flex-row gap-3 rounded-md border-2 border-danger'
+          <SettingsItem
+            icon={"LogOut"}
+            onPress={logout}
+            title='Logout'
+            textStyle='text-danger dark:text-danger'
+            iconColor='red'
+            showArrow={false}
+            
+          />
+          {/* <TouchableOpacity className='bg-red-100/50 dark:bg-red-100/10 py-4 justify-center items-center flex-row gap-3 rounded-md border-2 border-danger'
           onPress={logout}
           >
             <Icon name='LogOut' color='red'/>
             <Text className='text-danger font-rubik-semibold text-lg'>Logout</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </ScrollView>
     </SafeAreaView>

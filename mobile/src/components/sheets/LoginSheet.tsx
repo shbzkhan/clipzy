@@ -100,6 +100,7 @@ const LoginSheet = (props:SheetProps<"login-sheet">) => {
                 <CustomTextInput
                 label="Password"
                 returnKeyType='send'
+                secureTextEntry
                 onSubmitEditing={handleSubmit}
                 value={values.password}
                 onChangeText={handleChange("password")}

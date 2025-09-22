@@ -29,6 +29,7 @@ const [googleLogin,{isLoading}] = useGoogleLoginMutation()
     }
       const userLoggedIn = await googleLogin({idToken}).unwrap()
           ToastShow(userLoggedIn.message, "success")
+          console.log(userLoggedIn)
           dispatch(userData(userLoggedIn.data.user))
           await AsyncStorage.setItem("token", userLoggedIn.data.accessToken)
     } catch (e: any) {

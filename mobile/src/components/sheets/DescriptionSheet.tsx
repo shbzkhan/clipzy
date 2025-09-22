@@ -5,8 +5,12 @@ import { StyleSheet } from 'react-native'
 import Icon from '../../constants/Icons'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { ScrollView } from 'react-native-gesture-handler'
+import { formatDM, formatYear } from '../../constants/DateFormat'
+import { Video } from '../../types/video'
 
 const DescriptionSheet = (props:SheetProps<"comment-sheet">) => {
+  // const 
+  const videoData:Video = props.payload?.entityId
   const [desc, setDesc] = useState<string>("")
   return (
     <ActionSheet 
@@ -35,19 +39,19 @@ const DescriptionSheet = (props:SheetProps<"comment-sheet">) => {
       </View>
       <ScrollView contentContainerClassName='px-4 gap-3'>
         <View className='my-6 gap-5'>
-            <Text className='text-white font-rubik-bold text-2xl'>This is name of this area so that provide a simple name of this area of cercle</Text>
+            <Text className='text-white font-rubik-bold text-2xl'>{videoData.title}</Text>
             <View className='flex-row justify-around'>
                 <View className='items-center'>
-                    <Text className='text-white font-rubik-bold text-xl'>320</Text>
+                    <Text className='text-white font-rubik-bold text-xl'>{videoData.likesCount}</Text>
                     <Text className=' font-rubik text-sm text-gray-400'>Likes</Text>
                 </View>
                 <View className='items-center'>
-                    <Text className='text-white font-rubik-bold text-xl'>8649</Text>
+                    <Text className='text-white font-rubik-bold text-xl'>{videoData.views}</Text>
                     <Text className='font-rubik text-sm text-gray-400'>Views</Text>
                 </View>
                 <View className='items-center'>
-                    <Text className='text-white font-rubik-bold text-xl'>3 Feb</Text>
-                    <Text className='font-rubik text-sm text-gray-400'>2025</Text>
+                    <Text className='text-white font-rubik-bold text-xl'>{formatDM(videoData.createdAt)}</Text>
+                    <Text className='font-rubik text-sm text-gray-400'>{formatYear(videoData.createdAt)}</Text>
                 </View>
             </View>
         </View>

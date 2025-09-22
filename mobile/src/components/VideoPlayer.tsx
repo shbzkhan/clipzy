@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
 import { View, Text, TouchableOpacity, Image, StatusBar, BackHandler, Platform } from 'react-native'
 import Video from 'react-native-video'
 import ImageIcon from '../constants/ImageIcon'
@@ -7,8 +7,10 @@ import { format } from '../constants/TimeFormat'
 import Orientation from "react-native-orientation-locker"
 import { ActivityIndicator } from 'react-native-paper'
 import { Immersive } from 'react-native-immersive'
+import { VideoIdData } from '../types/video'
 
-const VideoPlayer = () => {
+const VideoPlayer:FC<VideoById> = ({data}) => {
+  console.log("VideoPlayer", data)
   const [clicked, setClicked] = useState<boolean>(true)
   const [paushed, setPaushed] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(true)
@@ -16,6 +18,9 @@ const VideoPlayer = () => {
   const ref = useRef([])
   const [progress, setProgress] = useState<any>(0)
   const [fullscreen, setFullscreen] = useState<boolean>(false)
+
+  //video fetching
+  
 
 useEffect(() => {
     const backAction = () => {
@@ -56,8 +61,8 @@ useEffect(() => {
   return (
     <View className={`w-full ${fullscreen?"h-screen":"h-[200px]"} relative`}>
   <Video
-  paused={paushed}
-    source={{ uri: 'https://videos.pexels.com/video-files/1196530/1196530-hd_1920_1080_30fps.mp4' }}
+    paused={paushed}
+    source={{ uri: data.videoFile}}
     style={{ width: '100%', height: fullscreen? "100%": 200 }}
     resizeMode="contain"
     ref={ref}

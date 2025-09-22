@@ -13,7 +13,8 @@ export type RootStackParamList = {
     WatchHistory:undefined
     Playlist:undefined
     YourVideo:undefined
-    Download:undefined
+    ChangePassword:undefined
+    ForgetPassword:undefined
     UserDetail:undefined
     Notification:undefined
     PlaylistVideo:undefined

@@ -14,7 +14,7 @@ interface videoCardProps{
 const VideoListCard:FC<videoCardProps> = ({_id, title, thumbnail, fullname, views, time, date }) => {
   
   return (
-    <TouchableOpacity className='flex-row gap-2 px-4'
+    <TouchableOpacity className='flex-row gap-2'
     onPress={()=>navigate("Video",{id:_id})}
     >
       <Image

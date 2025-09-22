@@ -24,10 +24,12 @@ import Playlist from '../screens/Playlist';
 import YourVideo from '../screens/YourVideo';
 import UserDetail from '../screens/UserDetail';
 import Notification from '../screens/Notification';
-import Download from '../screens/Download';
+import Download from '../screens/ChangePassword';
 import PlaylistVideo from '../screens/PlaylistVideo';
 import Post from '../screens/Post';
 import UploadVideo from '../screens/UploadVideo';
+import ChangePassword from '../screens/ChangePassword';
+import ForgetPassword from '../screens/ForgetPassword';
 
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -104,11 +106,12 @@ const RootNavigator = () => {
       <Stack.Screen name="WatchHistory" component={WatchHistory} />
       <Stack.Screen name="Playlist" component={Playlist} />
       <Stack.Screen name="YourVideo" component={YourVideo} />
-      <Stack.Screen name="Download" component={Download} />
+      <Stack.Screen name="ChangePassword" component={ChangePassword} />
       <Stack.Screen name="UserDetail" component={UserDetail} />
       <Stack.Screen name="Notification" component={Notification} />
       <Stack.Screen name="PlaylistVideo" component={PlaylistVideo} />
       <Stack.Screen name="UploadVideo" component={UploadVideo} />
+      <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
     </Stack.Navigator>
     </SheetProvider>
     </ToastProvider>

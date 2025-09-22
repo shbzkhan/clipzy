@@ -93,6 +93,7 @@ const SignupSchema = Yup.object().shape({
                 />
                 <CustomTextInput
                 label="Password"
+                secureTextEntry
                 value={values.password}
                 onChangeText={handleChange("password")}
                 errors={touched.password && errors.password}

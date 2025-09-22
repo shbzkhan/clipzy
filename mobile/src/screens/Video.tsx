@@ -1,5 +1,5 @@
-import { View, Text, Image, TouchableOpacity, FlatList, ScrollView } from 'react-native'
-import React, { FC, useState } from 'react'
+import { View, Text, Image, TouchableOpacity, FlatList, ScrollView, ActivityIndicator } from 'react-native'
+import React, { FC, useEffect, useState } from 'react'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Video } from '../utils/domyData'
 import VideoCard from '../components/VideoCard'
@@ -14,16 +14,51 @@ import Slider from '../components/Header/Slider'
 import { SheetManager } from 'react-native-actions-sheet'
 import UserLogo from '../components/UserLogo'
 import VideoCardLoader from '../components/Skeleton/VideoCardLoader'
+import { useGetVideoByIdQuery, useGetVideosQuery } from '../redux/api/videoApi'
+import AuthBox from '../components/AuthBox'
+import { useSelector } from 'react-redux'
+import { RootState } from '../redux/store'
+import GlobalLoader from '../components/GlobalLoader'
+// import { Video, Video } from '../types/video'
 
 interface videoDetailsProps{
   route:any
 }
 const VideoDetails:FC<videoDetailsProps> = ({route}) => {
+  const user = useSelector((state:RootState)=>state.user.user)
   const insets = useSafeAreaInsets();
-   const [loading, setLoading] = useState(true)
-const video = route.params
+  //  const [loading, setLoading] = useState(true)
+const video = route.params as string
+const videoId = video.id 
+// console.log("video id", videoId)
   const [isLiked, setIsLiked] = useState<boolean>(false)
   const [like, setLike] =useState<number>(435)
+  const {data, isLoading, error}= useGetVideoByIdQuery({videoId})
+  //allvideofetch
+  const [page, setPage] = useState<number>(1);
+  const [videos, setVideos] = useState<Video[]>([]);
+  const { data:videoData, isLoading:loading, isFetching, isError, refetch } = useGetVideosQuery({page});
+  
+    useEffect(()=>{
+      if(page === 1){
+        setVideos(videoData?.docs)
+      }else{
+        setVideos((prev) => [...prev, ...videoData?.docs]);
+      }
+    },[videoData,page])
+  
+     const handleRefresh = () => {
+      setPage(1);
+      refetch();
+    };
+  
+    const handleLoadMore = () => {
+      if (!isFetching && videoData?.hasNextPage) {
+        setPage((prev) => prev + 1);
+      }
+    };
+    
+ 
 
   const isLikedHandle = ()=>{
     if(isLiked){
@@ -39,13 +74,21 @@ const video = route.params
   }
 
   let comment = "Waiting for the blink it zomato and other video with new names"
+  if(!user) return <AuthBox name="Video Creation"/>
+  if(isLoading){
+    return <GlobalLoader/>
+  }
   return (
     <SafeAreaView className='flex-1 bg-white dark:bg-dark'>
-      <VideoPlayer/>
+      <VideoPlayer data={data?.data}/>
 
     <FlatList
-    data={!loading?Video:[1,1,1,1]}
-    keyExtractor={video =>video._id}
+    data={!loading?videos:[1,1,1,1]}
+    keyExtractor={item =>item._id}
+    onEndReached={handleLoadMore}
+    onEndReachedThreshold={0.5}
+    refreshing={isFetching && page === 1}
+    onRefresh={handleRefresh}
     showsVerticalScrollIndicator={false}
     contentContainerStyle={[{ paddingBottom: insets.bottom + 56,}]}
     contentContainerClassName = "gap-6 pt-2"
@@ -56,30 +99,36 @@ const video = route.params
       <VideoCardLoader/>
     )}
 
+     ListFooterComponent={
+            isFetching && page > 1 ? (
+              <ActivityIndicator size="small" color="#2563EB" />
+            ) : null
+          }
+
     ListHeaderComponent={
       <View className='px-3 gap-4'>
         <TouchableOpacity
         onPress={()=>{
             SheetManager.show("description-sheet",{
             payload:{
-              entityId:"hello",
+              entityId:data?.data,
             }
           })
         }}
         >
-          <Text className='text-black font-rubik-bold text-xl dark:text-white' numberOfLines={2}>This is name of this area so that provide a simple name of this area of cercle</Text>
-          <Text className='text-gray-600 text-xs font-rubik dark:text-gray-300'>285k views  4w ago  #TheMemoryAboutYou <Text className='font-rubik-semibold text-black dark:text-white'>...more</Text></Text>
+          <Text className='text-black font-rubik-bold text-xl dark:text-white' numberOfLines={2}>{data.data.title}</Text>
+          <Text className='text-gray-600 text-xs font-rubik dark:text-gray-300'>{data.data.views + " views"+ data.data.createdAt+" ago  #TheMemoryAboutYou" }<Text className='font-rubik-semibold text-black dark:text-white'>...more</Text></Text>
         </TouchableOpacity>
         <TouchableOpacity className='flex-row items-center justify-between'>
           <View className='flex-row items-center gap-1'>
           <UserLogo
-            uri={"https://api.dicebear.com/9.x/initials/png?seed=Z Khan"}
+            uri={data.data.owner.avatar}
           />
-          <Text className='font-rubik-medium dark:text-white'>Shahbaz Khan</Text>
-          <Text className='text-sm font-rubik text-gray-500 dark:text-gray-300'>348k</Text>
+          <Text className='font-rubik-medium dark:text-white'>{data.data.owner.fullname}</Text>
+          <Text className='text-sm font-rubik text-gray-500 dark:text-gray-300'>{data.data.owner.subscribersCount}</Text>
           </View>
           <SubscribedButton
-          isSubscribed={false}
+          isSubscribed={data.data.owner.isSubscribed}
           />
         </TouchableOpacity>
           <ScrollView
@@ -87,7 +136,7 @@ const video = route.params
           contentContainerClassName='gap-4 py-2'
           showsHorizontalScrollIndicator={false}
           >
-            <CustomVideoSliderCard title={like} icon="Heart" focused={isLiked} handlePress={isLikedHandle}/>
+            <CustomVideoSliderCard title={data.data.likesCount} icon="Heart" focused={isLiked} handlePress={isLikedHandle}/>
             <CustomVideoSliderCard title="Share" icon="Share" handlePress={()=>ToastShow("Shared","success")}/>
             <CustomVideoSliderCard title="Download" icon="ArrowDownToLine" handlePress={()=>ToastShow("Downloaded","success")}/>
             <CustomVideoSliderCard title="Save" icon="Pin" handlePress={()=>ToastShow("Saved","success")}/>

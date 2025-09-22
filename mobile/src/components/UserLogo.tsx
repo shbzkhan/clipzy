@@ -1,15 +1,15 @@
 import { Image, TouchableOpacity } from 'react-native'
 import{ FC } from 'react'
-import { navigate } from '../navigation/NavigationUtils'
 
 interface UserLogo {
     uri:string
     heightAndWidth?:number
+    handlePress?:()=>void
 }
-const UserLogo:FC<UserLogo> = ({uri, heightAndWidth=12}) => {
+const UserLogo:FC<UserLogo> = ({uri, handlePress, heightAndWidth=12}) => {
   return (
     <TouchableOpacity
-        onPress={()=>navigate("Channel")}
+        onPress={handlePress}
         >
            <Image
         source={{uri:uri}}

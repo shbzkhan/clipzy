@@ -24,7 +24,7 @@ return (
       color={iconColor}
       />
       <Text
-      className={`text-lg font-rubik-medium text-black-300 ${textStyle} dark:text-white`}
+      className={`text-lg font-rubik-medium text-black-300 dark:text-white ${textStyle}`}
       >{title}</Text>
     </View>
     {showArrow && (

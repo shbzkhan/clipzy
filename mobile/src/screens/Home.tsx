@@ -1,18 +1,45 @@
 import {FlatList, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import HomeHeader from '../components/Header/HomeHeader'
 import VideoCard from '../components/VideoCard'
 import Slider from '../components/Header/Slider'
-import { Video } from '../utils/domyData'
+// import { Video } from '../utils/domyData'
 import VideoCardLoader from '../components/Skeleton/VideoCardLoader'
+import { Video } from '../types/video'
+import { useGetVideosQuery } from '../redux/api/videoApi'
+import { ActivityIndicator } from 'react-native-paper'
 
 
 
 const Home = () => {
   // const navigation = useNavigation()
+  //react native taiwlind ka rn package download karna use karne ke liye jaha tailwind na use ho
+  const [page, setPage] = useState<number>(1);
+  const [videos, setVideos] = useState<Video[]>([]);
   const insets = useSafeAreaInsets();
-  const [loading, setLoading] = useState(false)
+  const { data, isLoading, isFetching, isError, refetch } = useGetVideosQuery({page});
+
+  useEffect(()=>{
+    console.log("video", data)
+    if(page === 1){
+      setVideos(data?.docs)
+      console.log(data)
+    }else{
+      setVideos((prev) => [...prev, ...data?.docs]);
+    }
+  },[data,page])
+
+   const handleRefresh = () => {
+    setPage(1);
+    refetch();
+  };
+
+  const handleLoadMore = () => {
+    if (!isFetching && data?.hasNextPage) {
+      setPage((prev) => prev + 1);
+    }
+  };
   
 
   
@@ -23,18 +50,28 @@ const Home = () => {
       <Slider/>
       </View>
     <FlatList
-    data={!loading?Video:[1,1,1,1]}
+    data={!isLoading?videos:[1,1,1,1]}
     keyExtractor={(video) =>video._id}
+    onEndReached={handleLoadMore}
+    onEndReachedThreshold={0.5}
     showsVerticalScrollIndicator={false}
-    contentContainerStyle={[{ paddingBottom: insets.bottom + 60,}]}
-    contentContainerClassName = "gap-6 pt-2"
+    // contentContainerStyle={[{ paddingBottom: insets.bottom + 60,}]}
+    contentContainerClassName = "gap-6 pt-2 pb-32"
     renderItem={({item})=>(
-      !loading?
+      !isLoading?
       <VideoCard {...item} />
       :
       <VideoCardLoader/>
     )}
+    refreshing={isFetching && page === 1}
+    onRefresh={handleRefresh}
 
+    ListFooterComponent={
+        isFetching && page > 1 ? (
+          <ActivityIndicator size="small" color="#2563EB" />
+        ) : null
+      }
+    
     />
     </SafeAreaView>
   )

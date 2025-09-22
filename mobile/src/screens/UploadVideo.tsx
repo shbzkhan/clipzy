@@ -70,7 +70,7 @@ const UploadVideo = () => {
           value={caption}
           multiline
           onChangeText={(text)=>setCaption(text)}
-          className='bg-secondary flex-1 px-2 w-full h-[150px] text-start align-top border-2 border-primary-200 rounded-md font-rubik-medium'
+          className='bg-secondary dark:bg-dark flex-1 px-2 w-full h-[150px] text-start align-top border-2 border-primary-200 rounded-md font-rubik-medium dark:text-white dark:border-dark-100'
           placeholder='Write caption here'
           />
         </View>
@@ -85,7 +85,7 @@ const UploadVideo = () => {
       </ScrollView>
         </KeyboardAwareScrollView>
         {isLoading&&(<View className='absolute top-0 bottom-0 right-0 left-0 bg-black/80 justify-center items-center'>
-          <ActivityIndicator size="large"/>
+          <ActivityIndicator color="#2563EB" size="large"/>
         </View>)}
         
     </SafeAreaView>

@@ -36,7 +36,22 @@ export const authApi = createApi({
                 url:"users/current",
                 method:"GET"
             })
-        })
+        }),
+
+         avatar: builder.mutation<any,string>({
+            query:(formData)=> ({
+                url:"users/avatar",
+                method:"PATCH",
+                body:formData,
+            })
+        }),
+         coverImage: builder.mutation<any,string>({
+            query:(formData)=> ({
+                url:"users/cover-image",
+                method:"PATCH",
+                body:formData,
+            })
+        }),
     })
 })
 
@@ -45,5 +60,7 @@ export const {
     useRegisterMutation,
     useLoginMutation,
     useGoogleLoginMutation,
-    useCurrentUserQuery
+    useCurrentUserQuery,
+    useAvatarMutation,
+    useCoverImageMutation
     } = authApi
