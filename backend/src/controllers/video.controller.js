@@ -18,10 +18,22 @@ const getAllVideos = asyncHandler(async (req, res) => {
         pipeline.push({
           $search: {
             index: "search-videos",
+            compound: {
+            should: [
+            {
+            autocomplete: {
+                query,
+                path: "title",
+            }
+          },
+          {
             autocomplete: {
               query,
-              path: "description"
+              path: "description",
             }
+          }
+        ]
+      }
           }
         });
     }

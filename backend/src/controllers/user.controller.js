@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import jwt from "jsonwebtoken"
 import {User} from "../models/user.model.js"
 import { asyncHandler } from "../utils/asyncHandler.js"
-import { updateOnCloudinary, uploadOnCloudinary } from "../utils/cloudinary.js";
+import { deleteOnCloudinary, updateOnCloudinary, uploadOnCloudinary } from "../utils/cloudinary.js";
 import { apiError } from "../utils/ApiError.js";
 import { apiResponse } from "../utils/ApiResponse.js";
 import {OAuth2Client} from "google-auth-library"
@@ -350,19 +350,30 @@ const updateUserAvatar = asyncHandler(async(req, res)=>{
     if (!user) {
             throw new apiError(404,"Unauthorized user")
         }
-    
+    let avatar
     if(user.avatar && user.avatar.includes("cloudinary")){
         const publicId = user.avatar.split("/").pop().split(".")[0]
-        const avatar = await updateOnCloudinary(publicId, avatarLocalPath)
+
+        avatar = await uploadOnCloudinary(avatarLocalPath)
         if (!avatar.url) {
             throw new apiError(400, "Avatar Image not update try again")
         }
-    }else if(!user.avatar || user.avatar ===""){
-        const avatar = await uploadOnCloudinary(avatarLocalPath)
+
+        const deletedAvatar = await deleteOnCloudinary(publicId)
+        if (!deletedAvatar) {
+            throw new apiError(400, "Avatar not update try again")
+        }
+    }else if(user.avatar && !user.avatar.includes("cloudinary")){
+        avatar = await uploadOnCloudinary(avatarLocalPath)
         if (!avatar.url) {
             throw new apiError(400, "Avatar Image not uploade, try again")
         }   
-        await User.findByIdAndUpdate(
+
+    }else{
+        throw new apiError(400,"Somthing went wrong while updaing user avatar Image")
+    }
+
+    await User.findByIdAndUpdate(
             req.user._id,
             {
                 $set:{
@@ -372,10 +383,6 @@ const updateUserAvatar = asyncHandler(async(req, res)=>{
                 new:true
             }
         )
-
-    }else{
-        throw new apiError(400,"Somthing went wrong while updaing user avatar Image")
-    }
 
     return res
             .status(200)
@@ -401,19 +408,29 @@ const updateUserCoverImage = asyncHandler(async(req, res)=>{
     if (!user) {
             throw new apiError(404,"Unauthorized user")
         }
-    
+    let coverImage
     if(user.coverImage && user.coverImage.includes("cloudinary")){
         const publicId = user.coverImage.split("/").pop().split(".")[0]
-        const coverImage = await updateOnCloudinary(publicId, coverImageLocalPath)
+        coverImage = await uploadOnCloudinary(coverImageLocalPath)
         if (!coverImage.url) {
             throw new apiError(400, "Cover Image not update try again")
         }
+
+        const deletedCoverImage = await deleteOnCloudinary(publicId)
+        if (!deletedCoverImage) {
+            throw new apiError(400, "Avatar not update try again")
+        }
     }else if(!user.coverImage || user.coverImage ===""){
-        const coverImage = await uploadOnCloudinary(coverImageLocalPath)
+        coverImage = await uploadOnCloudinary(coverImageLocalPath)
         if (!coverImage.url) {
             throw new apiError(400, "Cover Image not uploade, try again")
-        }   
-        await User.findByIdAndUpdate(
+        }
+
+    }else{
+        throw new apiError(400,"Somthing went wrong while updaing user Cover Image")
+    }
+
+    await User.findByIdAndUpdate(
             req.user._id,
             {
                 $set:{
@@ -423,10 +440,6 @@ const updateUserCoverImage = asyncHandler(async(req, res)=>{
                 new:true
             }
         )
-
-    }else{
-        throw new apiError(400,"Somthing went wrong while updaing user Cover Image")
-    }
 
     return res
             .status(200)
