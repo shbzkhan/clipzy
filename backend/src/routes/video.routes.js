@@ -11,11 +11,13 @@ import {auth} from "../middlewares/auth.middleware.js"
 import {upload} from "../middlewares/multer.middleware.js"
 
 const router = Router();
-router.use(auth);
 
+
+router.route("/").get(getAllVideos)
+
+router.use(auth)
 router
     .route("/")
-    .get(getAllVideos)
     .post(
         upload.fields([
             {
