@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity, FlatList, ScrollView, ActivityIndicator } from 'react-native'
+import { View, Text, Image, TouchableOpacity, FlatList, ScrollView, ActivityIndicator, Pressable } from 'react-native'
 import React, { FC, useEffect, useState } from 'react'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Video } from '../utils/domyData'
@@ -37,7 +37,7 @@ const videoId = video.id
   //allvideofetch
   const [page, setPage] = useState<number>(1);
   const [videos, setVideos] = useState<Video[]>([]);
-  const { data:videoData, isLoading:loading, isFetching, isError, refetch } = useGetVideosQuery({page});
+  const { data:videoData, isLoading:loading, isFetching } = useGetVideosQuery({page});
   
     useEffect(()=>{
       if(page === 1){
@@ -46,11 +46,6 @@ const videoId = video.id
         setVideos((prev) => [...prev, ...videoData?.docs]);
       }
     },[videoData,page])
-  
-     const handleRefresh = () => {
-      setPage(1);
-      refetch();
-    };
   
     const handleLoadMore = () => {
       if (!isFetching && videoData?.hasNextPage) {
@@ -79,16 +74,15 @@ const videoId = video.id
     return <GlobalLoader/>
   }
   return (
-    <SafeAreaView className='flex-1 bg-white dark:bg-dark'>
-      <VideoPlayer data={data?.data}/>
+    <>
+    <SafeAreaView edges={['bottom', "top"]} className='flex-1 bg-white dark:bg-dark'>
+    <VideoPlayer data={data?.data}/>
 
     <FlatList
     data={!loading?videos:[1,1,1,1]}
     keyExtractor={item =>item._id}
     onEndReached={handleLoadMore}
     onEndReachedThreshold={0.5}
-    refreshing={isFetching && page === 1}
-    onRefresh={handleRefresh}
     showsVerticalScrollIndicator={false}
     contentContainerStyle={[{ paddingBottom: insets.bottom + 56,}]}
     contentContainerClassName = "gap-6 pt-2"
@@ -116,27 +110,34 @@ const videoId = video.id
           })
         }}
         >
-          <Text className='text-black font-rubik-bold text-xl dark:text-white' numberOfLines={2}>{data.data.title}</Text>
-          <Text className='text-gray-600 text-xs font-rubik dark:text-gray-300'>{data.data.views + " views"+ data.data.createdAt+" ago  #TheMemoryAboutYou" }<Text className='font-rubik-semibold text-black dark:text-white'>...more</Text></Text>
+          <Text className='text-black font-rubik-bold text-xl dark:text-white' numberOfLines={2}>{data?.data.title}</Text>
+          <Text className='text-gray-600 text-xs font-rubik dark:text-gray-300'>{data?.data.views + " views"+ data.data.createdAt+" ago  #TheMemoryAboutYou" }<Text className='font-rubik-semibold text-black dark:text-white'>...more</Text></Text>
         </TouchableOpacity>
-        <TouchableOpacity className='flex-row items-center justify-between'>
+        <Pressable className='flex-row items-center justify-between'
+        onPress={()=>navigate("Channel",{
+          id:data?.data?.owner._id
+        })}
+        >
           <View className='flex-row items-center gap-1'>
           <UserLogo
-            uri={data.data.owner.avatar}
+            uri={data?.data?.owner.avatar}
+            handlePress={()=>navigate("Channel",{
+                  id:data?.data?.owner._id
+              })}
           />
-          <Text className='font-rubik-medium dark:text-white'>{data.data.owner.fullname}</Text>
-          <Text className='text-sm font-rubik text-gray-500 dark:text-gray-300'>{data.data.owner.subscribersCount}</Text>
+          <Text className='font-rubik-medium dark:text-white'>{data?.data.owner.fullname}</Text>
+          <Text className='text-sm font-rubik text-gray-500 dark:text-gray-300'>{data?.data.owner.subscribersCount}</Text>
           </View>
           <SubscribedButton
-          isSubscribed={data.data.owner.isSubscribed}
+          isSubscribed={data?.data.owner.isSubscribed}
           />
-        </TouchableOpacity>
+        </Pressable>
           <ScrollView
           horizontal
           contentContainerClassName='gap-4 py-2'
           showsHorizontalScrollIndicator={false}
           >
-            <CustomVideoSliderCard title={data.data.likesCount} icon="Heart" focused={isLiked} handlePress={isLikedHandle}/>
+            <CustomVideoSliderCard title={data?.data.likesCount} icon="Heart" focused={isLiked} handlePress={isLikedHandle}/>
             <CustomVideoSliderCard title="Share" icon="Share" handlePress={()=>ToastShow("Shared","success")}/>
             <CustomVideoSliderCard title="Download" icon="ArrowDownToLine" handlePress={()=>ToastShow("Downloaded","success")}/>
             <CustomVideoSliderCard title="Save" icon="Pin" handlePress={()=>ToastShow("Saved","success")}/>
@@ -167,6 +168,7 @@ const videoId = video.id
 
     />
     </SafeAreaView>
+    </>
   )
 }
 

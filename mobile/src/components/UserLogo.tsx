@@ -2,7 +2,7 @@ import { Image, TouchableOpacity } from 'react-native'
 import{ FC } from 'react'
 
 interface UserLogo {
-    uri:string
+    uri:string | undefined
     heightAndWidth?:number
     handlePress?:()=>void
 }

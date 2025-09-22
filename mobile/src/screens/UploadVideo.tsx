@@ -9,7 +9,7 @@ import ImageIcon from '../constants/ImageIcon'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useVideoUploadMutation } from '../redux/api/videoApi'
 import { ToastShow } from '../utils/Tost'
-import { navigate } from '../navigation/NavigationUtils'
+import { navigate, pop } from '../navigation/NavigationUtils'
 
 
 interface uriData{
@@ -46,7 +46,7 @@ const UploadVideo = () => {
           const uploaded = await videoUpload(formData).unwrap()
           console.log("video upload ",uploaded)
           ToastShow(uploaded.message)
-          navigate("Home")
+          pop(2)
     } catch (error) {
       ToastShow(error?.data?.message,"danger")
       console.log("error", error)

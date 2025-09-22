@@ -59,12 +59,12 @@ useEffect(() => {
     fullscreen ? exitFullscreen() : enterFullscreen();
   };
   return (
-    <View className={`w-full ${fullscreen?"h-screen":"h-[200px]"} relative`}>
+    <View className={`w-full ${fullscreen?"h-screen":"h-[200px]"} relative bg-black/60`}>
   <Video
     paused={paushed}
     source={{ uri: data.videoFile}}
     style={{ width: '100%', height: fullscreen? "100%": 200 }}
-    resizeMode="contain"
+    resizeMode={fullscreen?"contain":"cover"}
     ref={ref}
     onLoadStart={()=>setLoading(true)}
     onLoad={()=>setLoading(false)}
@@ -131,8 +131,8 @@ useEffect(() => {
         <View className={`absolute ${fullscreen?"bottom-6":"-bottom-2"} w-full`}>
           <View className='flex-row justify-between px-4 '>
             <View className='bg-black/30 flex-row px-2 py-1 rounded-full'>
-               <Text className='text-white text-sm'>{format(progress.currentTime)} </Text>
-               <Text className='text-gray-300 text-sm'>/ {format(progress.seekableDuration)}</Text>
+               <Text className='text-white text-sm'>{progress.currentTime?format(progress.currentTime):"00:00"} </Text>
+               <Text className='text-gray-300 text-sm'>/ {progress.currentTime?format(progress.seekableDuration):"00:00"}</Text>
             </View>
             <TouchableOpacity
          onPress={toggleFullscreen}

@@ -6,7 +6,7 @@ import { icons } from 'lucide-react-native'
 type iconsName = keyof typeof icons
 interface CustomVideoSliderProps {
     icon:iconsName
-    title:string | number
+    title:string | number | undefined
     focused?:boolean | false
     handlePress?:()=>void
 
