@@ -48,9 +48,9 @@ const {colorScheme} = useColorScheme();
        keyExtractor={(item)=>item.id.toString()}
        contentContainerClassName='px-3 mt-5 gap-5 pb-24'
        showsVerticalScrollIndicator={false}
-       bounces={false}
-       keyboardShouldPersistTaps="handled"
-       keyboardDismissMode='on-drag'
+      //  bounces={false}
+      //  keyboardShouldPersistTaps="handled"
+      //  keyboardDismissMode='on-drag'
        renderItem={({item})=>(
         <View className='flex-row gap-3'>
           <UserLogo

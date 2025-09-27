@@ -47,3 +47,10 @@ export interface VideoIdData {
   statusCode: number;
   data: VideoById;
 }
+
+export interface WatchHistory{
+  statusCode: number;
+  data: (Video | null)[];
+  message: string;
+  success: boolean;
+}

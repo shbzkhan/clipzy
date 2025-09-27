@@ -1,6 +1,7 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { ApiResponse, LoginUser, RegisterUser, UserData} from "../../types/auth";
 import customBaseQuery from "../middleware/header";
+import { WatchHistory } from "../../types/video";
 
 
 export const authApi = createApi({
@@ -52,6 +53,10 @@ export const authApi = createApi({
                 body:formData,
             })
         }),
+
+        watchHistory: builder.query<WatchHistory, void>({
+                    query: () => "users/watch-history"
+                 }),
     })
 })
 
@@ -62,5 +67,6 @@ export const {
     useGoogleLoginMutation,
     useCurrentUserQuery,
     useAvatarMutation,
-    useCoverImageMutation
+    useCoverImageMutation,
+    useWatchHistoryQuery
     } = authApi

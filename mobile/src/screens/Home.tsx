@@ -50,12 +50,11 @@ const Home = () => {
       <Slider/>
       </View>
     <FlatList
-    data={!isLoading?videos:[1,1,1,1]}
-    keyExtractor={(video) =>video._id}
+    data={!isLoading?videos:[1,2,3,4]}
+    keyExtractor={(video, index) =>!isLoading?video._id:index}
     onEndReached={handleLoadMore}
     onEndReachedThreshold={0.5}
     showsVerticalScrollIndicator={false}
-    // contentContainerStyle={[{ paddingBottom: insets.bottom + 60,}]}
     contentContainerClassName = "gap-6 pt-2 pb-32"
     renderItem={({item})=>(
       !isLoading?

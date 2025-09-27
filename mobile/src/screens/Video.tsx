@@ -19,6 +19,7 @@ import AuthBox from '../components/AuthBox'
 import { useSelector } from 'react-redux'
 import { RootState } from '../redux/store'
 import GlobalLoader from '../components/GlobalLoader'
+import { timeAgo } from '../constants/TimeAgo'
 // import { Video, Video } from '../types/video'
 
 interface videoDetailsProps{
@@ -111,7 +112,7 @@ const videoId = video.id
         }}
         >
           <Text className='text-black font-rubik-bold text-xl dark:text-white' numberOfLines={2}>{data?.data.title}</Text>
-          <Text className='text-gray-600 text-xs font-rubik dark:text-gray-300'>{data?.data.views + " views"+ data.data.createdAt+" ago  #TheMemoryAboutYou" }<Text className='font-rubik-semibold text-black dark:text-white'>...more</Text></Text>
+          <Text className='text-gray-600 text-xs font-rubik dark:text-gray-300'>{data?.data.views + " views  " + timeAgo(data?.data.createdAt) +" ago  #TheMemoryAboutYou" }<Text className='font-rubik-semibold text-black dark:text-white'>...more</Text></Text>
         </TouchableOpacity>
         <Pressable className='flex-row items-center justify-between'
         onPress={()=>navigate("Channel",{
@@ -162,7 +163,6 @@ const videoId = video.id
             <Text className='text-gray-500 font-rubik text-sm dark:text-gray-300' >{comment.slice(0,45)+"..."}</Text>
             </View>
           </TouchableOpacity>
-          <Slider/>
       </View>
     }
 

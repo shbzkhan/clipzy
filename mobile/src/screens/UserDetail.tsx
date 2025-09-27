@@ -15,8 +15,8 @@ import { ToastShow } from '../utils/Tost'
 import { useAvatarMutation, useCoverImageMutation } from '../redux/api/authApi'
 import { userData } from '../redux/slice/userSlice'
 import CustomHeader from '../components/Header/CustomHeader'
+import ImagePicker from "react-native-image-crop-picker";
 
-//TODO: use new package react-native-image-crop-picker for upadate avatar
 const UserDetail = () => {
   const user = useSelector((state:RootState)=>state.user.user)
   const dispatch = useDispatch()
@@ -33,33 +33,28 @@ const UserDetail = () => {
  
 
 
+  
   const handleAvatarPicker = async()=>{
-  setEditAvatar(false)
-  const options = {
+    setEditAvatar(false)
+    ImagePicker.openPicker({
+    width: 200,
+    height: 200,
+    cropping: true,
+    cropperCircleOverlay: true, // 🔥 Circular overlay for avatar
+    compressImageQuality: 0.8,
     mediaType: 'photo',
-    quality: 1,
-    maxHeight: 2000,
-    maxWidth: 2000,
-    includeBase64: false,
-  };
-
-  launchImageLibrary(options, (response) => {
-    if (response.didCancel) {
-      console.log('User cancelled image picker');
-    } else if (response.errorCode) {
-      console.log('ImagePicker Error: ', response.errorCode);
-    } else if (response.assets && response.assets.length > 0) {
-      const selectedImageUri = response.assets[0].uri;
-      setAvatarImaage(selectedImageUri)
-      setEditAvatar(true)
-    }
+  }).then(image => {
+    console.log(image.path)
+    setAvatarImaage(image.path)
+    setEditAvatar(true)
+    handleAvatarChange(image.path)
   });
   }
-  
-  const handleAvatarChange = async()=>{
+  const handleAvatarChange = async(imgUri:string)=>{
+    console.log("imageUri", imgUri)
     const formData = new FormData();
         formData.append("avatar", {
-         uri: avatarImage,
+         uri: imgUri,
          name: `avatar_${Date.now()}.jpg`,
          type: "image/jpeg",
        });
@@ -72,6 +67,22 @@ const UserDetail = () => {
       console.log(error)
       ToastShow("Avatar Updation Failed","danger")
     }
+  }
+
+
+   const handleCoversPicker = async()=>{
+    ImagePicker.openPicker({
+    width: 1200,
+    height: 535,       
+    cropping: true,
+    freeStyleCropEnabled: false, 
+    compressImageQuality: 0.8,
+    mediaType: 'photo',
+  }).then(image => {
+    console.log(image.path)
+    setCoverImg(image.path)
+    handleCoverChange(image.path)
+  });
   }
 
   const handleCoverPicker = async()=>{
@@ -124,7 +135,7 @@ const UserDetail = () => {
           <View className='h-48 w-ful'>
             {/* <View className='w-52'></View> */}
           {coverImg ?(
-            <TouchableOpacity onPress={handleCoverPicker}
+            <TouchableOpacity onPress={handleCoversPicker}
             disabled={coverLoading}
             >
             <Image
@@ -171,14 +182,6 @@ const UserDetail = () => {
               <CustomIcon name="SquarePen" />
             </TouchableOpacity>
             </TouchableOpacity>
-           {editAvatar &&(
-             <TouchableOpacity className='mt-3'
-             onPress={handleAvatarChange}
-             disabled={isLoading}
-             >
-            <Text className='text-primary-600 font-bold text-center'>Update</Text>
-            </TouchableOpacity>
-           )}
           </View>
           </View>
           <View className='gap-8 px-4 mt-10'>

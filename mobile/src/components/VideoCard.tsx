@@ -8,6 +8,7 @@ import { format } from '../constants/TimeFormat'
 import { Owner } from '../types/video'
 import{ createShimmerPlaceholder } from 'react-native-shimmer-placeholder'
 import LinearGradient from 'react-native-linear-gradient'
+import { timeAgo } from '../constants/TimeAgo'
 
 
 interface videoCardProps{
@@ -50,12 +51,13 @@ const VideoCard:FC<videoCardProps> = ({_id, title, thumbnail, views, duration, c
       </View>
       <View className='px-3 flex-row gap-2  items-center'>
         <UserLogo
+        handlePress={()=>navigate("Channel")}
         uri={owner.avatar}
         />
 
         <View className='flex-1'>
             <Text className='text-black font-rubik-bold dark:text-white' numberOfLines={2}>{title}</Text>
-            <Text className='text-gray-600 text-xs font-rubik dark:text-gray-300'>{`${owner.fullname} . ${views} views . ${createdAt} days ago`}</Text>
+            <Text className='text-gray-600 text-xs font-rubik dark:text-gray-300'>{`${owner.fullname}  •  ${views} views  •  ${timeAgo(createdAt)}`}</Text>
         </View>
       </View>
     </TouchableOpacity>
