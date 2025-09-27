@@ -123,8 +123,8 @@ const publishAVideo = asyncHandler(async (req, res) => {
         throw new apiError(400, "Video and thumbnail are required")
     }
 
-    const videoFile = await uploadOnCloudinary(videoFileLocalPath)
     const thumbnail = await uploadOnCloudinary(thumbnailLocalPath)
+    const videoFile = await uploadOnCloudinary(videoFileLocalPath)
     if(!videoFile){
         await deleteOnCloudinary(thumbnail.public_id)
         throw new apiError(404, "Video not uploaded")
@@ -143,6 +143,8 @@ const publishAVideo = asyncHandler(async (req, res) => {
 
     const videoUploaded = await Video.findById(video._id)
     if(!videoUploaded){
+        await deleteOnCloudinary(videoFile.public_id, "video")
+        await deleteOnCloudinary(thumbnail.public_id)
         throw new apiError(404, "Video not published, please try again")
     }
 
