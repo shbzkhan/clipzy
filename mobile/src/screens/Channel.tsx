@@ -1,10 +1,7 @@
-import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Icon from '../constants/Icons'
-import { launchImageLibrary } from 'react-native-image-picker'
-import { ToastShow } from '../utils/Tost'
-import { userData } from '../redux/slice/userSlice'
-import {useChannelQuery, useWatchHistoryQuery } from '../redux/api/authApi'
+import {useChannelQuery, } from '../redux/api/authApi'
 import { MaterialTabBar, Tabs,ScrollView } from 'react-native-collapsible-tab-view'
 import PlaylistCard from '../components/PlaylistCard'
 import VideoListCardLoader from '../components/Skeleton/VideoListCardLoader'
@@ -13,13 +10,13 @@ import GlobalLoader from '../components/GlobalLoader'
 import ChannelHeader from '../components/ChannelDetails'
 import { Video } from '../types/video'
 import { useGetVideosQuery } from '../redux/api/videoApi'
-import { ActivityIndicator } from 'react-native'
-import VideoCardLoader from '../components/Skeleton/VideoCardLoader'
-import VideoCard from '../components/VideoCard'
+import { StyleSheet, useColorScheme } from 'nativewind'
 
 const HEADER_HEIGHT = 250
 
 const Channel = ({route}) => {
+
+  const {colorScheme} = useColorScheme()
 const channelD = route.params as string
 const channelId = channelD.channelId
   const [loading, setLoading] = useState(false)
@@ -33,7 +30,6 @@ const channelId = channelD.channelId
     useEffect(()=>{
       if(page === 1){
         setVideos(data?.docs)
-        console.log("Channel video length", data?.docs.length)
       }else{
         const combinedVideos = page === 1 ? data?.docs : [...videos, ...data?.docs];
           const uniqueVideo = Array.from(new Map(combinedVideos?.map(video => [video._id, video])).values());
@@ -54,15 +50,17 @@ const channelId = channelD.channelId
   }
   return (
      <Tabs.Container
-      renderHeader={() => <ChannelHeader user={channelData?.data} totalVideos ={data?.docs.length} />}
+      renderHeader={() => <ChannelHeader user={channelData?.data} totalVideos ={data?.totalDocs} />}
       headerHeight={HEADER_HEIGHT}
       revealHeaderOnScroll={true}
-      snapThreshold={0.5} 
+      snapThreshold={0.5}
+      containerStyle={colorScheme === "dark"?{backgroundColor:"#071825",}:{backgroundColor:"#ffffff"}}
+      headerContainerStyle={colorScheme === "dark"?{backgroundColor:"#071825",}:{backgroundColor:"#ffffff"}}
       renderTabBar={(props) => (
     <MaterialTabBar
        {...props}
       activeColor="#2563EB"
-      inactiveColor="black"
+      inactiveColor={colorScheme === "dark"?"#ffffff":"black"}
       indicatorStyle={{ backgroundColor: '#2563EB', height: 3 }}
       contentContainerStyle={{ flex:1, justifyContent:"space-between", alignContent:"center", padding:8}}
       labelStyle={{ fontWeight: 'bold', textAlign: 'center' }}
@@ -76,6 +74,7 @@ const channelId = channelD.channelId
           onEndReached={handleLoadMore}
           onEndReachedThreshold={0.5}
           showsVerticalScrollIndicator={false}
+          contentContainerStyle={{marginTop:30}}
           contentContainerClassName = "gap-6 pt-2 pb-32"
           renderItem={({item})=>(
           !channelVideoLoading?
@@ -267,21 +266,4 @@ const channelId = channelD.channelId
     </Tabs.Container>
   )
 }
-const styles = StyleSheet.create({
-  box: {
-    height: 250,
-    width: '100%',
-  },
-  boxA: {
-    backgroundColor: 'white',
-  },
-  boxB: {
-    backgroundColor: '#D8D8D8',
-  },
-  header: {
-    height: HEADER_HEIGHT,
-    width: '100%',
-    backgroundColor: '#2196f3',
-  },
-})
 export default Channel
