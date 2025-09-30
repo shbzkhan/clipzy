@@ -9,8 +9,8 @@ export const videoApi = createApi({
     baseQuery:customBaseQuery,
     endpoints:(builder)=>({
         //getVideos 
-        getVideos: builder.query<VideoResponse, { page?: number}>({
-            query: ({ page = 1}) => `videos?page=${page}&limit=3`,
+        getVideos: builder.query<VideoResponse, { page?: number, userId?:string}>({
+            query: ({ page = 1, userId}) => `videos?page=${page}&limit=3${userId && `&userId=${userId}`}`,
             transformResponse: (response: { data: VideoResponse }) => response.data,
          }),
 

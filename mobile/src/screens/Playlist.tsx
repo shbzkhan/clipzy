@@ -33,7 +33,6 @@ const Playlist = () => {
                 </TouchableOpacity>
               </View>
             }
-        
             />
     </SafeAreaView>
   )

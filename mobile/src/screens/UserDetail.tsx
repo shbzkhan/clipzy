@@ -40,7 +40,7 @@ const UserDetail = () => {
     width: 200,
     height: 200,
     cropping: true,
-    cropperCircleOverlay: true, // 🔥 Circular overlay for avatar
+    cropperCircleOverlay: true,
     compressImageQuality: 0.8,
     mediaType: 'photo',
   }).then(image => {

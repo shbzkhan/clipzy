@@ -51,7 +51,7 @@ const VideoCard:FC<videoCardProps> = ({_id, title, thumbnail, views, duration, c
       </View>
       <View className='px-3 flex-row gap-2  items-center'>
         <UserLogo
-        handlePress={()=>navigate("Channel")}
+        handlePress={()=>navigate("Channel",{channelId:owner.username})}
         uri={owner.avatar}
         />
 

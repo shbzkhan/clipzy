@@ -1,210 +1,60 @@
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native'
-import React, { useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import CustomIcon from '../components/CustomIcon'
-import { ActivityIndicator } from 'react-native-paper'
+import React, { useEffect, useState } from 'react'
 import Icon from '../constants/Icons'
 import { launchImageLibrary } from 'react-native-image-picker'
 import { ToastShow } from '../utils/Tost'
 import { userData } from '../redux/slice/userSlice'
-import { useAvatarMutation, useCoverImageMutation } from '../redux/api/authApi'
-import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from '../redux/store'
-import { MaterialTabBar, Tabs, CollapsibleTabView, ScrollView } from 'react-native-collapsible-tab-view'
-import UserLogo from '../components/UserLogo'
-import SubscribedButton from '../components/SubscribedButton'
-import wt from "react-native-wind"
+import {useChannelQuery, useWatchHistoryQuery } from '../redux/api/authApi'
+import { MaterialTabBar, Tabs,ScrollView } from 'react-native-collapsible-tab-view'
 import PlaylistCard from '../components/PlaylistCard'
-import CustomHeader from '../components/Header/CustomHeader'
-import AuthBox from '../components/AuthBox'
-// import UserLogo from '../components/UserLogo'
-// import SubscribedButton from '../components/SubscribedButton'
-// import Playlist from './Playlist'
-// import Profile from './Profile'
-// import Home from './Home'
-// import WatchHistory from './WatchHistory'
-// import Post from './Post'
+import VideoListCardLoader from '../components/Skeleton/VideoListCardLoader'
+import VideoListCard from '../components/VideoListCard'
+import GlobalLoader from '../components/GlobalLoader'
+import ChannelHeader from '../components/ChannelDetails'
+import { Video } from '../types/video'
+import { useGetVideosQuery } from '../redux/api/videoApi'
+import { ActivityIndicator } from 'react-native'
+import VideoCardLoader from '../components/Skeleton/VideoCardLoader'
+import VideoCard from '../components/VideoCard'
 
 const HEADER_HEIGHT = 250
 
-const Header =()=>{
-  const user = useSelector((state:RootState)=>state.user.user)
-    const dispatch = useDispatch()
-  
-    console.log(user)
-    const [username, setUsername] = useState<string | undefined>(user?.username)
-    const [fullname, setFullname] = useState<string | undefined>(user?.fullname)
-    const [avatarImage, setAvatarImaage] = useState<string>(user?.avatar)
-    const [coverImg, setCoverImg] = useState<string | null>(user?.coverImage)
-    const [editable, setEditable] = useState<boolean>(false)
-    const [editAvatar, setEditAvatar] = useState<boolean>(false)
-    const[avatar,{isLoading}] = useAvatarMutation()
-    const[coverImage,{isLoading:coverLoading}] = useCoverImageMutation()
+const Channel = ({route}) => {
+const channelD = route.params as string
+const channelId = channelD.channelId
+  const [loading, setLoading] = useState(false)
+  const {data:channelData, isLoading:channelLoading} = useChannelQuery({channelId})
 
-    
-   
+  //channel video
+  const [page, setPage] = useState<number>(1);
+    const [videos, setVideos] = useState<Video[]>([]);
+    const { data, isLoading:channelVideoLoading, isFetching } = useGetVideosQuery({page, userId:channelData?.data._id});
+  
+    useEffect(()=>{
+      if(page === 1){
+        setVideos(data?.docs)
+        console.log("Channel video length", data?.docs.length)
+      }else{
+        const combinedVideos = page === 1 ? data?.docs : [...videos, ...data?.docs];
+          const uniqueVideo = Array.from(new Map(combinedVideos?.map(video => [video._id, video])).values());
+        setVideos(uniqueVideo);
+      }
+    },[data,page])
   
   
-    const handleAvatarPicker = async()=>{
-    setEditAvatar(false)
-    const options = {
-      mediaType: 'photo',
-      quality: 1,
-      maxHeight: 2000,
-      maxWidth: 2000,
-      includeBase64: false,
+    const handleLoadMore = () => {
+      if (!isFetching && data?.hasNextPage) {
+        setPage((prev) => prev + 1);
+      }
     };
   
-    launchImageLibrary(options, (response) => {
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.errorCode) {
-        console.log('ImagePicker Error: ', response.errorCode);
-      } else if (response.assets && response.assets.length > 0) {
-        const selectedImageUri = response.assets[0].uri;
-        setAvatarImaage(selectedImageUri)
-        setEditAvatar(true)
-      }
-    });
-    }
-    
-    const handleAvatarChange = async()=>{
-      const formData = new FormData();
-          formData.append("avatar", {
-           uri: avatarImage,
-           name: `avatar_${Date.now()}.jpg`,
-           type: "image/jpeg",
-         });
-      try {
-         const updateAvatar = await avatar(formData).unwrap()
-         dispatch(userData({...user,avatar:avatarImage}))
-          ToastShow(updateAvatar.message)
-      } catch (error) {
-        setAvatarImaage(user?.avatar)
-        console.log(error)
-        ToastShow("Avatar Updation Failed","danger")
-      }
-    }
-  
-    const handleCoverPicker = async()=>{
-    const options = {
-      mediaType: 'photo',
-      quality: 1,
-      maxHeight: 198,
-      maxWidth: 2000,
-      includeBase64: false,
-    };
-  
-    launchImageLibrary(options, (response) => {
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.errorCode) {
-        console.log('ImagePicker Error: ', response.errorCode);
-      } else if (response.assets && response.assets.length > 0) {
-        const selectedImageUri = response.assets[0].uri;
-        setCoverImg(selectedImageUri)
-        handleCoverChange(selectedImageUri)
-      }
-    });
-    }
-  
-    const handleCoverChange = async(imageUri:string)=>{
-      const formData = new FormData();
-          formData.append("coverImage", {
-           uri: imageUri,
-           name: `coverImage_${Date.now()}.jpg`,
-           type: "image/jpeg",
-         });
-      try {
-         const updateCover = await coverImage(formData).unwrap()
-         console.log("coverUpdate",updateCover)
-         dispatch(userData({...user,coverImage:imageUri}))
-          ToastShow(updateCover.message)
-      } catch (error) {
-        setCoverImg(user?.coverImage || null)
-        console.log(error)
-        ToastShow("Cover Image Updation Failed","danger")
-      }
-    }
-    if(!user) return <AuthBox name="Video Creation"/>
-      return (
-        <>
-        <View className='h-28 w-full'>
-                  {/* <View className='w-52'></View> */}
-                {coverImg ?(
-                  <TouchableOpacity onPress={handleCoverPicker}
-                  disabled={coverLoading}
-                  >
-                  <Image
-                  source={{uri:coverImg}}
-                  className='w-full h-full'
-                  resizeMode='cover'
-                  />
-                  {coverLoading && (
-                  <View className='absolute h-full w-full bg-black/50 justify-center items-center'>
-                    <ActivityIndicator color="#2563EB" size="large"/>
-                  </View>
-                  )}
-                  </TouchableOpacity>
-                ):(
-                <TouchableOpacity className='h-full w-full bg-secondary dark:bg-black/30'
-                onPress={handleCoverPicker}
-                >
-                <View className='justify-center items-center h-full'>
-                <Icon name='Camera' size={38}/>
-                </View>
-                </TouchableOpacity>
-                )}
-                
-      </View>
-      <View className='px-4 gap-2 mt-5'>
-          <View className='flex-row items-center gap-5'>
-                <TouchableOpacity className=' w-24'
-                disabled={isLoading}
-                onPress={handleAvatarPicker}
-                >
-                  <UserLogo
-                  heightAndWidth={24}
-                  uri={avatarImage}
-                  />
-                  
-                  {isLoading &&(
-                    <View className='absolute w-full h-full justify-center bg-black/50 rounded-full'>
-                      <ActivityIndicator color="#2563EB" size="small"/>
-                    </View>
-                  )}
-                  <TouchableOpacity className='absolute bottom-1 right-0'
-                  disabled={isLoading}
-                  onPress={handleAvatarPicker}
-                  >
-                    <CustomIcon size={12} name="SquarePen" />
-                  </TouchableOpacity>
-                  </TouchableOpacity>
-                 {editAvatar &&(
-                   <TouchableOpacity className='mt-3'
-                   onPress={handleAvatarChange}
-                   disabled={isLoading}
-                   >
-                  <Text className='text-primary-600 font-bold text-center'>Update</Text>
-                  </TouchableOpacity>
-                 )}
-              <View className=''>
-                  <Text className='text-2xl font-rubik-bold dark:text-white' numberOfLines={1}>{user.fullname}</Text>
-                  <Text className='text-gray-600 dark:text-gray-300 text-sm'>@{user.username}</Text>
-                  <Text className='text-gray-600 dark:text-gray-300 text-sm'>@{user.username}</Text>
-                </View>
-              </View>
-              <SubscribedButton className='py-2'/>      
-              </View></>
-      )
-    }
 
-
-const Channel = () => {
-
+  if(channelVideoLoading || channelLoading){
+    return <GlobalLoader/>
+  }
   return (
      <Tabs.Container
-      renderHeader={Header}
+      renderHeader={() => <ChannelHeader user={channelData?.data} totalVideos ={data?.docs.length} />}
       headerHeight={HEADER_HEIGHT}
       revealHeaderOnScroll={true}
       snapThreshold={0.5} 
@@ -220,13 +70,42 @@ const Channel = () => {
      )}
     >
       <Tabs.Tab name="Videos">
-        
+        <Tabs.FlatList
+          data={!channelVideoLoading?videos:[1,2,3,4]}
+          keyExtractor={(video, index) =>!channelVideoLoading?video._id:index.toString()}
+          onEndReached={handleLoadMore}
+          onEndReachedThreshold={0.5}
+          showsVerticalScrollIndicator={false}
+          contentContainerClassName = "gap-6 pt-2 pb-32"
+          renderItem={({item})=>(
+          !channelVideoLoading?
+        <VideoListCard {...item} />
+        :
+      <VideoListCardLoader/>
+    )}
+    />
       </Tabs.Tab>
       <Tabs.Tab name="Playlist">
-        <ScrollView>
-          <View style={[styles.box, styles.boxA]} />
-          <View style={[styles.box, styles.boxB]} />
-        </ScrollView>
+        <Tabs.FlatList
+                    data={!loading?Video:[1,2,3,4,5,6,7,8,9]}
+                    keyExtractor={(video) =>video._id}
+                    showsVerticalScrollIndicator={false}
+                    contentContainerClassName = "gap-6 pt-2 pb-14"
+                    renderItem={({item})=>(
+                      !loading?
+                      <PlaylistCard {...item} />
+                      :
+                      <VideoListCardLoader/>
+                    )}
+        
+                    ListFooterComponent={
+                      <View className='justify-center items-center mt-4'>
+                        <TouchableOpacity className='border-2 border-primary-400 dark:border-white rounded-full p-3'>
+                        <Icon name='Plus' size={38}/>
+                        </TouchableOpacity>
+                      </View>
+                    }
+                    />
       </Tabs.Tab>
       <Tabs.Tab name="Post">
         <ScrollView className='bg-white'>

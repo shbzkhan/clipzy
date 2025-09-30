@@ -14,7 +14,6 @@ import { ActivityIndicator } from 'react-native-paper'
 
 const Home = () => {
   // const navigation = useNavigation()
-  //react native taiwlind ka rn package download karna use karne ke liye jaha tailwind na use ho
   const [page, setPage] = useState<number>(1);
   const [videos, setVideos] = useState<Video[]>([]);
   const insets = useSafeAreaInsets();

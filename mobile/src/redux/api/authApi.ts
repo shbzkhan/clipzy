@@ -56,7 +56,10 @@ export const authApi = createApi({
 
         watchHistory: builder.query<WatchHistory, void>({
                     query: () => "users/watch-history"
-                 }),
+        }),
+        channel: builder.query<WatchHistory, {channelId:string}>({
+                    query: ({channelId}) => `users/c/${channelId}`
+        }),
     })
 })
 
@@ -68,5 +71,6 @@ export const {
     useCurrentUserQuery,
     useAvatarMutation,
     useCoverImageMutation,
-    useWatchHistoryQuery
+    useWatchHistoryQuery,
+    useChannelQuery
     } = authApi
