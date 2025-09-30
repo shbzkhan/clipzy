@@ -54,8 +54,8 @@ const channelId = channelD.channelId
       headerHeight={HEADER_HEIGHT}
       revealHeaderOnScroll={true}
       snapThreshold={0.5}
-      containerStyle={colorScheme === "dark"?{backgroundColor:"#071825",}:{backgroundColor:"#ffffff"}}
-      headerContainerStyle={colorScheme === "dark"?{backgroundColor:"#071825",}:{backgroundColor:"#ffffff"}}
+      containerStyle={{backgroundColor:colorScheme === "dark"?"#071825":"#ffffff"}}
+      headerContainerStyle={{backgroundColor:colorScheme === "dark"?"#071825":"#ffffff"}}
       renderTabBar={(props) => (
     <MaterialTabBar
        {...props}
@@ -74,7 +74,7 @@ const channelId = channelD.channelId
           onEndReached={handleLoadMore}
           onEndReachedThreshold={0.5}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{marginTop:30}}
+          contentContainerStyle={{marginTop:30, paddingHorizontal:12}}
           contentContainerClassName = "gap-6 pt-2 pb-32"
           renderItem={({item})=>(
           !channelVideoLoading?

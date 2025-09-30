@@ -7,7 +7,6 @@ import { format } from '../constants/TimeFormat'
 import Orientation from "react-native-orientation-locker"
 import { ActivityIndicator } from 'react-native-paper'
 import { Immersive } from 'react-native-immersive'
-import { VideoIdData } from '../types/video'
 
 const VideoPlayer:FC<VideoById> = ({data}) => {
   const [clicked, setClicked] = useState<boolean>(true)
@@ -18,16 +17,25 @@ const VideoPlayer:FC<VideoById> = ({data}) => {
   const [progress, setProgress] = useState<any>(0)
   const [fullscreen, setFullscreen] = useState<boolean>(false)
 
-  //video fetching
   
+  useEffect(()=>{
+        if(clicked){
+          const timeoutId = setTimeout(() => {
+           setClicked(false)
+        }, 2000)
 
+        return ()=> clearTimeout(timeoutId)
+        }
+    },[clicked])
+
+//video fetching
 useEffect(() => {
     const backAction = () => {
       if (fullscreen) {
-        exitFullscreen(); // agar fullscreen hai to pehle exit kare
-        return true; // default back action cancel
+        exitFullscreen();
+        return true;
       }
-      return false; // normal back kaam kare
+      return false;
     };
 
     const backHandler = BackHandler.addEventListener("hardwareBackPress", backAction);

@@ -60,7 +60,7 @@ const UserDetail = () => {
        });
     try {
        const updateAvatar = await avatar(formData).unwrap()
-       dispatch(userData({...user,avatar:avatarImage}))
+       dispatch(userData({...user,avatar:imgUri}))
         ToastShow(updateAvatar.message)
     } catch (error) {
       setAvatarImaage(user?.avatar)
@@ -82,28 +82,6 @@ const UserDetail = () => {
     console.log(image.path)
     setCoverImg(image.path)
     handleCoverChange(image.path)
-  });
-  }
-
-  const handleCoverPicker = async()=>{
-  const options = {
-    mediaType: 'photo',
-    quality: 1,
-    maxHeight: 198,
-    maxWidth: 2000,
-    includeBase64: false,
-  };
-
-  launchImageLibrary(options, (response) => {
-    if (response.didCancel) {
-      console.log('User cancelled image picker');
-    } else if (response.errorCode) {
-      console.log('ImagePicker Error: ', response.errorCode);
-    } else if (response.assets && response.assets.length > 0) {
-      const selectedImageUri = response.assets[0].uri;
-      setCoverImg(selectedImageUri)
-      handleCoverChange(selectedImageUri)
-    }
   });
   }
 

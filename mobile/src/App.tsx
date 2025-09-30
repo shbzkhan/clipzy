@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import messaging from '@react-native-firebase/messaging';
 import { requestNotificationPermission } from "./utils/notificationService";
 import { Alert } from "react-native";
+import Orientation from 'react-native-orientation-locker';
 
 
 
@@ -24,6 +25,9 @@ export default function App() {
     offlineAccess:false,
     iosClientId:"800380995541-dvld55rubos6boois8d5b4putqta2fe2.apps.googleusercontent.com"
   })
+
+  //auto rotate off
+   Orientation.lockToPortrait();
 
   //notifications
   requestNotificationPermission()

@@ -12,10 +12,11 @@ interface videoCardProps{
     }
     views:string
 }
-const VideoListCard:FC<videoCardProps> = ({_id, title, thumbnail,views, owner:{fullname}}) => {
+const VideoListCard:FC<videoCardProps> = ({_id, title, thumbnail,views, owner: { fullname}}) => {
+  console.log("watchHistory fullname", fullname)
   
   return (
-    <TouchableOpacity className='flex-row gap-2'
+    <TouchableOpacity className='flex-row gap-2 '
     onPress={()=>navigate("Video",{id:_id})}
     >
       <Image
