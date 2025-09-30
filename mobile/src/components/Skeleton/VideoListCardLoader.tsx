@@ -9,7 +9,7 @@ const VideoListCardLoader= () => {
     const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient)
   
   return (
-    <View className='flex-row gap-2 px-4'>
+    <View className='flex-row gap-2'>
       <View className="w-48 h-28 rounded-xl overflow-hidden bg-secondary">
         <ShimmerPlaceholder style={{ flex: 1, width: "100%", borderRadius: 12}} />
       </View>

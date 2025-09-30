@@ -9,7 +9,7 @@ interface videoCardProps{
     title:string
     thumbnail:string
     fullname:string
-    videos:string
+    videos:number
 }
 const PlaylistCard:FC<videoCardProps> = ({_id, title, thumbnail, fullname, videos = 12 }) => {
   

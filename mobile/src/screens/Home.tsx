@@ -26,7 +26,9 @@ const Home = () => {
       setVideos(data?.docs)
       console.log(data)
     }else{
-      setVideos((prev) => [...prev, ...data?.docs]);
+      const combinedVideos = page === 1 ? data?.docs : [...videos, ...data?.docs];
+        const uniqueVideo = Array.from(new Map(combinedVideos?.map(video => [video._id, video])).values());
+      setVideos(uniqueVideo);
     }
   },[data,page])
 
@@ -67,10 +69,9 @@ const Home = () => {
 
     ListFooterComponent={
         isFetching && page > 1 ? (
-          <ActivityIndicator size="small" color="#2563EB" />
+          <ActivityIndicator  size="small" color="#2563EB" />
         ) : null
       }
-    
     />
     </SafeAreaView>
   )

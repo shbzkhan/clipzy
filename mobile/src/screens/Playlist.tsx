@@ -6,6 +6,8 @@ import { Video } from '../utils/domyData'
 import { FlatList } from 'react-native'
 import PlaylistCard from '../components/PlaylistCard'
 import Icon from '../constants/Icons'
+import PlaylistUploader from '../components/playlist/playlistUploader'
+import VideoListCardLoader from '../components/Skeleton/VideoListCardLoader'
 
 const Playlist = () => {
   const [loading, setLoading] = useState(false)
@@ -13,15 +15,15 @@ const Playlist = () => {
     <SafeAreaView className='flex-1 px-4 bg-white dark:bg-dark'>
       <CustomHeader title='Your Playlists' />
         <FlatList
-            data={!loading?Video:[1,1,1,1]}
-            keyExtractor={(video) =>video._id.toString()}
+            data={!loading?Video:[1,2,3,4,5,6,7,8,9]}
+            keyExtractor={(video) =>video._id}
             showsVerticalScrollIndicator={false}
             contentContainerClassName = "gap-6 pt-2 pb-14"
             renderItem={({item})=>(
-            //   !loading?
+              !loading?
               <PlaylistCard {...item} />
-            //   :
-            //   <VideoCardLoader/>
+              :
+              <VideoListCardLoader/>
             )}
 
             ListFooterComponent={

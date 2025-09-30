@@ -10,7 +10,6 @@ import { Immersive } from 'react-native-immersive'
 import { VideoIdData } from '../types/video'
 
 const VideoPlayer:FC<VideoById> = ({data}) => {
-  console.log("VideoPlayer", data)
   const [clicked, setClicked] = useState<boolean>(true)
   const [paushed, setPaushed] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(true)
