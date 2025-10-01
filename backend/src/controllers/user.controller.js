@@ -216,7 +216,8 @@ const logoutUser = asyncHandler(async (req, res) => {
 
 //refereh access token controller
 const refreshAccessToken = asyncHandler(async (req, res)=>{
-    const incomingToken = req.cookies?.refreshToken || req.body?.refreshToken
+    const incomingToken = req.body?.refreshToken
+    console.log("incoming token hear", incomingToken)
     if(!incomingToken){
         throw new apiError(401, "Refresh token not found")
     }
@@ -227,7 +228,7 @@ const refreshAccessToken = asyncHandler(async (req, res)=>{
         }
     
         const user = await User.findById(decoded?._id).select("-password")
-                
+
         if (!user) {
             throw new apiError(401,"Invalid Refresh Token")
         }
@@ -236,7 +237,8 @@ const refreshAccessToken = asyncHandler(async (req, res)=>{
             throw new apiError(401,"Unauthorized, token not matched")
         }
 
-        const { accessToken, newRefreshToken } = await generateAccessAndRefreshToken(user._id)
+        const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id)
+        console.log("new Refresh Token", refreshToken)
 
         const options = {
             httpOnly: true,
@@ -246,11 +248,14 @@ const refreshAccessToken = asyncHandler(async (req, res)=>{
         return res
                 .status(200)
                 .cookie("accessToken", accessToken, options)
-                .cookie("refreshToken", newRefreshToken, options)
+                .cookie("refreshToken", refreshToken, options)
                 .json(
                     new apiResponse(
                         203,
-                        {accessToken, refreshToken:newRefreshToken},
+                        {
+                            accessToken, 
+                            refreshToken
+                        },
                         "Access Token Refreshed"
                     )
                 )
