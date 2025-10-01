@@ -4,7 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const customBaseQuery = fetchBaseQuery({
   baseUrl: "http://192.168.226.250:4000/api/v1/",
   prepareHeaders: async (headers) => {
-    const token = await AsyncStorage.getItem("token");
+    const token = await AsyncStorage.getItem("access-token");
     if (token) {
       headers.set("Authorization", `Bearer ${token}`);
     }

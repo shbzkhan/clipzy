@@ -6,13 +6,14 @@ import * as Yup from "yup"
 import CustomTextInput from '../components/CustomTextInput'
 import Logo from '../constants/Logo'
 import CustomButton from '../components/CustomButton'
-import { goBack, navigate } from '../navigation/NavigationUtils'
+import { goBack, navigate, resetAndNavigate } from '../navigation/NavigationUtils'
 import { ToastShow } from '../utils/Tost'
 import { useLoginMutation } from '../redux/api/authApi'
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
 import { LoginUser } from '../types/auth'
 import { useDispatch } from 'react-redux'
 import { userData } from '../redux/slice/userSlice'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
 const Login = () => {
@@ -23,9 +24,13 @@ const Login = () => {
            try {
              const userLoggedIn = await login(user).unwrap()
              ToastShow(userLoggedIn.message, "success")
-             dispatch(userData(userLoggedIn.data))
-             goBack()
+             dispatch(userData(userLoggedIn.data.user))
+             await AsyncStorage.setItem("access-token", userLoggedIn?.data.accessToken)
+             await AsyncStorage.setItem("refresh-token", userLoggedIn?.data.refreshToken)
+             resetAndNavigate("MainTabs")
              resetForm()
+             //"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OGNiYjhlNDA0MzhmMGI4OGI2ZmY0ODUiLCJpYXQiOjE3NTkzMjQ5MTMsImV4cCI6MTc1OTkyOTcxM30.NI0S3kxn30eMgtjeVkF9z5HI9icxGhiJpOwCV1co0gM"
+
            } catch (err) {
              const error = err as FetchBaseQueryError
              const errorMsg = error.data as {message:string}
@@ -38,7 +43,7 @@ const SignupSchema = Yup.object().shape({
                     password: Yup.string().min(6, 'Minimum 6 characters').required('Password is required'),
 });
   return (
-    <SafeAreaView className=' bg-white flex-1'>
+    <SafeAreaView className=' bg-white flex-1 dark:bg-dark'>
         <KeyboardAvoidingView
         behavior={Platform.OS ==="ios" ? "padding":"height"}
         style={{flex:1}}
@@ -52,7 +57,7 @@ const SignupSchema = Yup.object().shape({
                 imageStyle='h-10 w-12'
                 />
             </View>
-                <Text className='text-black font-tinos-bold text-4xl pt-4'>CLIPZY</Text>
+                <Text className='text-primary-600 font-tinos-bold text-4xl pt-4'>CLIPZY</Text>
                 <Text className='text-gray-300 text-xl'>Login a account</Text>
             </View>
         <Formik
@@ -98,7 +103,7 @@ const SignupSchema = Yup.object().shape({
                     <Text className='text-gray-300 font-tinos text-xl'>Create a new account?</Text>
                     <TouchableOpacity
                     className=''
-                    onPress={()=>navigate("Register")}
+                    onPress={()=>{navigate("Register")}}
                     >
                         <Text className='text-primary-600 font-tinos text-xl'>Register</Text>
                     </TouchableOpacity>

@@ -2,7 +2,7 @@ import { View, Text, ScrollView,TouchableOpacity, Alert } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import  {settingData}  from '../utils/settingData'
-import { navigate } from '../navigation/NavigationUtils';
+import { navigate, resetAndNavigate } from '../navigation/NavigationUtils';
 import CustomIcon from '../components/CustomIcon';
 import SettingsItem from '../components/SettingsItem';
 import UserLogo from '../components/UserLogo';
@@ -19,8 +19,10 @@ const dispatch = useDispatch();
 const user = useSelector((state:RootState)=>state.user.user)
 
 const logout = async()=>{
-  await AsyncStorage.removeItem("token")
+  await AsyncStorage.removeItem("access-token")
+  await AsyncStorage.removeItem("refresh-token")
     dispatch(clearUser())
+    resetAndNavigate("WelcomeScreen")
   }
 
   if(!user) return <AuthBox name="Video Creation"/>

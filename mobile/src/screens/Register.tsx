@@ -21,6 +21,7 @@ const Register = () => {
        try {
          const user = await register(newUser).unwrap()
          ToastShow(user.message, "success")
+         goBack()
          resetForm()
        } catch (err) {
          const error = err as FetchBaseQueryError
@@ -109,14 +110,15 @@ const SignupSchema = Yup.object().shape({
                     <Text className='text-gray-300 font-tinos text-xl'>Already have a account?</Text>
                     <TouchableOpacity
                     className=''
-                    onPress={()=>{
-                        goBack()
-                        SheetManager.show("login-sheet",{
-                            payload:{
-                            entityId:"hello",
-                            }
-                      })
-                    }}
+                    // onPress={()=>{
+                    //     goBack()
+                    //     SheetManager.show("login-sheet",{
+                    //         payload:{
+                    //         entityId:"hello",
+                    //         }
+                    //   })
+                    // }}
+                    onPress={()=>goBack()}
                     >
                         <Text className='text-primary-600 font-tinos text-xl'>Sign in</Text>
                     </TouchableOpacity>

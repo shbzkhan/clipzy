@@ -25,11 +25,18 @@ export const authApi = createApi({
                 body:user
             })
         }),
-        googleLogin: builder.mutation<ApiResponse<UserData>, LoginUser>({
+        googleLogin: builder.mutation<ApiResponse<UserData>, {idToken:string}>({
             query:({idToken})=> ({
                 url:"users/google-login",
                 method:"POST",
                 body:{idToken}
+            })
+        }),
+        refreshAccessToken: builder.mutation<ApiResponse<UserData>, {refreshToken:string}>({
+            query:({refreshToken})=> ({
+                url:"users/refresh-token",
+                method:"POST",
+                body:{refreshToken}
             })
         }),
         currentUser:builder.query({
@@ -38,7 +45,6 @@ export const authApi = createApi({
                 method:"GET"
             })
         }),
-
          avatar: builder.mutation<any,string>({
             query:(formData)=> ({
                 url:"users/avatar",
@@ -72,5 +78,6 @@ export const {
     useAvatarMutation,
     useCoverImageMutation,
     useWatchHistoryQuery,
-    useChannelQuery
+    useChannelQuery,
+    useRefreshAccessTokenMutation
     } = authApi

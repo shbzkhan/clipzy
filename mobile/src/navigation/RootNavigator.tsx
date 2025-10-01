@@ -15,7 +15,7 @@ import { allStack } from './ScreenCollection';
 const Stack = createNativeStackNavigator();
 
 const RootNavigator = () => {
-     const dispatch = useDispatch()
+    const dispatch = useDispatch()
     const mode = useSelector((state: RootState)=>state.theme.mode)
     const [loaded,setLoaded] = useState(false)
     const { setColorScheme, colorScheme:colorSchemaD } = useColorScheme();

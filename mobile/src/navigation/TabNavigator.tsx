@@ -7,14 +7,27 @@ import Post from '../screens/Post';
 import { TabNavigatorParamList } from '../types';
 import Icon from '../constants/Icons';
 import { Image, TouchableOpacity } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useColorScheme } from 'nativewind';
 import { navigate } from './NavigationUtils';
+import { useEffect } from 'react';
+import { useCurrentUserQuery } from '../redux/api/authApi';
+import { userData } from '../redux/slice/userSlice';
 
 const Tab = createBottomTabNavigator<TabNavigatorParamList>();
 
 
 const TabNavigator = () => {
+  const dispatch = useDispatch()
+  const {data, isLoading:currentDataLoading} = useCurrentUserQuery()
+  useEffect(()=>{
+     if(currentDataLoading) return;
+      if(data){
+      const user = data.data.user
+      console.log("user data splace screen", user)
+    dispatch(userData(user))
+    }
+  },[data, dispatch])
   const { colorScheme} = useColorScheme();
   const user = useSelector((state:any)=>state.user.user)
   return (

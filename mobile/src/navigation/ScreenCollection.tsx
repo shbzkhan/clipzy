@@ -16,6 +16,7 @@ import UploadVideo from '../screens/UploadVideo';
 import UserDetail from '../screens/UserDetail';
 import VideoDetails from '../screens/Video';
 import WatchHistory from '../screens/WatchHistory';
+import WelcomeScreen from '../screens/WelcomeScreen';
 import YourVideo from '../screens/YourVideo';
 import TabNavigator from './TabNavigator';
 
@@ -23,6 +24,10 @@ const authStack = [
   {
     name: 'Splash',
     component: Splash,
+  },
+  {
+    name: 'WelcomeScreen',
+    component: WelcomeScreen,
   },
   {
     name: 'Login',

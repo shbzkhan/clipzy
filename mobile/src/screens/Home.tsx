@@ -20,10 +20,8 @@ const Home = () => {
   const { data, isLoading, isFetching, isError, refetch } = useGetVideosQuery({page});
 
   useEffect(()=>{
-    console.log("video", data)
     if(page === 1){
       setVideos(data?.docs)
-      console.log(data)
     }else{
       const combinedVideos = page === 1 ? data?.docs : [...videos, ...data?.docs];
         const uniqueVideo = Array.from(new Map(combinedVideos?.map(video => [video._id, video])).values());
