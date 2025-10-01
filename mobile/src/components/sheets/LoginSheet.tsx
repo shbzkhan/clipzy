@@ -21,6 +21,8 @@ import { useColorScheme } from 'nativewind'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const LoginSheet = (props:SheetProps<"login-sheet">) => {
+    const dsdsf = props.payload?.entityId
+    console.log("id", dsdsf)
     const {colorScheme} = useColorScheme()
     const [error, setError] = useState("")
     const [isError, setIsError] = useState(false)

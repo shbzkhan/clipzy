@@ -55,7 +55,6 @@ const useGallery = ({pageSize =30})=>{
       setHasNextPage(videoData.page_info.has_next_page)
       
     } catch (error) {
-      console.log(error)
       ToastShow("An error occured while fetching videos", "danger")
     }finally{
       setIsLoadingNextPage(false)
@@ -123,8 +122,6 @@ const Post:FC = () => {
     isLoadingNextPage,
     permissionNotGranted
   } = useGallery({pageSize:30})
-
-console.log(videos)
 
 
 

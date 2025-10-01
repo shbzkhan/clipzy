@@ -8,12 +8,13 @@ import VideoListCardLoader from '../components/Skeleton/VideoListCardLoader'
 import { Video } from '../types/video'
 import { useSelector } from 'react-redux'
 import { RootState } from '../redux/store'
+import { ActivityIndicator } from 'react-native'
 
 const YourVideo = () => {
   const user = useSelector((state:RootState)=>state.user.user)
   const [page, setPage] = useState<number>(1);
   const [videos, setVideos] = useState<Video[]>([]);
-  const { data, isLoading, isFetching } = useGetVideosQuery({page, userId:user?._id});
+  const { data, isLoading, isFetching, refetch } = useGetVideosQuery({page, userId:user?._id});
     
       useEffect(()=>{
         if(page === 1){
@@ -25,6 +26,11 @@ const YourVideo = () => {
         }
       },[data,page])
     
+
+      const handleRefresh = () => {
+      setPage(1);
+      refetch();
+      };
     
       const handleLoadMore = () => {
         if (!isFetching && data?.hasNextPage) {
@@ -36,7 +42,7 @@ const YourVideo = () => {
     <SafeAreaView className='flex-1 bg-white dark:bg-dark px-4'>
       <CustomHeader title='Your Videos'/>
         <FlatList
-            data={!isLoading?videos:[1,2,3,4]}
+            data={!isLoading?videos:[1,2,3,4,5,6]}
             keyExtractor={(video, index) =>!isLoading?video._id:index.toString()}
             onEndReached={handleLoadMore}
             onEndReachedThreshold={0.5}
@@ -48,6 +54,15 @@ const YourVideo = () => {
               :
             <VideoListCardLoader/>
             )}
+
+            refreshing={isFetching && page === 1}
+                onRefresh={handleRefresh}
+            
+                ListFooterComponent={
+                    isFetching && page > 1 ? (
+                      <ActivityIndicator  size="small" color="#2563EB" />
+                    ) : null
+                  }
         
             />
     </SafeAreaView>

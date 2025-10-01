@@ -1,5 +1,5 @@
 import { ActivityIndicator, ScrollView, Text, TextInput, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import CustomHeader from '../components/Header/CustomHeader'
 import { Image } from 'react-native'
@@ -10,6 +10,8 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { useVideoUploadMutation } from '../redux/api/videoApi'
 import { ToastShow } from '../utils/Tost'
 import { navigate, pop } from '../navigation/NavigationUtils'
+import { useDispatch } from 'react-redux'
+import { uploadPost } from '../redux/slice/uploadSlice'
 
 
 interface uriData{
@@ -18,16 +20,32 @@ interface uriData{
 }
 
 const UploadVideo = () => {
+  const dispatch = useDispatch()
   const data = useRoute()
   const item = data?.params as uriData
   const [videoUpload,{isLoading}]= useVideoUploadMutation()
 
   const [caption, setCaption] = useState<string>("")
 
+
+  // useEffect(() => {
+  //   console.log("Upload Loading", isLoading)
+  //   dispatch(uploadPost({
+  //     isUploading:isLoading,
+  //     imageUrl: item.thumb_uri,
+  //     title: caption ,
+  //   }));
+  // }, [isLoading]);
+
   const handleVideoUpload = async()=>{
     if(caption.trim()===""){
       return ToastShow("Title is required","danger")
     }
+    dispatch(uploadPost({
+      isUploading:true,
+      imageUrl: item.thumb_uri,
+      title: caption ,
+    }));
 
     const formData = new FormData();
        formData.append("videoFile", {
@@ -43,16 +61,27 @@ const UploadVideo = () => {
        });
        formData.append("title", caption)
     try {
+          pop(2)
           const uploaded = await videoUpload(formData).unwrap()
           console.log("video upload ",uploaded)
           ToastShow(uploaded.message)
-          pop(2)
+          dispatch(uploadPost({
+              isUploading:false,
+              imageUrl: item.thumb_uri,
+              title: caption ,
+    }));
     } catch (error) {
       ToastShow(error?.data?.message,"danger")
       console.log("error", error)
+       dispatch(uploadPost({
+              isUploading:false,
+              imageUrl: item.thumb_uri,
+              title: caption ,
+      }));
     }
 
   }
+  
   
   
   return (
@@ -84,9 +113,9 @@ const UploadVideo = () => {
         </View>
       </ScrollView>
         </KeyboardAwareScrollView>
-        {isLoading&&(<View className='absolute top-0 bottom-0 right-0 left-0 bg-black/80 justify-center items-center'>
+        {/* {isLoading&&(<View className='absolute top-0 bottom-0 right-0 left-0 bg-black/80 justify-center items-center'>
           <ActivityIndicator color="#2563EB" size="large"/>
-        </View>)}
+        </View>)} */}
         
     </SafeAreaView>
   )

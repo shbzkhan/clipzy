@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {useColorScheme} from "nativewind"
 import { setTheme } from '../redux/slice/themeSlice';
 import { allStack } from './ScreenCollection';
+import GlobalUploader from '../components/GlobalUploader';
 
 
 const Stack = createNativeStackNavigator();
@@ -64,6 +65,8 @@ const RootNavigator = () => {
    if(!loaded){
     return <Splash/>
   }
+
+
   return (
     <>
     <ToastProvider>
@@ -83,6 +86,7 @@ const RootNavigator = () => {
         ))
       }
     </Stack.Navigator>
+      <GlobalUploader/>
     </SheetProvider>
     </ToastProvider>
     </>

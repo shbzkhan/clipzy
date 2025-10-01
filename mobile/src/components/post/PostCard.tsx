@@ -8,7 +8,6 @@ import { CameraRoll } from '@react-native-camera-roll/camera-roll'
 
 
 const PostCard = ({item}:videoProp) => {
-    console.log("first", item)
 
     const handleVideoSelect = async(data:any)=>{
         const {uri}=data;

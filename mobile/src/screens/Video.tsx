@@ -112,7 +112,7 @@ const VideoDetails:FC<videoDetailsProps> = ({route}) => {
         }}
         >
           <Text className='text-black font-rubik-bold text-xl dark:text-white' numberOfLines={2}>{data?.data.title}</Text>
-          <Text className='text-gray-600 text-xs font-rubik dark:text-gray-300'>{data?.data.views + " views  " + timeAgo(data?.data.createdAt) +" ago  #TheMemoryAboutYou" }<Text className='font-rubik-semibold text-black dark:text-white'>...more</Text></Text>
+          <Text className='text-gray-600 text-xs font-rubik dark:text-gray-300'>{data?.data.views + " views  " + timeAgo(data?.data.createdAt) }<Text className='font-rubik-semibold text-black dark:text-white'>...more</Text></Text>
         </TouchableOpacity>
         <Pressable className='flex-row items-center justify-between'
         onPress={()=>navigate("Channel",{

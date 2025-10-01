@@ -10,7 +10,7 @@ export const videoApi = createApi({
     endpoints:(builder)=>({
         //getVideos 
         getVideos: builder.query<VideoResponse, { page?: number, userId?:string}>({
-            query: ({ page = 1, userId}) => `videos?page=${page}&limit=3${userId && `&userId=${userId}`}`,
+            query: ({ page = 1, userId}) => `videos?page=${page}&limit=10${userId && `&userId=${userId}`}`,
             transformResponse: (response: { data: VideoResponse }) => response.data,
          }),
 

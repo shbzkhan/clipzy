@@ -1,23 +1,37 @@
 import { View, Text, TouchableOpacity, Image } from 'react-native'
 import React, { FC } from 'react'
 import { navigate } from '../navigation/NavigationUtils'
+import { SheetManager } from 'react-native-actions-sheet'
+import { useSelector } from 'react-redux'
+import { RootState } from '../redux/store'
 
 
 interface videoCardProps{
-    _id:number
+    _id:string
     title:string
     thumbnail:string
     owner:{
+      _id:string
       fullname:string
     }
     views:string
 }
-const VideoListCard:FC<videoCardProps> = ({_id, title, thumbnail,views, owner: { fullname}}) => {
-  console.log("watchHistory fullname", fullname)
-  
+const VideoListCard:FC<videoCardProps> = ({_id, title, thumbnail,views, owner: { _id:userId, fullname,}}) => {
+console.log("owner", userId)
+  const {user} = useSelector((state:RootState)=>state.user)
+
+  const handleSheetOpen = (userId:string)=>{
+      if(userId !== user?._id) return
+       SheetManager.show("login-sheet",{
+          payload:{
+            entityId:_id,
+          }
+        })
+  }
   return (
     <TouchableOpacity className='flex-row gap-2 '
     onPress={()=>navigate("Video",{id:_id})}
+    onLongPress={()=>handleSheetOpen(userId)}
     >
       <Image
       source={{uri: thumbnail}}
