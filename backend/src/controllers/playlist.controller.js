@@ -35,7 +35,7 @@ const getUserPlaylists = asyncHandler(async (req, res) => {
         throw new apiError(404, "Invalid User Id")
     }
 
-    const playlist = await Playlist.find({owner:userId}).sort({updatedAt: -1}).select("-videos -description")
+    const playlist = await Playlist.find({owner:userId}).sort({updatedAt: -1})
 
     return res
             .status(200)
@@ -72,6 +72,7 @@ const getPlaylistById = asyncHandler(async (req, res) => {
                             pipeline:[
                                 {
                                     $project:{
+                                        _id:1,
                                         fullname:1,
                                         avatar:1
                                     }
