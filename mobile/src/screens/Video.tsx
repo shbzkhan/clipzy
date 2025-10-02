@@ -21,7 +21,6 @@ import { RootState } from '../redux/store'
 import GlobalLoader from '../components/GlobalLoader'
 import { timeAgo } from '../constants/TimeAgo'
 import Share from "react-native-share"
-import { Video } from '../types/video'
 
 
 const VideoDetails:FC = ({route}) => {

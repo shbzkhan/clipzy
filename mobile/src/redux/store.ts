@@ -5,6 +5,7 @@ import userReducer from "./slice/userSlice"
 import themeReducer from "./slice/themeSlice"
 import uploadPost from "./slice/uploadSlice"
 import { videoApi } from './api/videoApi'
+import { playlistApi } from './api/playlistApi'
 
 export const store = configureStore({
   reducer: {
@@ -12,13 +13,15 @@ export const store = configureStore({
     theme: themeReducer,
     uploadPost: uploadPost,
     [authApi.reducerPath]: authApi.reducer,
-    [videoApi.reducerPath]: videoApi.reducer
+    [videoApi.reducerPath]: videoApi.reducer,
+    [playlistApi.reducerPath]: playlistApi.reducer,
   },
   
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
   .concat(authApi.middleware)
-  .concat(videoApi.middleware),
+  .concat(videoApi.middleware)
+  .concat(playlistApi.middleware)
 })
 
 setupListeners(store.dispatch)
