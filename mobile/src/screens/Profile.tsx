@@ -37,7 +37,7 @@ const logout = async()=>{
 
          <CustomIcon
           name="Search"
-          handlePress={()=>navigate("SearchHistory")}
+          handlePress={()=>navigate("Search")}
         />
         </View>
 

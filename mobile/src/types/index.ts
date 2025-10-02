@@ -7,7 +7,6 @@ export type RootStackParamList = {
     Register:undefined,
     Video:undefined
     Channel:undefined
-    SearchHistory:undefined
     SearchVideo:undefined
     Appearance:undefined
     WatchHistory:undefined
@@ -23,6 +22,7 @@ export type RootStackParamList = {
 }
 export type TabNavigatorParamList = {
     Home:undefined,
+    Search:undefined,
     Subscriptions:undefined
     Profile:undefined,
     Post:undefined

@@ -20,12 +20,11 @@ import { useSelector } from 'react-redux'
 import { RootState } from '../redux/store'
 import GlobalLoader from '../components/GlobalLoader'
 import { timeAgo } from '../constants/TimeAgo'
-// import { Video, Video } from '../types/video'
+import Share from "react-native-share"
+import { Video } from '../types/video'
 
-interface videoDetailsProps{
-  route:any
-}
-const VideoDetails:FC<videoDetailsProps> = ({route}) => {
+
+const VideoDetails:FC = ({route}) => {
   const user = useSelector((state:RootState)=>state.user.user)
   const insets = useSafeAreaInsets();
   //  const [loading, setLoading] = useState(true)
@@ -34,7 +33,7 @@ const VideoDetails:FC<videoDetailsProps> = ({route}) => {
 // console.log("video id", videoId)
   const [isLiked, setIsLiked] = useState<boolean>(false)
   const [like, setLike] =useState<number>(435)
-  const {data, isLoading, error}= useGetVideoByIdQuery({videoId})
+  const {data, isLoading}= useGetVideoByIdQuery({videoId})
   //allvideofetch
   const [page, setPage] = useState<number>(1);
   const [videos, setVideos] = useState<Video[]>([]);
@@ -67,6 +66,20 @@ const VideoDetails:FC<videoDetailsProps> = ({route}) => {
       ToastShow("Liked","success")
 
     }
+  }
+
+  //share to social media handler
+  const handleShareSocialMedia = async()=>{
+        const shareOptions ={
+          message:data?.data.title,
+          url:`https://www.clizpy.vercel.app/videos/${videoId}`
+        }
+        try {
+          const ShareResponse = await Share.open(shareOptions)
+            console.log(JSON.stringify(ShareResponse))
+        } catch (error) {
+          console.log("Error => ", error);
+        }
   }
 
   let comment = "Waiting for the blink it zomato and other video with new names"
@@ -139,7 +152,7 @@ const VideoDetails:FC<videoDetailsProps> = ({route}) => {
           showsHorizontalScrollIndicator={false}
           >
             <CustomVideoSliderCard title={data?.data.likesCount} icon="Heart" focused={isLiked} handlePress={isLikedHandle}/>
-            <CustomVideoSliderCard title="Share" icon="Share" handlePress={()=>ToastShow("Shared","success")}/>
+            <CustomVideoSliderCard title="Share" icon="Share" handlePress={handleShareSocialMedia}/>
             <CustomVideoSliderCard title="Download" icon="ArrowDownToLine" handlePress={()=>ToastShow("Downloaded","success")}/>
             <CustomVideoSliderCard title="Save" icon="Pin" handlePress={()=>ToastShow("Saved","success")}/>
             <CustomVideoSliderCard title="Thanks" icon="ShipWheel" handlePress={()=>ToastShow("Thanks for Click","success")}/>

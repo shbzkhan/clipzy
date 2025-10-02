@@ -4,9 +4,10 @@ import CustomHeader from '../components/Header/CustomHeader'
 import VideoListCard from '../components/VideoListCard'
 import VideoListCardLoader from '../components/Skeleton/VideoListCardLoader'
 import { useWatchHistoryQuery } from '../redux/api/authApi'
+import {StyleSheet} from  "nativewind"
 
 const WatchHistory = () => {
-  const {data, isLoading} = useWatchHistoryQuery()
+  const {data, isLoading, isFetching, refetch} = useWatchHistoryQuery()
   return (
     <SafeAreaView className='flex-1 bg-white dark:bg-dark px-3'>
      <CustomHeader title='Watch Historys' />
@@ -15,6 +16,8 @@ const WatchHistory = () => {
             keyExtractor={(video, index) =>!isLoading?video?._id:index.toString()}
             showsVerticalScrollIndicator={false}
             contentContainerClassName = "gap-6 pt-2 pb-14 pt-2"
+            refreshing={isFetching}
+            onRefresh={refetch}
             renderItem={({item})=>(
               !isLoading?
               <VideoListCard {...item} />

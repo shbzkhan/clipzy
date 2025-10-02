@@ -20,7 +20,7 @@ const HomeHeader = () => {
 
       <CustomIcon 
       name="Search"
-      handlePress={()=>navigate("SearchHistory")}
+      handlePress={()=>navigate("Search")}
       />
       </View>
     </View>

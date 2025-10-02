@@ -13,6 +13,7 @@ import { navigate } from './NavigationUtils';
 import { useEffect } from 'react';
 import { useCurrentUserQuery } from '../redux/api/authApi';
 import { userData } from '../redux/slice/userSlice';
+import Search from '../screens/SearchHistory';
 
 const Tab = createBottomTabNavigator<TabNavigatorParamList>();
 
@@ -48,6 +49,14 @@ const TabNavigator = () => {
       options={{
         tabBarIcon:({focused, size})=>{
           return <Icon name='LayoutGrid' color={"#2563EB"} focused={focused} size={size} />
+        },
+        
+      }}
+      />
+      <Tab.Screen name="Search" component={Search} 
+      options={{
+        tabBarIcon:({focused, size})=>{
+          return <Icon name='Search' color={"#2563EB"} focused={focused} size={size} />
         },
         
       }}

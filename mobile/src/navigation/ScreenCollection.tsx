@@ -9,7 +9,6 @@ import Playlist from '../screens/Playlist';
 import PlaylistVideo from '../screens/PlaylistVideo';
 import Post from '../screens/Post';
 import Register from '../screens/Register';
-import Search from '../screens/SearchHistory';
 import SearchVideo from '../screens/SearchVideo';
 import Splash from '../screens/Splash';
 import UploadVideo from '../screens/UploadVideo';
@@ -51,10 +50,6 @@ const dashboardStack = [
   {
     name: 'About',
     component: About,
-  },
-  {
-    name: 'SearchHistory',
-    component: Search,
   },
   {
     name: 'Video',
