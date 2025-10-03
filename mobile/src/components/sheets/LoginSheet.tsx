@@ -21,8 +21,8 @@ import { useColorScheme } from 'nativewind'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const LoginSheet = (props:SheetProps<"login-sheet">) => {
-    const dsdsf = props.payload?.entityId
-    console.log("id", dsdsf)
+    const sheet_id = props.payload?.entityId
+    console.log("id", sheet_id)
     const {colorScheme} = useColorScheme()
     const [error, setError] = useState("")
     const [isError, setIsError] = useState(false)
@@ -68,10 +68,10 @@ const LoginSheet = (props:SheetProps<"login-sheet">) => {
         <KeyboardAvoidingView
         behavior={Platform.OS ==="ios" ? "padding":"height"}
         >
-        <View className='flex-row justify-center px-4 border-b border-gray-500 py-4 mb-6'>
-            <Text className='text-primary-600 font-rubik-bold text-2xl dark:text-white'>Login</Text>
+        <View className='flex-row justify-center px-4 py-4 mb-6 border-b border-gray-500'>
+            <Text className='text-2xl text-primary-600 font-rubik-bold dark:text-white'>Login</Text>
         </View>
-        <ScrollView className='flex item-center px-4'>
+        <ScrollView className='flex px-4 item-center'>
             <View className='justify-center pb-4'>
         <Formik
             initialValues={{
@@ -116,8 +116,8 @@ const LoginSheet = (props:SheetProps<"login-sheet">) => {
                 containerStyles='mt-4'
                 />
                 {isError && <Text className='text-center text-danger'>{error}</Text>}
-                <View className='mx-auto mt-3 flex-row items-center gap-1 pb-3'>
-                    <Text className='text-gray-300 font-tinos text-xl'>Create a new account?</Text>
+                <View className='flex-row items-center gap-1 pb-3 mx-auto mt-3'>
+                    <Text className='text-xl text-gray-300 font-tinos'>Create a new account?</Text>
                     <TouchableOpacity
                     className=''
                     onPress={()=>{
@@ -125,7 +125,7 @@ const LoginSheet = (props:SheetProps<"login-sheet">) => {
                         navigate("Register")
                     }}
                     >
-                        <Text className='text-primary-600 font-tinos text-xl'>Register</Text>
+                        <Text className='text-xl text-primary-600 font-tinos'>Register</Text>
                     </TouchableOpacity>
                 </View>
                 </View>

@@ -13,11 +13,15 @@ import { RootState } from '../redux/store'
 import { useSelector } from 'react-redux'
 
 const Playlist = () => {
-  const [loading, setLoading] = useState(false)
   const {user} = useSelector((state:RootState)=>state.user)
-  console.log("userid", user._id)
-    const {data, isLoading, isFetching, refetch} = useUserPlaylistQuery({userId:user?._id})
+  const {data, isLoading, isFetching, refetch} = useUserPlaylistQuery({userId:user?._id})
   const [isCreatePlaylist, setIsCreatePlaylist] = useState<boolean>(false)
+  const [isUpdatePlaylist, setIsUpdatePlaylist] = useState<boolean>(false)
+  const [videoData, setVideoData] = useState<object>({
+    id:null,
+    name:"",
+    description:""
+  })
   return (
     <>
     <SafeAreaView className='flex-1 px-4 bg-white dark:bg-dark'>
@@ -26,10 +30,18 @@ const Playlist = () => {
             data={!isLoading?data.data:[1,2,3,4,5,6,7]}
             keyExtractor={(video, index) =>!isLoading?video._id:index.toString()}
             showsVerticalScrollIndicator={false}
+            refreshing={isFetching}
+            onRefresh={refetch}
             contentContainerClassName = "gap-6 pt-2 pb-14"
             renderItem={({item})=>(
               !isLoading?
-              <PlaylistCard {...item} />
+              <PlaylistCard {...item}
+              setIsCreatePlaylist={setIsCreatePlaylist}
+              isUpdatePlaylist={isUpdatePlaylist}
+              setIsUpdatePlaylist={setIsUpdatePlaylist}
+              videoData={videoData}
+              setVideoData={setVideoData}
+               />
               :
               <VideoListCardLoader/>
             )}
@@ -45,7 +57,16 @@ const Playlist = () => {
             }
             />
     </SafeAreaView>
-    {isCreatePlaylist && <PlaylistUploader setIsCreatePlaylist={setIsCreatePlaylist}/>}
+    {
+    isCreatePlaylist && 
+    <PlaylistUploader 
+    setIsCreatePlaylist={setIsCreatePlaylist}
+    isUpdatePlaylist={isUpdatePlaylist}
+    setIsUpdatePlaylist={setIsUpdatePlaylist}
+    videoData={videoData}
+    setVideoData={setVideoData}
+    />
+    }
   </>
   )
 }

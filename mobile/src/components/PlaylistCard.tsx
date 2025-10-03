@@ -1,6 +1,8 @@
 import { View, Text, TouchableOpacity, Image } from 'react-native'
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import { navigate } from '../navigation/NavigationUtils'
+import { SheetManager } from 'react-native-actions-sheet'
+import PlaylistUploader from './playlist/PlaylistUploader'
 
 
 interface videoCardProps{
@@ -9,12 +11,28 @@ interface videoCardProps{
     thumbnail:string
     description:string
     videos:string[]
+    setIsCreatePlaylist?:any
+    setIsUpdatePlaylist?:any
+    setVideoData?:any
 }
-const PlaylistCard:FC<videoCardProps> = ({_id, name, thumbnail, description, videos }) => {
+
+const PlaylistCard:FC<videoCardProps> = ({_id, name, thumbnail, description, videos, setIsCreatePlaylist,setIsUpdatePlaylist, setVideoData }) => {
+
+  const handleCreatePlaylistHandler =(pid:string, pname:string, pdescription:string)=>{
+        setIsCreatePlaylist(true)
+        setIsUpdatePlaylist(true)
+        setVideoData({
+          id:pid,
+          name:pname,
+          description:pdescription
+      })
+  }
+
   return (
+    <>
     <TouchableOpacity className='flex-row gap-2'
-    onPress={()=>navigate("PlaylistVideo",{id:_id})}
-    >
+      onPress={()=>navigate("PlaylistVideo",{id:_id})}
+      onLongPress={()=>handleCreatePlaylistHandler(_id, name, description)}>
     <View className='relative items-center justify-center w-48 h-28 rounded-xl overf'>
         <View className='h-full w-44 bg-primary-600 rounded-xl' />
         <View className='absolute top-1'>
@@ -33,6 +51,7 @@ const PlaylistCard:FC<videoCardProps> = ({_id, name, thumbnail, description, vid
         <Text className='text-sm text-gray-600 font-rubik-medium dark:text-gray-300' numberOfLines={2}>{description}</Text>
       </View>
     </TouchableOpacity>
+      </>
   )
 }
 

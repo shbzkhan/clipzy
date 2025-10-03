@@ -6,18 +6,18 @@ import { Video, VideoIdData, VideoResponse } from "../../types/video";
 
 export const videoApi = createApi({
     reducerPath:"video",
-    baseQuery:customBaseQuery,
+    baseQuery:customBaseQuery("videos"),
     endpoints:(builder)=>({
         //getVideos 
         getVideos: builder.query<VideoResponse, { page?: number, userId?:string}>({
-            query: ({ page = 1, userId}) => `videos?page=${page}&limit=10${userId && `&userId=${userId}`}`,
+            query: ({ page = 1, userId}) => `?page=${page}&limit=4${userId && `&userId=${userId}`}`,
             transformResponse: (response: { data: VideoResponse }) => response.data,
          }),
 
         //publised video
         videoUpload: builder.mutation<any,any>({
             query:(formData)=> ({
-                url:"videos",
+                url:"/",
                 method:"POST",
                 body:formData,
             })
@@ -25,11 +25,11 @@ export const videoApi = createApi({
         
         //getVideoById
         getVideoById: builder.query<VideoIdData, {videoId:string}>({
-            query: ({videoId}) => `videos/${videoId}`
+            query: ({videoId}) => `/${videoId}`
          }),
 
          getVideoSearched: builder.query<VideoResponse, { page?: number, query?:string}>({
-            query: ({ page = 1, query}) => `videos?page=${page}&limit=10&query=${query}`,
+            query: ({ page = 1, query}) => `?page=${page}&limit=10&query=${query}`,
             transformResponse: (response: { data: VideoResponse }) => response.data,
          }),
     })

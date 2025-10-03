@@ -1,27 +1,50 @@
+import { formDataProps } from './../../components/playlist/PlaylistUploader';
 import { createApi} from "@reduxjs/toolkit/query/react";
 
 import customBaseQuery from "../middleware/header";
-import { formDataProps } from "../../components/playlist/PlaylistUploader";
 import { PlaylistProps } from "../../types/playlist";
 
 
 export const playlistApi = createApi({
     reducerPath:"playlist",
-    baseQuery:customBaseQuery,
+    baseQuery:customBaseQuery("playlist/"),
+    tagTypes: ["PlaylistFetch"],
     endpoints:(builder)=>({
+       
+        //user playlist
+        userPlaylist :builder.query<PlaylistProps, {userId:string}>({
+            query:({userId})=> `user/${userId}`,
+            providesTags:["PlaylistFetch"]
+        }),
+
         //create
         createPlaylist: builder.mutation<PlaylistProps,formDataProps>({
             query:(formData)=> ({
-                url:"playlist",
+                url:"",
                 method:"POST",
                 body:formData,
-            })
+            }),
+            invalidatesTags:['PlaylistFetch']
         }),
 
-        //user playlist
-        userPlaylist :builder.query<PlaylistProps, {userId:string}>({
-            query:({userId})=> `playlist/user/${userId}`
-        })
+        //update playlist
+        updatePlaylist: builder.mutation<PlaylistProps,{id:string | null, formData:formDataProps}>({
+            query:({id, formData})=> ({
+                url:`${id}`,
+                method:"PATCH",
+                body:formData,
+            }),
+            invalidatesTags:['PlaylistFetch']
+        }),
+
+        //delet playlist
+        deletePlaylist: builder.mutation<PlaylistProps,{id:string | null}>({
+            query:(id)=> ({
+                url:`${id}`,
+                method:"DELETE",
+            }),
+            invalidatesTags:['PlaylistFetch']
+        }),
         
     })
 })
@@ -29,5 +52,7 @@ export const playlistApi = createApi({
 
 export const {
     useCreatePlaylistMutation,
-    useUserPlaylistQuery
+    useUserPlaylistQuery,
+    useUpdatePlaylistMutation,
+    useDeletePlaylistMutation
     } = playlistApi

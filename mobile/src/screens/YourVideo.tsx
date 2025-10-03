@@ -39,7 +39,7 @@ const YourVideo = () => {
       };
     
   return (
-    <SafeAreaView className='flex-1 bg-white dark:bg-dark px-4'>
+    <SafeAreaView className='flex-1 px-4 bg-white dark:bg-dark'>
       <CustomHeader title='Your Videos'/>
         <FlatList
             data={!isLoading?videos:[1,2,3,4,5,6]}

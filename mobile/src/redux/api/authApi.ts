@@ -6,12 +6,12 @@ import { WatchHistory } from "../../types/video";
 
 export const authApi = createApi({
     reducerPath:"auth",
-    baseQuery:customBaseQuery,
+    baseQuery:customBaseQuery("users/"),
     endpoints:(builder)=>({
         //register new user
         register: builder.mutation<ApiResponse<UserData>, RegisterUser>({
             query:(newUser)=> ({
-                url:"users/register",
+                url:"register",
                 method:"POST",
                 body:newUser
             })
@@ -20,51 +20,51 @@ export const authApi = createApi({
         // login user api
         login: builder.mutation<ApiResponse<UserData>, LoginUser>({
             query:(user)=> ({
-                url:"users/login",
+                url:"login",
                 method:"POST",
                 body:user
             })
         }),
         googleLogin: builder.mutation<ApiResponse<UserData>, {idToken:string}>({
             query:({idToken})=> ({
-                url:"users/google-login",
+                url:"google-login",
                 method:"POST",
                 body:{idToken}
             })
         }),
         refreshAccessToken: builder.mutation<ApiResponse<UserData>, {refreshToken:string}>({
             query:({refreshToken})=> ({
-                url:"users/refresh-token",
+                url:"refresh-token",
                 method:"POST",
                 body:{refreshToken}
             })
         }),
         currentUser:builder.query({
             query:()=>({
-                url:"users/current",
+                url:"current",
                 method:"GET"
             })
         }),
          avatar: builder.mutation<any,string>({
             query:(formData)=> ({
-                url:"users/avatar",
+                url:"avatar",
                 method:"PATCH",
                 body:formData,
             })
         }),
          coverImage: builder.mutation<any,string>({
             query:(formData)=> ({
-                url:"users/cover-image",
+                url:"cover-image",
                 method:"PATCH",
                 body:formData,
             })
         }),
 
         watchHistory: builder.query<WatchHistory, void>({
-                    query: () => "users/watch-history"
+                    query: () => "watch-history"
         }),
         channel: builder.query<WatchHistory, {channelId:string}>({
-                    query: ({channelId}) => `users/c/${channelId}`
+                    query: ({channelId}) => `c/${channelId}`
         }),
     })
 })

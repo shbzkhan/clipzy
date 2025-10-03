@@ -2,10 +2,12 @@ import {SheetDefinition, registerSheet} from "react-native-actions-sheet"
 import CommentSheet from "./CommentSheet"
 import DescriptionSheet from "./DescriptionSheet"
 import LoginSheet from "./LoginSheet"
+import PlaylistSheet from "./PlaylistSheet"
 
 registerSheet("comment-sheet", CommentSheet)
 registerSheet("description-sheet", DescriptionSheet)
 registerSheet("login-sheet", LoginSheet)
+registerSheet("playlist-sheet", PlaylistSheet)
 
 declare module "react-native-actions-sheet"{
     interface Sheets{
@@ -20,6 +22,11 @@ declare module "react-native-actions-sheet"{
             }
         }>
         "login-sheet":SheetDefinition<{
+            payload:{
+                entityId:string
+            }
+        }>
+        "playlist-sheet":SheetDefinition<{
             payload:{
                 entityId:string
             }
