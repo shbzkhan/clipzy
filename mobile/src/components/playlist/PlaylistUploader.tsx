@@ -133,13 +133,13 @@ const handleCreatePlaylistDisable = ()=>{
         <TextInput
         placeholder='Write you playlist title'
         value={form.name}
-        className='w-full px-4 border-2 border-primary-300 focus:border-primary-600 rounded-xl font-rubik-bold'
+        className='w-full px-4 border-2 border-primary-300 focus:border-primary-600 rounded-xl font-rubik-bold dark:text-white'
         onChangeText={(e)=>setForm({...form, name:e})}
         />
         <TextInput
         placeholder='Write description'
         value={form.description}
-        className='w-full h-32 px-4 align-top border-2 border-primary-300 focus:border-primary-600 rounded-xl font-rubik-medium text-start'
+        className='w-full h-32 px-4 align-top border-2 border-primary-300 focus:border-primary-600 rounded-xl font-rubik-medium text-start dark:text-white'
         onChangeText={(e)=>setForm({...form, description:e})}
         multiline
         />
