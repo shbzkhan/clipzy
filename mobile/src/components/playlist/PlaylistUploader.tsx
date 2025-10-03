@@ -1,5 +1,5 @@
-import { View, TextInput, KeyboardAvoidingView, Pressable, TouchableOpacity} from 'react-native'
-import React, { FC, useState } from 'react'
+import { View, TextInput, KeyboardAvoidingView, Pressable, TouchableOpacity, Animated} from 'react-native'
+import React, { FC, useEffect, useRef, useState } from 'react'
 import { BlurView } from "@react-native-community/blur";
 import CustomButton from '../CustomButton';
 import {useColorScheme} from "nativewind"
@@ -14,6 +14,7 @@ import { ActivityIndicator } from 'react-native';
 }
 
  interface playlsitUploaderProps{
+  isCreatePlaylist:boolean
   setIsCreatePlaylist:any
   isUpdatePlaylist:boolean
   setIsUpdatePlaylist:any
@@ -25,17 +26,37 @@ import { ActivityIndicator } from 'react-native';
   setVideoData:any
  }
 
-const PlaylistUploader:FC<playlsitUploaderProps> = ({setIsCreatePlaylist, isUpdatePlaylist, setIsUpdatePlaylist, videoData, setVideoData}) => {
+const PlaylistUploader:FC<playlsitUploaderProps> = ({isCreatePlaylist, setIsCreatePlaylist, isUpdatePlaylist, setIsUpdatePlaylist, videoData, setVideoData}) => {
   const {colorScheme} = useColorScheme();
   const [form, setForm] = useState<formDataProps>({
     name : videoData.name || "",
     description:videoData.description || ""
   })
   const [error, setError] = useState<string>("")
+  
 
   const[createPlaylist, {isLoading}]=useCreatePlaylistMutation()
   const[updatePlaylist, {isLoading:updateLoading}]=useUpdatePlaylistMutation()
   const[deletePlaylist, {isLoading:deleteLoading}]=useDeletePlaylistMutation()
+
+
+  //animated
+  const slideAnim = useRef(new Animated.Value(1000)).current;
+  useEffect(() => {
+    if (isCreatePlaylist) {
+      Animated.timing(slideAnim, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    } else {
+      Animated.timing(slideAnim, {
+        toValue: 1000,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [isCreatePlaylist]);
 
   const handleCreatePlaylist = async()=>{
     setError("")
@@ -81,7 +102,7 @@ const PlaylistUploader:FC<playlsitUploaderProps> = ({setIsCreatePlaylist, isUpda
   
 
 const handleCreatePlaylistDisable = ()=>{
-        setIsCreatePlaylist(false)
+       setIsCreatePlaylist(false)
        setIsUpdatePlaylist(false)
        setVideoData({
          id:null,
@@ -89,6 +110,7 @@ const handleCreatePlaylistDisable = ()=>{
          description:""
       })
 }
+
 
   return (
     <Pressable className='absolute top-0 bottom-0 left-0 z-50 justify-center w-full righ-0 '
@@ -102,7 +124,12 @@ const handleCreatePlaylistDisable = ()=>{
         reducedTransparencyFallbackColor="black"
       />
       <KeyboardAvoidingView behavior='padding'>
-      <View className='gap-5 p-4 m-5 bg-white dark:bg-dark rounded-xl'>
+      <Animated.View
+            style={{
+              transform: [{ translateY: slideAnim }],
+            }}
+        >
+        <View className='gap-5 p-4 m-5 bg-white dark:bg-dark rounded-xl'>
         <TextInput
         placeholder='Write you playlist title'
         value={form.name}
@@ -142,7 +169,8 @@ const handleCreatePlaylistDisable = ()=>{
           )
         }
       {error && <Text className="text-center font-rubik text-danger">{error}</Text>}
-      </View>
+        </View>
+      </Animated.View>
       </KeyboardAvoidingView>
     </Pressable>
   )
