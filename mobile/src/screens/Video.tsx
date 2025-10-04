@@ -113,7 +113,7 @@ const VideoDetails:FC = ({route}) => {
           }
 
     ListHeaderComponent={
-      <View className='px-3 gap-4'>
+      <View className='gap-4 px-3'>
         <TouchableOpacity
         onPress={()=>{
             SheetManager.show("description-sheet",{
@@ -123,8 +123,8 @@ const VideoDetails:FC = ({route}) => {
           })
         }}
         >
-          <Text className='text-black font-rubik-bold text-xl dark:text-white' numberOfLines={2}>{data?.data.title}</Text>
-          <Text className='text-gray-600 text-xs font-rubik dark:text-gray-300'>{data?.data.views + " views  " + timeAgo(data?.data.createdAt) }<Text className='font-rubik-semibold text-black dark:text-white'>...more</Text></Text>
+          <Text className='text-xl text-black font-rubik-bold dark:text-white' numberOfLines={2}>{data?.data.title}</Text>
+          <Text className='text-xs text-gray-600 font-rubik dark:text-gray-300'>{data?.data.views + " views  " + timeAgo(data?.data.createdAt) }<Text className='text-black font-rubik-semibold dark:text-white'>...more</Text></Text>
         </TouchableOpacity>
         <Pressable className='flex-row items-center justify-between'
         onPress={()=>navigate("Channel",{
@@ -139,7 +139,7 @@ const VideoDetails:FC = ({route}) => {
               })}
           />
           <Text className='font-rubik-medium dark:text-white'>{data?.data.owner.fullname}</Text>
-          <Text className='text-sm font-rubik text-gray-500 dark:text-gray-300'>{data?.data.owner.subscribersCount}</Text>
+          <Text className='text-sm text-gray-500 font-rubik dark:text-gray-300'>{data?.data.owner.subscribersCount}</Text>
           </View>
           <SubscribedButton
           isSubscribed={data?.data.owner.isSubscribed}
@@ -157,7 +157,7 @@ const VideoDetails:FC = ({route}) => {
             <CustomVideoSliderCard title="Thanks" icon="ShipWheel" handlePress={()=>ToastShow("Thanks for Click","success")}/>
           </ScrollView>
 
-          <TouchableOpacity className='bg-secondary px-4 py-3 rounded-xl gap-2 mt-3 mb-5 dark:bg-dark-100'
+          <TouchableOpacity className='gap-2 px-4 py-3 mt-3 mb-5 bg-secondary rounded-xl dark:bg-dark-100'
           onPress={()=>{
             SheetManager.show("comment-sheet",{
             payload:{
@@ -167,12 +167,12 @@ const VideoDetails:FC = ({route}) => {
         }}
           >
             <Text className='font-rubik-semibold dark:text-white'>Comments</Text>
-            <View className='flex-row gap-2 items-center'>
+            <View className='flex-row items-center gap-2'>
               <UserLogo
                 uri={"https://api.dicebear.com/9.x/initials/png?seed=Z Khan"}
                 heightAndWidth={6}
               />
-            <Text className='text-gray-500 font-rubik text-sm dark:text-gray-300' >{comment.slice(0,45)+"..."}</Text>
+            <Text className='text-sm text-gray-500 font-rubik dark:text-gray-300' >{comment.slice(0,45)+"..."}</Text>
             </View>
           </TouchableOpacity>
       </View>
