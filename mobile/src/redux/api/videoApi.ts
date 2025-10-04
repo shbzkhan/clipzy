@@ -32,6 +32,7 @@ export const videoApi = createApi({
             query: ({ page = 1, query}) => `?page=${page}&limit=10&query=${query}`,
             transformResponse: (response: { data: VideoResponse }) => response.data,
          }),
+
     })
 })
 
@@ -40,5 +41,5 @@ export const {
     useVideoUploadMutation,
     useGetVideosQuery,
     useGetVideoByIdQuery,
-    useGetVideoSearchedQuery
+    useGetVideoSearchedQuery,
     } = videoApi

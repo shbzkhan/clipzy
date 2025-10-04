@@ -45,6 +45,19 @@ export const playlistApi = createApi({
             }),
             invalidatesTags:['PlaylistFetch']
         }),
+
+        //playlist by id
+        playlistById :builder.query<PlaylistProps, {playlistId:string}>({
+            query:({playlistId})=> `${playlistId}`,
+        }),
+
+        // video of playlist
+        playlistAddVideo: builder.mutation<PlaylistProps,{videoId:string, playlistId:string}>({
+            query:({videoId, playlistId})=> ({
+                url:`add/${videoId}/${playlistId}`,
+                method:"PATCH",
+            }),
+        }),
         
     })
 })
@@ -54,5 +67,7 @@ export const {
     useCreatePlaylistMutation,
     useUserPlaylistQuery,
     useUpdatePlaylistMutation,
-    useDeletePlaylistMutation
+    useDeletePlaylistMutation,
+    usePlaylistByIdQuery,
+    usePlaylistAddVideoMutation
     } = playlistApi

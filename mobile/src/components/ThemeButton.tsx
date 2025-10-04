@@ -24,7 +24,7 @@ const ThemeButton:FC<ThemeButton> = ({themeName, handlePress, icon, title}) => {
             <Text className='font-rubik-medium text-lg dark:text-white flex-1'>{title}</Text>  
             <RadioButton
             color='white'
-            value={themeName}
+            value={"djdjdd"}
             status={mode === themeName ? "checked":"unchecked"}
             // color="2563EB"
             onPress={handlePress}

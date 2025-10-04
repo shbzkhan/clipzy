@@ -1,5 +1,5 @@
 import { View, Text, Image, TouchableOpacity } from 'react-native'
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import VideoListCard from '../components/VideoListCard'
 import CustomHeader from '../components/Header/CustomHeader'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -8,23 +8,38 @@ import { FlatList } from 'react-native'
 import CustomButton from '../components/CustomButton'
 import { navigate } from '../navigation/NavigationUtils'
 import VideoListCardLoader from '../components/Skeleton/VideoListCardLoader'
+import { usePlaylistByIdQuery } from '../redux/api/playlistApi'
+import GlobalLoader from '../components/GlobalLoader'
+import EmptyState from '../components/EmptyState'
 
 interface playlistProps{
   route:any
 }
 const PlaylistVideo:FC<playlistProps> = ({route}) => {
-    const video = route.params
+  const {id:playlistId} = route.params as string
+  console.log("playlist id", playlistId)
+  const {data, isLoading} = usePlaylistByIdQuery({playlistId})
+
+  useEffect(()=>{
+    if(!isLoading){
+      console.log("playlist data", data)
+    }
+  },[isLoading])
   const [loading, setLoading] = useState(true)
+
+  if(isLoading){
+    return <GlobalLoader/>
+  }
   return (
     <SafeAreaView className='flex-1 bg-white dark:bg-dark'>
       <CustomHeader title='Likes Playlist' />
         <FlatList
-            data={!loading?Video:[1,2,3,4]}
+            data={!isLoading?data.data.videos:[1,2,3,4]}
             keyExtractor={(video) =>video._id}
             showsVerticalScrollIndicator={false}
             contentContainerClassName = "gap-6 pt-2 pb-14"
             renderItem={({item})=>(
-              !loading?
+              !isLoading?
               <VideoListCard {...item} />
               :
               <VideoListCardLoader/>
@@ -53,9 +68,9 @@ const PlaylistVideo:FC<playlistProps> = ({route}) => {
                         />
                         </TouchableOpacity>
                         <View className='bg-black/25 backdrop-blur-3xl px-4 pt-5 pb-4'>
-                        <Text className='text-white font-rubik-bold text-2xl'>Watch Later</Text>
-                        <Text className='text-white font-rubik-semibold text-md'>Shahbaz Khan</Text>
-                        <Text className='text-white font-rubik text-sm'>31 videos</Text>
+                        <Text className='text-white font-rubik-bold text-2xl'>{data?.data?.name}</Text>
+                        <Text className='text-white font-rubik-semibold text-md'>{data?.data?.owner.fullname}</Text>
+                        <Text className='text-white font-rubik text-sm'>{data?.data.description}</Text>
     
                             <TouchableOpacity className='bg-white w-40 py-2 items-center rounded-xl mt-2'
                             onPress={()=>navigate("Video", {id:1})}
@@ -67,6 +82,9 @@ const PlaylistVideo:FC<playlistProps> = ({route}) => {
                         </View>
                     </View>
                 </View>
+            }
+            ListEmptyComponent={
+              <EmptyState/>
             }
             />
     </SafeAreaView>

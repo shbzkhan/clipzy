@@ -66,7 +66,7 @@ useEffect(() => {
     fullscreen ? exitFullscreen() : enterFullscreen();
   };
   return (
-    <View className={`w-full ${fullscreen?"h-screen":"h-[200px]"} relative bg-black/60`}>
+    <View className={`w-full ${fullscreen?"h-screen":"h-[200px]"} relative bg-black`}>
   <Video
     paused={paushed}
     source={{ uri: data.videoFile}}
@@ -104,8 +104,8 @@ useEffect(() => {
             <ActivityIndicator size={"large"} color='white'/>
           </View>
       :
-        <View className='flex-row gap-16 items-center'>
-          <TouchableOpacity className='bg-black/30 w-12 h-12 rounded-full justify-center items-center'
+        <View className='flex-row items-center gap-16'>
+          <TouchableOpacity className='items-center justify-center w-12 h-12 rounded-full bg-black/30'
           onPress={()=> ref.current.seek(parseInt(progress.currentTime)-10)}>
             <Image
           source={ImageIcon.backward}
@@ -114,7 +114,7 @@ useEffect(() => {
           tintColor="white"
           />
           </TouchableOpacity>
-          <TouchableOpacity className='bg-black/30 w-16 h-16 rounded-full justify-center items-center'
+          <TouchableOpacity className='items-center justify-center w-16 h-16 rounded-full bg-black/30'
           onPress={()=>setPaushed(!paushed)}
           >
             <Image
@@ -124,7 +124,7 @@ useEffect(() => {
           tintColor="white"
           />
           </TouchableOpacity>
-          <TouchableOpacity className='bg-black/30 w-12 h-12 rounded-full justify-center items-center'
+          <TouchableOpacity className='items-center justify-center w-12 h-12 rounded-full bg-black/30'
           onPress={()=> ref.current.seek(parseInt(progress.currentTime)+10)}
           >
             <Image
@@ -139,9 +139,9 @@ useEffect(() => {
       }
         <View className={`absolute ${fullscreen?"bottom-6":"-bottom-2"} w-full`}>
           <View className='flex-row justify-between px-4 '>
-            <View className='bg-black/30 flex-row px-2 py-1 rounded-full'>
-               <Text className='text-white text-sm'>{progress.currentTime?format(progress.currentTime):"00:00"} </Text>
-               <Text className='text-gray-300 text-sm'>/ {progress.currentTime?format(progress.seekableDuration):"00:00"}</Text>
+            <View className='flex-row px-2 py-1 rounded-full bg-black/30'>
+               <Text className='text-sm text-white'>{progress.currentTime?format(progress.currentTime):"00:00"} </Text>
+               <Text className='text-sm text-gray-300'>/ {progress.currentTime?format(progress.seekableDuration):"00:00"}</Text>
             </View>
             <TouchableOpacity
          onPress={toggleFullscreen}
