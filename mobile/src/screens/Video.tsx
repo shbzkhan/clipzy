@@ -33,18 +33,12 @@ import { RootState } from '../redux/store';
 import GlobalLoader from '../components/GlobalLoader';
 import { timeAgo } from '../constants/TimeAgo';
 import Share from 'react-native-share';
-import {
-  usePlaylistAddVideoMutation,
-  usePlaylistVideoMutation,
-} from '../redux/api/playlistApi';
 
 const VideoDetails: FC = ({ route }) => {
   const user = useSelector((state: RootState) => state.user.user);
   const insets = useSafeAreaInsets();
-  //  const [loading, setLoading] = useState(true)
   const video = route.params as string;
   const videoId = video.id;
-  // console.log("video id", videoId)
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [like, setLike] = useState<number>(435);
   const { data, isLoading } = useGetVideoByIdQuery({ videoId });
@@ -87,7 +81,7 @@ const VideoDetails: FC = ({ route }) => {
   const handleShareSocialMedia = async () => {
     const shareOptions = {
       message: data?.data.title,
-      url: `https://www.clizpy.vercel.app/videos/${videoId}`,
+      url: `https://clizpy.vercel.app/videos/${videoId}`,
     };
     try {
       const ShareResponse = await Share.open(shareOptions);

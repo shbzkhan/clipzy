@@ -9,6 +9,7 @@ import VideoCardLoader from '../components/Skeleton/VideoCardLoader'
 import { Video } from '../types/video'
 import { useGetVideosQuery } from '../redux/api/videoApi'
 import { ActivityIndicator } from 'react-native-paper'
+import EmptyState from '../components/EmptyState'
 
 
 
@@ -61,13 +62,19 @@ const Home = () => {
       :
       <VideoCardLoader/>
     )}
-    refreshing={isFetching && page === 1}
+    refreshing={isFetching && page === 1 && !isLoading}
     onRefresh={handleRefresh}
 
     ListFooterComponent={
         isFetching && page > 1 ? (
           <ActivityIndicator  size="small" color="#2563EB" />
         ) : null
+      }
+      ListEmptyComponent={
+        <EmptyState
+          title='No Video Published'
+          description='please published a videos'
+          />
       }
     />
     </SafeAreaView>

@@ -1,20 +1,19 @@
-import { View, Text, Touchable, TouchableOpacity } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import CustomHeader from '../components/Header/CustomHeader'
+import React, { useState } from 'react'
+import { FlatList, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { Video } from '../utils/domyData'
-import { FlatList } from 'react-native'
+import { useSelector } from 'react-redux'
+import CustomHeader from '../components/Header/CustomHeader'
 import PlaylistCard from '../components/PlaylistCard'
-import Icon from '../constants/Icons'
 import VideoListCardLoader from '../components/Skeleton/VideoListCardLoader'
 import PlaylistUploader from '../components/playlist/PlaylistUploader'
+import Icon from '../constants/Icons'
 import { useUserPlaylistQuery } from '../redux/api/playlistApi'
 import { RootState } from '../redux/store'
-import { useSelector } from 'react-redux'
+import EmptyState from '../components/EmptyState'
 
 const Playlist = () => {
   const {user} = useSelector((state:RootState)=>state.user)
-  const {data, isLoading} = useUserPlaylistQuery({userId:user?._id})
+  const {data, isLoading, isFetching, refetch} = useUserPlaylistQuery({userId:user?._id})
   const [isCreatePlaylist, setIsCreatePlaylist] = useState<boolean>(false)
   const [isUpdatePlaylist, setIsUpdatePlaylist] = useState<boolean>(false)
   const [videoData, setVideoData] = useState<object>({
@@ -31,6 +30,8 @@ const Playlist = () => {
             keyExtractor={(video, index) =>!isLoading?video._id:index.toString()}
             showsVerticalScrollIndicator={false}
             contentContainerClassName = "gap-6 pt-2 pb-14"
+            refreshing={isFetching && !isLoading}
+            onRefresh={refetch}
             renderItem={({item})=>(
               !isLoading?
               <PlaylistCard {...item}
@@ -53,6 +54,12 @@ const Playlist = () => {
                 <Icon name='Plus' size={38}/>
                 </TouchableOpacity>
               </View>
+            }
+            ListEmptyComponent={
+              <EmptyState
+              title='No Playlist founded'
+              description='please create a Playlist'
+              />
             }
             />
     </SafeAreaView>

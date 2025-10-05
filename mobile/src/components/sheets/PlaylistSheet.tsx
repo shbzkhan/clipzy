@@ -32,13 +32,12 @@ const PlaylistSheet = (props: SheetProps<'playlist-sheet'>) => {
 
   // handle add video in playlist
   const handleAddVideoPlaylist = async () => {
-    console.log('hsdkdfhdfskdfjsk');
     try {
       const addedVideoPlaylist = await playlistAddVideo({
         videoId: sheet_id,
         playlistId: isSelected,
       }).unwrap();
-      console.log('video upload ', addedVideoPlaylist);
+      console.log('video add in playlist ', addedVideoPlaylist);
       SheetManager.hide(props.sheetId);
       ToastShow(addedVideoPlaylist.message);
       setSelection(null);
@@ -63,7 +62,7 @@ const PlaylistSheet = (props: SheetProps<'playlist-sheet'>) => {
       }}
     >
       <SafeAreaView className="px-4 pb-3">
-        <Text className="text-xl font-rubik-semibold text-primary-600 text-center mt-5 mb-5">
+        <Text className="mt-5 mb-5 text-center font-rubik-semibold text-primary-600">
           Add video in playlists
         </Text>
         <FlatList
@@ -86,7 +85,7 @@ const PlaylistSheet = (props: SheetProps<'playlist-sheet'>) => {
                 }}
                 className="flex flex-row items-center justify-between"
               >
-                <View className="flex flex-row gap-3 items-center">
+                <View className="flex flex-row items-center gap-3">
                   <Icon
                     name="ListVideo"
                     size={20}

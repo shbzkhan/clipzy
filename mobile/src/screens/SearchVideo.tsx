@@ -10,15 +10,16 @@ import { useEffect, useState } from 'react'
 import { useGetVideoSearchedQuery, useGetVideosQuery } from '../redux/api/videoApi'
 import { ActivityIndicator } from 'react-native'
 import { Video } from '../types/video'
+import EmptyState from '../components/EmptyState'
 
 
 
 const SearchVideo = () => {
   const searchInput = useRoute()
-  const query:string = searchInput.params
+  const query = searchInput.params as string
  const [page, setPage] = useState<number>(1);
   const [videos, setVideos] = useState<Video[]>([]);
-  const { data, isLoading, isFetching, isError, refetch } = useGetVideoSearchedQuery({page,query});
+  const { data, isLoading, isFetching, refetch } = useGetVideoSearchedQuery({page,query});
 
   useEffect(()=>{
     console.log("videoSearch", data)
@@ -59,7 +60,7 @@ const SearchVideo = () => {
     keyExtractor={video =>video._id}
     onEndReached={handleLoadMore}
     onEndReachedThreshold={0.5}
-    refreshing={isFetching && page === 1}
+    refreshing={isFetching && page === 1 && !isLoading}
     onRefresh={handleRefresh}
     showsVerticalScrollIndicator={false}
     contentContainerClassName = "gap-6 pt-2 pb-14"
@@ -81,6 +82,12 @@ const SearchVideo = () => {
           <ActivityIndicator size="small" color="#2563EB" />
         ) : null
       }
+    ListEmptyComponent={
+        <EmptyState
+          title='No Video found'
+          description='please search another videos'
+          />
+    }
 
     />
     </SafeAreaView>

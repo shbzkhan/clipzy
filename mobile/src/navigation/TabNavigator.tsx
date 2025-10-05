@@ -1,9 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../screens/Home';
 import Subscriptions from '../screens/Subscriptions';
-import { CircleUserRound, CreativeCommonsIcon, HomeIcon, UploadCloud, User } from 'lucide-react-native';
 import Profile from '../screens/Profile';
-import Post from '../screens/Post';
 import { TabNavigatorParamList } from '../types';
 import Icon from '../constants/Icons';
 import { Image, TouchableOpacity } from 'react-native';
@@ -14,6 +12,7 @@ import { useEffect } from 'react';
 import { useCurrentUserQuery } from '../redux/api/authApi';
 import { userData } from '../redux/slice/userSlice';
 import Search from '../screens/SearchHistory';
+import GlobalLoader from '../components/GlobalLoader';
 
 const Tab = createBottomTabNavigator<TabNavigatorParamList>();
 
@@ -31,6 +30,10 @@ const TabNavigator = () => {
   },[data, dispatch])
   const { colorScheme} = useColorScheme();
   const user = useSelector((state:any)=>state.user.user)
+
+  if(currentDataLoading){
+    return <GlobalLoader/>
+  }
   return (
      <Tab.Navigator
      screenOptions={({route})=>({

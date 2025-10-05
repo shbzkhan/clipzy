@@ -8,3 +8,11 @@ export interface PlaylistProps {
   updatedAt: string;
   __v: number;
 }
+
+
+export interface PlaylistResponse {
+  statusCode: number;
+  data:string[]
+  message: string;
+  success: boolean;
+}

@@ -2,13 +2,13 @@ import { formDataProps } from './../../components/playlist/PlaylistUploader';
 import { createApi} from "@reduxjs/toolkit/query/react";
 
 import customBaseQuery from "../middleware/header";
-import { PlaylistProps } from "../../types/playlist";
+import { PlaylistProps, PlaylistResponse } from "../../types/playlist";
 
 
 export const playlistApi = createApi({
     reducerPath:"playlist",
     baseQuery:customBaseQuery("playlist/"),
-    tagTypes: ["PlaylistFetch"],
+    tagTypes: ["PlaylistFetch","videoDeleteFromPlaylist"],
     endpoints:(builder)=>({
        
         //user playlist
@@ -49,14 +49,22 @@ export const playlistApi = createApi({
         //playlist by id
         playlistById :builder.query<PlaylistProps, {playlistId:string}>({
             query:({playlistId})=> `${playlistId}`,
+            providesTags:['videoDeleteFromPlaylist']
         }),
 
         // video of playlist
-        playlistAddVideo: builder.mutation<PlaylistProps,{videoId:string, playlistId:string}>({
+        playlistAddVideo: builder.mutation<PlaylistResponse,{videoId:string, playlistId:string}>({
             query:({videoId, playlistId})=> ({
                 url:`add/${videoId}/${playlistId}`,
                 method:"PATCH",
             }),
+        }),
+        playlistDeleteVideo: builder.mutation<PlaylistResponse,{videoId:string, playlistId:string}>({
+            query:({videoId, playlistId})=> ({
+                url:`remove/${videoId}/${playlistId}`,
+                method:"PATCH",
+            }),
+            invalidatesTags:["videoDeleteFromPlaylist"]
         }),
         
     })
@@ -69,5 +77,6 @@ export const {
     useUpdatePlaylistMutation,
     useDeletePlaylistMutation,
     usePlaylistByIdQuery,
-    usePlaylistAddVideoMutation
+    usePlaylistAddVideoMutation,
+    usePlaylistDeleteVideoMutation
     } = playlistApi
