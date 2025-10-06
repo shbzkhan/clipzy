@@ -10,39 +10,13 @@ import { Video } from '../types/video'
 import { useGetVideosQuery } from '../redux/api/videoApi'
 import { ActivityIndicator } from 'react-native-paper'
 import EmptyState from '../components/EmptyState'
+import { usePaginatedVideos } from '../hooks/usePaginatedVideos'
 
 
 
 const Home = () => {
-  // const navigation = useNavigation()
-  const [page, setPage] = useState<number>(1);
-  const [videos, setVideos] = useState<Video[]>([]);
-  const insets = useSafeAreaInsets();
-  const { data, isLoading, isFetching, isError, refetch } = useGetVideosQuery({page});
+  const { videos, isLoading, handleLoadMore, handleRefresh, isFetching, page } = usePaginatedVideos({});
 
-  useEffect(()=>{
-    if(page === 1){
-      setVideos(data?.docs)
-    }else{
-      const combinedVideos = page === 1 ? data?.docs : [...videos, ...data?.docs];
-        const uniqueVideo = Array.from(new Map(combinedVideos?.map(video => [video._id, video])).values());
-      setVideos(uniqueVideo);
-    }
-  },[data,page])
-
-   const handleRefresh = () => {
-    setPage(1);
-    refetch();
-  };
-
-  const handleLoadMore = () => {
-    if (!isFetching && data?.hasNextPage) {
-      setPage((prev) => prev + 1);
-    }
-  };
-  
-
-  
   return (
      <SafeAreaView className='bg-white dark:bg-dark'>
       <View className='gap-4 mb-2'>

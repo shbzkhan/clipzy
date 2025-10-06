@@ -1,3 +1,4 @@
+import {WEB_CLIENT_ID, IOS_CLIENT_ID} from "./env"
 import "react-native-gesture-handler"
 import "../global.css"
 import "./components/sheets/sheet"
@@ -20,10 +21,10 @@ export default function App() {
 
   useEffect(()=>{
     GoogleSignin.configure({
-    webClientId:"800380995541-gqmnj3g4s3haa882h1091ecchol7cvio.apps.googleusercontent.com",
+    webClientId:WEB_CLIENT_ID,
     forceCodeForRefreshToken:true,
     offlineAccess:false,
-    iosClientId:"800380995541-dvld55rubos6boois8d5b4putqta2fe2.apps.googleusercontent.com"
+    iosClientId:IOS_CLIENT_ID
   })
 
   //auto rotate off

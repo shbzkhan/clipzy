@@ -5,9 +5,6 @@ import { SheetManager } from 'react-native-actions-sheet'
 import { useSelector } from 'react-redux'
 import { RootState } from '../redux/store'
 import { Trash2 } from 'lucide-react-native'
-import { usePlaylistDeleteVideoMutation } from '../redux/api/playlistApi'
-import { ToastShow } from '../utils/Tost'
-
 
 interface videoCardProps{
     _id:string
@@ -50,7 +47,7 @@ const VideoListCard:FC<videoCardProps> = ({_id, title, thumbnail,views, owner: {
         <Text className='text-sm text-gray-600 font-rubik dark:text-gray-300'>{views} Views</Text>
       </View>
       {
-        isPlaylistVideo && (
+        (isPlaylistVideo && userId === user?._id) && (
           <TouchableOpacity className='h-full py-5'
            onPress={() => handleDeleteVideoFromPlaylist?.(_id)}
           // disabled={isLoading}

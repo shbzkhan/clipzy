@@ -32,7 +32,10 @@ const PlaylistCard:FC<videoCardProps> = ({_id, name, thumbnail, description, vid
     <>
     <TouchableOpacity className='flex-row gap-2'
       onPress={()=>navigate("PlaylistVideo",{id:_id})}
-      onLongPress={()=>handleCreatePlaylistHandler(_id, name, description)}>
+      onLongPress={()=>{
+        if(!setVideoData) return
+        handleCreatePlaylistHandler(_id, name, description)
+        }}>
     <View className='relative items-center justify-center w-48 h-28 rounded-xl overf'>
         <View className='h-full w-44 bg-primary-600 rounded-xl' />
         <View className='absolute top-1'>

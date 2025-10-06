@@ -9,8 +9,8 @@ export const videoApi = createApi({
     baseQuery:customBaseQuery("videos"),
     endpoints:(builder)=>({
         //getVideos 
-        getVideos: builder.query<VideoResponse, { page?: number, userId?:string}>({
-            query: ({ page = 1, userId}) => `?page=${page}&limit=4${userId && `&userId=${userId}`}`,
+        getVideos: builder.query<VideoResponse, { page?: number, userId?:string, search?:string}>({
+            query: ({ page = 1, userId, search}) => `?page=${page}&limit=10${userId && `&userId=${userId}`}${search && `&query=${search}`}`,
             transformResponse: (response: { data: VideoResponse }) => response.data,
          }),
 
@@ -28,10 +28,6 @@ export const videoApi = createApi({
             query: ({videoId}) => `/${videoId}`
          }),
 
-         getVideoSearched: builder.query<VideoResponse, { page?: number, query?:string}>({
-            query: ({ page = 1, query}) => `?page=${page}&limit=10&query=${query}`,
-            transformResponse: (response: { data: VideoResponse }) => response.data,
-         }),
 
     })
 })

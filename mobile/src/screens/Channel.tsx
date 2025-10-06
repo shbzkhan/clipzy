@@ -11,6 +11,7 @@ import ChannelHeader from '../components/ChannelDetails'
 import { Video } from '../types/video'
 import { useGetVideosQuery } from '../redux/api/videoApi'
 import { StyleSheet, useColorScheme } from 'nativewind'
+import { useUserPlaylistQuery } from '../redux/api/playlistApi'
 
 const HEADER_HEIGHT = 250
 
@@ -26,6 +27,7 @@ const channelId = channelD.channelId
   const [page, setPage] = useState<number>(1);
     const [videos, setVideos] = useState<Video[]>([]);
     const { data, isLoading:channelVideoLoading, isFetching } = useGetVideosQuery({page, userId:channelData?.data._id});
+    const {data:playlistData, isLoading:channelPlaylistLoading} = useUserPlaylistQuery({userId:channelData?.data._id})
   
     useEffect(()=>{
       if(page === 1){
@@ -74,8 +76,7 @@ const channelId = channelD.channelId
           onEndReached={handleLoadMore}
           onEndReachedThreshold={0.5}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{marginTop:30, paddingHorizontal:12}}
-          contentContainerClassName = "gap-6 pt-2 pb-32"
+          contentContainerClassName = "gap-6 pt-2 pb-32 mt-5"
           renderItem={({item})=>(
           !channelVideoLoading?
         <VideoListCard {...item} />
@@ -86,24 +87,16 @@ const channelId = channelD.channelId
       </Tabs.Tab>
       <Tabs.Tab name="Playlist">
         <Tabs.FlatList
-                    data={!loading?Video:[1,2,3,4,5,6,7,8,9]}
-                    keyExtractor={(video) =>video._id}
+                   data={!channelPlaylistLoading?playlistData.data:[1,2,3,4,5,6,7]}
+                    keyExtractor={(video, index) =>!channelPlaylistLoading?video._id:index.toString()}
                     showsVerticalScrollIndicator={false}
-                    contentContainerClassName = "gap-6 pt-2 pb-14"
+                    contentContainerClassName = "gap-6 pt-2 pb-32 mt-7"
                     renderItem={({item})=>(
-                      !loading?
-                      <PlaylistCard {...item} />
+                      !channelPlaylistLoading?
+                      <PlaylistCard {...item}/>
                       :
                       <VideoListCardLoader/>
                     )}
-        
-                    ListFooterComponent={
-                      <View className='justify-center items-center mt-4'>
-                        <TouchableOpacity className='border-2 border-primary-400 dark:border-white rounded-full p-3'>
-                        <Icon name='Plus' size={38}/>
-                        </TouchableOpacity>
-                      </View>
-                    }
                     />
       </Tabs.Tab>
       <Tabs.Tab name="Post">
