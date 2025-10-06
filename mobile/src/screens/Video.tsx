@@ -90,7 +90,7 @@ const VideoDetails: FC = ({ route }) => {
       console.log('Error => ', error);
     }
   };
-
+  console.log("viddfidsf", data)
 
   let comment =
     'Waiting for the blink it zomato and other video with new names';
@@ -152,7 +152,7 @@ const VideoDetails: FC = ({ route }) => {
                 className="flex-row items-center justify-between"
                 onPress={() =>
                   navigate('Channel', {
-                    id: data?.data?.owner._id,
+                    channelId: data?.data?.owner.username,
                   })
                 }
               >
@@ -161,7 +161,7 @@ const VideoDetails: FC = ({ route }) => {
                     uri={data?.data?.owner.avatar}
                     handlePress={() =>
                       navigate('Channel', {
-                        id: data?.data?.owner._id,
+                        channelId: data?.data?.owner.username,
                       })
                     }
                   />
@@ -230,13 +230,11 @@ const VideoDetails: FC = ({ route }) => {
                 </Text>
                 <View className="flex-row items-center gap-2">
                   <UserLogo
-                    uri={
-                      'https://api.dicebear.com/9.x/initials/png?seed=Z Khan'
-                    }
+                    uri={data?.data?.owner.avatar}
                     heightAndWidth={6}
                   />
                   <Text className="text-sm text-gray-500 font-rubik dark:text-gray-300">
-                    {comment.slice(0, 45) + '...'}
+                    {data?.data?.owner.fullname + ' please write a comment'}
                   </Text>
                 </View>
               </TouchableOpacity>

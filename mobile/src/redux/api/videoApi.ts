@@ -10,7 +10,7 @@ export const videoApi = createApi({
     endpoints:(builder)=>({
         //getVideos 
         getVideos: builder.query<VideoResponse, { page?: number, userId?:string, search?:string}>({
-            query: ({ page = 1, userId, search}) => `?page=${page}&limit=10${userId && `&userId=${userId}`}${search && `&query=${search}`}`,
+            query: ({ page = 1, userId, search}) => `?page=${page}&limit=10${userId ? `&userId=${userId}`:""}${search ? `&query=${encodeURIComponent(search)}`:""}`,
             transformResponse: (response: { data: VideoResponse }) => response.data,
          }),
 
@@ -37,5 +37,4 @@ export const {
     useVideoUploadMutation,
     useGetVideosQuery,
     useGetVideoByIdQuery,
-    useGetVideoSearchedQuery,
     } = videoApi

@@ -46,5 +46,6 @@ export const usePaginatedVideos = ({ userId, search, initialPage = 1 }:UsePagina
     page,
     handleLoadMore,
     handleRefresh,
+    totalVideos:data?.totalDocs
   };
 };

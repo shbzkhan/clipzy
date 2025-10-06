@@ -6,14 +6,13 @@ import EmptyState from '../components/EmptyState';
 import CustomHeader from '../components/Header/CustomHeader';
 import VideoListCardLoader from '../components/Skeleton/VideoListCardLoader';
 import VideoListCard from '../components/VideoListCard';
-import { useGetVideosQuery } from '../redux/api/videoApi';
 import { RootState } from '../redux/store';
-import { Video } from '../types/video';
 import { usePaginatedVideos } from '../hooks/usePaginatedVideos';
 
 const YourVideo = () => {
   const user = useSelector((state: RootState) => state.user.user);
   const { videos, isLoading, handleLoadMore, handleRefresh, isFetching, page } = usePaginatedVideos({userId:user?._id});
+  console.log(videos)
 
   return (
     <SafeAreaView className="flex-1 px-4 bg-white dark:bg-dark">

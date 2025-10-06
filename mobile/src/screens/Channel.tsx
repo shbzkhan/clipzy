@@ -1,58 +1,35 @@
-import { View, Text, TouchableOpacity } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import Icon from '../constants/Icons'
-import {useChannelQuery, } from '../redux/api/authApi'
-import { MaterialTabBar, Tabs,ScrollView } from 'react-native-collapsible-tab-view'
+import { useRoute } from '@react-navigation/native'
+import { useColorScheme } from 'nativewind'
+import React from 'react'
+import { Text } from 'react-native'
+import { MaterialTabBar, ScrollView, Tabs } from 'react-native-collapsible-tab-view'
+import ChannelHeader from '../components/ChannelDetails'
+import GlobalLoader from '../components/GlobalLoader'
 import PlaylistCard from '../components/PlaylistCard'
 import VideoListCardLoader from '../components/Skeleton/VideoListCardLoader'
 import VideoListCard from '../components/VideoListCard'
-import GlobalLoader from '../components/GlobalLoader'
-import ChannelHeader from '../components/ChannelDetails'
-import { Video } from '../types/video'
-import { useGetVideosQuery } from '../redux/api/videoApi'
-import { StyleSheet, useColorScheme } from 'nativewind'
+import { usePaginatedVideos } from '../hooks/usePaginatedVideos'
+import { useChannelQuery, } from '../redux/api/authApi'
 import { useUserPlaylistQuery } from '../redux/api/playlistApi'
 
 const HEADER_HEIGHT = 250
 
-const Channel = ({route}) => {
-
-  const {colorScheme} = useColorScheme()
-const channelD = route.params as string
-const channelId = channelD.channelId
-  const [loading, setLoading] = useState(false)
+const Channel = () => {
+const route = useRoute()
+const {colorScheme} = useColorScheme()
+const {channelId} = route.params as string
   const {data:channelData, isLoading:channelLoading} = useChannelQuery({channelId})
-
-  //channel video
-  const [page, setPage] = useState<number>(1);
-    const [videos, setVideos] = useState<Video[]>([]);
-    const { data, isLoading:channelVideoLoading, isFetching } = useGetVideosQuery({page, userId:channelData?.data._id});
-    const {data:playlistData, isLoading:channelPlaylistLoading} = useUserPlaylistQuery({userId:channelData?.data._id})
-  
-    useEffect(()=>{
-      if(page === 1){
-        setVideos(data?.docs)
-      }else{
-        const combinedVideos = page === 1 ? data?.docs : [...videos, ...data?.docs];
-          const uniqueVideo = Array.from(new Map(combinedVideos?.map(video => [video._id, video])).values());
-        setVideos(uniqueVideo);
-      }
-    },[data,page])
+  const { videos, isLoading:channelVideoLoading, handleLoadMore, totalVideos} = usePaginatedVideos({userId:channelData?.data._id});
+  const {data:playlistData, isLoading:channelPlaylistLoading} = useUserPlaylistQuery({userId:channelData?.data._id})
   
   
-    const handleLoadMore = () => {
-      if (!isFetching && data?.hasNextPage) {
-        setPage((prev) => prev + 1);
-      }
-    };
-  
-
   if(channelVideoLoading || channelLoading){
     return <GlobalLoader/>
   }
+  console.log("channel DAta", channelData)
   return (
      <Tabs.Container
-      renderHeader={() => <ChannelHeader user={channelData?.data} totalVideos ={data?.totalDocs} />}
+      renderHeader={() => <ChannelHeader user={channelData?.data} totalVideos ={totalVideos} />}
       headerHeight={HEADER_HEIGHT}
       revealHeaderOnScroll={true}
       snapThreshold={0.5}
@@ -90,7 +67,7 @@ const channelId = channelD.channelId
                    data={!channelPlaylistLoading?playlistData.data:[1,2,3,4,5,6,7]}
                     keyExtractor={(video, index) =>!channelPlaylistLoading?video._id:index.toString()}
                     showsVerticalScrollIndicator={false}
-                    contentContainerClassName = "gap-6 pt-2 pb-32 mt-7"
+                    contentContainerClassName = "gap-6 pt-2 pb-32 mt-7 mx-3"
                     renderItem={({item})=>(
                       !channelPlaylistLoading?
                       <PlaylistCard {...item}/>

@@ -1,15 +1,8 @@
-import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native'
-import React, { useState } from 'react'
-import { ActivityIndicator } from 'react-native-paper'
+import React from 'react'
+import { Image, Text, TouchableOpacity, View } from 'react-native'
 import Icon from '../constants/Icons'
-import { launchImageLibrary } from 'react-native-image-picker'
-import { ToastShow } from '../utils/Tost'
-import { userData } from '../redux/slice/userSlice'
-import { useAvatarMutation,useCoverImageMutation} from '../redux/api/authApi'
-import AuthBox from './AuthBox'
-import UserLogo from './UserLogo'
-import CustomIcon from './CustomIcon'
 import SubscribedButton from './SubscribedButton'
+import UserLogo from './UserLogo'
 
 
 const ChannelHeader =({user, totalVideos})=>{
