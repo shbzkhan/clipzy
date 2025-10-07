@@ -3,20 +3,20 @@ import { setupListeners } from '@reduxjs/toolkit/query'
 import { authApi } from './api/authApi'
 import userReducer from "./slice/userSlice"
 import themeReducer from "./slice/themeSlice"
-import uploadPost from "./slice/uploadSlice"
 import { videoApi } from './api/videoApi'
 import { playlistApi } from './api/playlistApi'
 import { likeApi } from './api/likeApi'
+import { commentApi } from './api/commentApi'
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
     theme: themeReducer,
-    uploadPost: uploadPost,
     [authApi.reducerPath]: authApi.reducer,
     [videoApi.reducerPath]: videoApi.reducer,
     [playlistApi.reducerPath]: playlistApi.reducer,
     [likeApi.reducerPath]: likeApi.reducer,
+    [commentApi.reducerPath]: commentApi.reducer,
   },
   
   middleware: (getDefaultMiddleware) =>
@@ -25,6 +25,7 @@ export const store = configureStore({
   .concat(videoApi.middleware)
   .concat(playlistApi.middleware)
   .concat(likeApi.middleware)
+  .concat(commentApi.middleware)
 })
 
 setupListeners(store.dispatch)

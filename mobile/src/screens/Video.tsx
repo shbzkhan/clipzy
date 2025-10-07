@@ -40,10 +40,10 @@ const VideoDetails: FC = ({ route }) => {
   const video = route.params as string;
   const videoId = video.id;
   const { data, isLoading } = useGetVideoByIdQuery({ videoId });
+   const [isLiked, setIsLiked] = useState<boolean>(data?.data.isLiked);
+  const [like, setLike] = useState(data?.data.likesCount);
   //allvideofetch
   const {videos, isLoading:loading, isFetching, handleLoadMore, page} = usePaginatedVideos({})
-  const [isLiked, setIsLiked] = useState<boolean>(data?.data.isLiked);
-  const [like, setLike] = useState(data?.data.likesCount);
   const [toggleLike] = useToggleLikeMutation()
   const isLikedHandle = async() => {
       try {
@@ -65,8 +65,6 @@ const VideoDetails: FC = ({ route }) => {
 
   };
 
-  let comment =
-    'Waiting for the blink it zomato and other video with new names';
   if (!user) return <AuthBox name="Video Creation" />;
   if (isLoading) {
     return <GlobalLoader />;
@@ -197,7 +195,7 @@ const VideoDetails: FC = ({ route }) => {
                 onPress={() => {
                   SheetManager.show('comment-sheet', {
                     payload: {
-                      entityId: 'hello',
+                      entityId: videoId,
                     },
                   });
                 }}

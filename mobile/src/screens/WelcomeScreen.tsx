@@ -38,7 +38,6 @@ const [googleLogin,{isLoading}] = useGoogleLoginMutation()
           await AsyncStorage.setItem("access-token", userLoggedIn?.data?.accessToken)
           await AsyncStorage.setItem("refresh-token", userLoggedIn?.data?.refreshToken)
           resetAndNavigate("MainTabs")
-          //"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OGNiYjhlNDA0MzhmMGI4OGI2ZmY0ODUiLCJpYXQiOjE3NTkzMjYzMjYsImV4cCI6MTc1OTkzMTEyNn0.-DuhLfjjc-307O7z91CB4xRnLMW7NCWFzMXi0eqw3Wk"
 
     } catch (e: any) {
        console.log("Google error full:", e);

@@ -11,7 +11,6 @@ import { useVideoUploadMutation } from '../redux/api/videoApi'
 import { ToastLoading, ToastShow } from '../utils/Tost'
 import { navigate, pop } from '../navigation/NavigationUtils'
 import { useDispatch } from 'react-redux'
-import { uploadPost } from '../redux/slice/uploadSlice'
 
 
 interface uriData{
@@ -41,11 +40,6 @@ const UploadVideo = () => {
     if(caption.trim()===""){
       return ToastShow("Title is required","danger")
     }
-    dispatch(uploadPost({
-      isUploading:true,
-      imageUrl: item.thumb_uri,
-      title: caption ,
-    }));
 
     const formData = new FormData();
        formData.append("videoFile", {
@@ -65,19 +59,9 @@ const UploadVideo = () => {
           const uploaded = await videoUpload(formData).unwrap()
           console.log("video upload ",uploaded)
           ToastShow(uploaded.message)
-          dispatch(uploadPost({
-              isUploading:false,
-              imageUrl: item.thumb_uri,
-              title: caption ,
-    }));
     } catch (error) {
       ToastShow(error?.data?.message,"danger")
-      console.log("error", error)
-       dispatch(uploadPost({
-              isUploading:false,
-              imageUrl: item.thumb_uri,
-              title: caption ,
-      }));
+      console.log("error", error);
     }
 
   }

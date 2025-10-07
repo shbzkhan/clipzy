@@ -1,16 +1,15 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Splash from '../screens/Splash';
+import { useColorScheme } from "nativewind";
+import { useEffect, useState } from 'react';
 import { Appearance, StatusBar } from 'react-native';
 import { SheetProvider } from 'react-native-actions-sheet';
-import { ToastProvider } from 'react-native-toast-notifications'
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useEffect, useState } from 'react';
-import { RootState } from '../redux/store';
+import { ToastProvider } from 'react-native-toast-notifications';
 import { useDispatch, useSelector } from 'react-redux';
-import {useColorScheme} from "nativewind"
 import { setTheme } from '../redux/slice/themeSlice';
+import { RootState } from '../redux/store';
+import Splash from '../screens/Splash';
 import { allStack } from './ScreenCollection';
-import GlobalUploader from '../components/GlobalUploader';
 
 
 const Stack = createNativeStackNavigator();
@@ -86,7 +85,6 @@ const RootNavigator = () => {
         ))
       }
     </Stack.Navigator>
-      <GlobalUploader/>
     </SheetProvider>
     </ToastProvider>
     </>

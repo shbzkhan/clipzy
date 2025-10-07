@@ -14,9 +14,6 @@ interface DecodedToken {
 }
 
 const Splash:FC = () => {
-const dispatch = useDispatch()
-const [authenticated, setAuthenticated] = useState<boolean>(false)
-const [checkedToked, setCheckedToked] = useState<boolean>(false)
 const [refreshAccessToken,{isLoading:refreshTokenLoading}] = useRefreshAccessTokenMutation()
 
 
@@ -50,16 +47,6 @@ const [refreshAccessToken,{isLoading:refreshTokenLoading}] = useRefreshAccessTok
         }
         resetAndNavigate("WelcomeScreen")
   }
-
-//   const {data, isLoading:currentDataLoading} = useCurrentUserQuery(undefined, {skip:!authenticated})
-//   useEffect(()=>{
-//      if(refreshTokenLoading || currentDataLoading) return;
-//     if(data){
-//     const user = data.data.user
-//     console.log("user data splace screen", user)
-//    dispatch(userData(user))
-// }
-//   },[data, dispatch, refreshTokenLoading])
 
 
     useEffect(()=>{

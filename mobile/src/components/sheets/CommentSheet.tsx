@@ -1,19 +1,23 @@
-import { View, Text, TouchableOpacity, Image, Keyboard, TextInput, KeyboardAvoidingView, Platform } from 'react-native'
-import React, { useRef, useState } from 'react'
-import ActionSheet, { SheetManager, SheetProps} from 'react-native-actions-sheet'
-import { StyleSheet } from 'react-native'
-import CustomIcon from '../CustomIcon'
-import Icon from '../../constants/Icons'
-import { domyComment } from '../../utils/domyComment'
-import { ToastShow } from '../../utils/Tost'
+import React from 'react'
+import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import ActionSheet, { SheetManager, SheetProps } from 'react-native-actions-sheet'
 import { FlatList } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import UserLogo from '../UserLogo'
+import Icon from '../../constants/Icons'
+import { timeAgo } from '../../constants/TimeAgo'
+import { usePaginatedComments } from '../../hooks/usePaginatedComment'
+import { ToastShow } from '../../utils/Tost'
 import CommentBox from '../CommentBox'
-import { colorScheme, useColorScheme } from 'nativewind'
+import GlobalLoader from '../GlobalLoader'
+import UserLogo from '../UserLogo'
 
 const CommentSheet = (props:SheetProps<"comment-sheet">) => {
-const {colorScheme} = useColorScheme();
+  const videoId = props.payload?.entityId;
+  const {comments, isLoading} = usePaginatedComments({videoId})
+
+  if(isLoading){
+    return <GlobalLoader/>
+  }
   return (
     <ActionSheet 
     id={props.sheetId}
@@ -35,18 +39,19 @@ const {colorScheme} = useColorScheme();
         className='max-h-full'
       >
       <SafeAreaView className='max-h-full'>
-      <View className='flex-row justify-between px-4 border-b border-gray-500 py-4'>
-        <Text className='text-white font-rubik-bold text-xl'>Comment</Text>
+      <View className='flex-row justify-between px-4 py-4 border-b border-gray-500'>
+        <Text className='text-xl text-white font-rubik-bold'>Comment</Text>
         <TouchableOpacity
         onPress={()=>SheetManager.hide(props.sheetId)}
         >
           <Icon name="X" color='white'/>
         </TouchableOpacity>
       </View>
+      {/* <View className='h-full'> */}
       <FlatList
-       data={domyComment}
-       keyExtractor={(item)=>item.id.toString()}
-       contentContainerClassName='px-3 mt-5 gap-5 pb-24'
+       data={comments}
+       keyExtractor={(item)=>item._id}
+       contentContainerClassName='px-3 mt-5 gap-5 pb-24 h-full'
        showsVerticalScrollIndicator={false}
       //  bounces={false}
       //  keyboardShouldPersistTaps="handled"
@@ -54,22 +59,22 @@ const {colorScheme} = useColorScheme();
        renderItem={({item})=>(
         <View className='flex-row gap-3'>
           <UserLogo
-                uri={item.avatar}
+                uri={item.owner.avatar}
                 heightAndWidth={8}
               />
           <View className='flex-1 gap-1'>
-          <Text className='text-gray-300 text-xs font-rubik'>@{item.username} . {item.time} ago</Text>
-          <Text className='text-white font-rubik'>{item.comment}</Text>
+          <Text className='text-xs text-gray-300 font-rubik'>@{item.owner.username} . {timeAgo(item.createdAt)} ago</Text>
+          <Text className='text-white font-rubik'>{item.content}</Text>
           <View className='flex-row gap-5'>
           <TouchableOpacity className='flex-row gap-1'>
             <Icon name='Heart' size={17}/>
-            <Text className='text-white font-rubik text-sm'>34</Text>
+            <Text className='text-sm text-white font-rubik'>{item.likes}</Text>
           </TouchableOpacity>
-         <TouchableOpacity className='flex-row gap-1 items-center'
+         <TouchableOpacity className='flex-row items-center gap-1'
          onPress={()=>ToastShow("Thanks for share comment", "success")}
          >
             <Icon name='Send' size={16}/>
-            <Text className='text-white font-rubik text-sm'>Share</Text>
+            <Text className='text-sm text-white font-rubik'>Share</Text>
           </TouchableOpacity>
           </View>
           </View>
@@ -79,7 +84,8 @@ const {colorScheme} = useColorScheme();
         </View>
        )}
       />
-      <CommentBox/>
+      {/* </View> */}
+      <CommentBox videoId={videoId}/>
       </SafeAreaView>
       </KeyboardAvoidingView>
     </ActionSheet>

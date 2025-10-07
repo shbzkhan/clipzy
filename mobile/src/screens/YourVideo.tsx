@@ -11,7 +11,7 @@ import { usePaginatedVideos } from '../hooks/usePaginatedVideos';
 
 const YourVideo = () => {
   const user = useSelector((state: RootState) => state.user.user);
-  const { videos, isLoading, handleLoadMore, handleRefresh, isFetching, page } = usePaginatedVideos({userId:user?._id});
+  const { videos, isLoading, handleLoadMore, isFetching, page } = usePaginatedVideos({userId:user?._id});
   console.log(videos)
 
   return (
@@ -29,8 +29,6 @@ const YourVideo = () => {
         renderItem={({ item }) =>
           !isLoading ? <VideoListCard {...item} /> : <VideoListCardLoader />
         }
-        refreshing={isFetching && page === 1 && !isLoading}
-        onRefresh={handleRefresh}
         ListFooterComponent={
           isFetching && page > 1 ? (
             <ActivityIndicator size="small" color="#2563EB" />

@@ -4,14 +4,30 @@ import UserLogo from './UserLogo'
 import CustomIcon from './CustomIcon'
 import { EmojiData } from '../utils/emojiData'
 import { ToastShow } from '../utils/Tost'
+import { useAddCommentMutation } from '../redux/api/commentApi'
 
-const CommentBox = () => {
+const CommentBox = ({videoId}:{videoId:string}) => {
     const [comment, setComment] = useState<string>("")
   const [isFocused, setIsFocused] = useState(false);
 
   const handleEmojiClick =(emoji:string)=>{
     setComment((prevComment)=>prevComment + emoji)
   }
+
+
+  const [addComment, {isLoading}] = useAddCommentMutation()
+  
+    const handleComment = async()=>{
+      try {
+        const commented = await addComment({videoId, content:comment}).unwrap()
+        console.log("commented", commented)
+        ToastShow(commented.message)
+        setComment("")
+      } catch (error) {
+        console.log("Error ",error)
+        ToastShow(error.data.message)
+      }
+    }
   return (
     <View className={`bg-dark border-t border-gray-500 w-full px-4 py-2 gap-2 ${isFocused && "pb-14"}`}>
         <View className='flex-row gap-2 '>
@@ -20,7 +36,7 @@ const CommentBox = () => {
                 heightAndWidth={9}
               />
         <TextInput
-        className='bg-dark-100 px-4 rounded-lg flex-1 font-rubik min-h-11 text-white'
+        className='flex-1 px-4 text-white rounded-lg bg-dark-100 font-rubik min-h-11'
         value={comment}
         multiline
         placeholder='Write Comment'   
@@ -32,11 +48,11 @@ const CommentBox = () => {
 
         />
         {
-          (comment.trim() !=="") && <CustomIcon name="Send" className='bg-primary-600' color='white' handlePress={()=>ToastShow("Thanks for like", "success")}/>
+          (comment.trim() !=="") && <CustomIcon name="Send" className='bg-primary-600' color='white' handlePress={handleComment}/>
         }
         </View>
         { isFocused &&
-        <View className='flex-row px-4 justify-between'>
+        <View className='flex-row justify-between px-4'>
             {
                 EmojiData?.map((i:string, index:number)=>(
                     <TouchableOpacity

@@ -29,7 +29,6 @@ const Login = () => {
              await AsyncStorage.setItem("refresh-token", userLoggedIn?.data.refreshToken)
              resetAndNavigate("MainTabs")
              resetForm()
-             //"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OGNiYjhlNDA0MzhmMGI4OGI2ZmY0ODUiLCJpYXQiOjE3NTkzMjQ5MTMsImV4cCI6MTc1OTkyOTcxM30.NI0S3kxn30eMgtjeVkF9z5HI9icxGhiJpOwCV1co0gM"
 
            } catch (err) {
              const error = err as FetchBaseQueryError

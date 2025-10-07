@@ -20,8 +20,6 @@ export const likeApi = createApi({
                     query: () => "videos",
                     transformResponse: (response: { data: any}) => response.data,
                  }),
-        
-
     })
 })
 

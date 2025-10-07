@@ -17,6 +17,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const Profile = () => {
 const dispatch = useDispatch();
 const user = useSelector((state:RootState)=>state.user.user)
+console.log("user data", user)
 
 const logout = async()=>{
   await AsyncStorage.removeItem("access-token")
