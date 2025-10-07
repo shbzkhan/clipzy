@@ -22,19 +22,20 @@ interface videoCardProps{
 const VideoListCard:FC<videoCardProps> = ({_id, title, thumbnail,views, owner: { _id:userId, fullname,}, isPlaylistVideo, handleDeleteVideoFromPlaylist}) => {
   const {user} = useSelector((state:RootState)=>state.user)
 
-
-  const handleSheetOpen = (userIdd:string)=>{
-      if(userIdd !== user?._id) return
-       SheetManager.show("login-sheet",{
+  const handleSheetOpen = (video_id:string, owner_id:string)=>{
+       SheetManager.show("videoDetails-sheet",{
           payload:{
-            entityId:_id,
+            entityId:{
+              video_id,
+              owner_id
+            }
           }
         })
   }
   return (
     <TouchableOpacity className='flex-row gap-2 px-3'
     onPress={()=>navigate("Video",{id:_id})}
-    onLongPress={()=>handleSheetOpen(userId)}
+    onLongPress={()=>handleSheetOpen(_id, userId)}
     >
       <Image
       source={{uri: thumbnail}}

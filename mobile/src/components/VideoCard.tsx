@@ -9,11 +9,12 @@ import { Owner } from '../types/video'
 import{ createShimmerPlaceholder } from 'react-native-shimmer-placeholder'
 import LinearGradient from 'react-native-linear-gradient'
 import { timeAgo } from '../constants/TimeAgo'
+import { SheetManager } from 'react-native-actions-sheet'
 
 
 interface videoCardProps{
     // videoPress:()=>void
-    _id:number
+    _id:string
     title:string
     thumbnail:string
     avatar:string
@@ -25,11 +26,23 @@ interface videoCardProps{
 }
 const VideoCard:FC<videoCardProps> = ({_id, title, thumbnail, views, duration, createdAt, owner }) => {
   const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient)
-   const { colorScheme} = useColorScheme();
+  //  const { colorScheme} = useColorScheme();
    const[thumbLoading, setThumbLoading]=useState(true)
+
+   const handleSheetOpen = (video_id:string, owner_id:string)=>{
+          SheetManager.show("videoDetails-sheet",{
+             payload:{
+               entityId:{
+                 video_id,
+                 owner_id
+               }
+             }
+           })
+     }
   return (
     <TouchableOpacity className='gap-4'
      onPress={()=>navigate("Video",{id:_id})}
+     onLongPress={()=>handleSheetOpen(_id, owner._id)}
     >
       <View className='relative'>
         {thumbLoading && (
@@ -57,7 +70,7 @@ const VideoCard:FC<videoCardProps> = ({_id, title, thumbnail, views, duration, c
 
         <View className='flex-1'>
             <Text className='text-black font-rubik-bold dark:text-white' numberOfLines={2}>{title}</Text>
-            <Text className='text-gray-600 text-xs font-rubik dark:text-gray-300'>{`${owner.fullname}  •  ${views} views  •  ${timeAgo(createdAt)}`}</Text>
+            <Text className='text-gray-600 text-xs font-rubik dark:text-gray-300'>{`${owner.username}  •  ${views} views  •  ${timeAgo(createdAt)}`}</Text>
         </View>
       </View>
     </TouchableOpacity>

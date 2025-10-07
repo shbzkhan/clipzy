@@ -3,6 +3,7 @@ import AppearanceToggle from '../screens/Appearance';
 import ChangePassword from '../screens/ChangePassword';
 import Channel from '../screens/Channel';
 import ForgetPassword from '../screens/ForgetPassword';
+import LikesVideo from '../screens/LikesVideo';
 import Login from '../screens/Login';
 import Notification from '../screens/Notification';
 import Playlist from '../screens/Playlist';
@@ -102,6 +103,10 @@ const dashboardStack = [
   {
     name: 'ForgetPassword',
     component: ForgetPassword,
+  },
+  {
+    name: 'LikesVideo',
+    component: LikesVideo,
   },
 ];
 

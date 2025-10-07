@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
   },
   container:{
     backgroundColor:"#0c263b",
-    height: "76%"
+    height: "74%"
   },
 
 })

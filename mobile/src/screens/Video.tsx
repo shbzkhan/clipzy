@@ -18,79 +18,52 @@ import VideoCard from '../components/VideoCard';
 import CustomButton from '../components/CustomButton';
 import SubscribedButton from '../components/SubscribedButton';
 import VideoPlayer from '../components/VideoPlayer';
-import { VideoSlider } from '../utils/VideoSliderData';
 import CustomVideoSliderCard from '../components/CustomVideoSliderCard';
 import { ToastShow } from '../utils/Tost';
 import { navigate } from '../navigation/NavigationUtils';
-import Slider from '../components/Header/Slider';
 import { SheetManager } from 'react-native-actions-sheet';
 import UserLogo from '../components/UserLogo';
 import VideoCardLoader from '../components/Skeleton/VideoCardLoader';
-import { useGetVideoByIdQuery, useGetVideosQuery } from '../redux/api/videoApi';
+import { useGetVideoByIdQuery,} from '../redux/api/videoApi';
 import AuthBox from '../components/AuthBox';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import GlobalLoader from '../components/GlobalLoader';
 import { timeAgo } from '../constants/TimeAgo';
-import Share from 'react-native-share';
+import { useToggleLikeMutation } from '../redux/api/likeApi';
+import { usePaginatedVideos } from '../hooks/usePaginatedVideos';
+import { handleShareToSocialMedia } from '../utils/ShareToSocialMedia';
 
 const VideoDetails: FC = ({ route }) => {
   const user = useSelector((state: RootState) => state.user.user);
   const insets = useSafeAreaInsets();
   const video = route.params as string;
   const videoId = video.id;
-  const [isLiked, setIsLiked] = useState<boolean>(false);
-  const [like, setLike] = useState<number>(435);
   const { data, isLoading } = useGetVideoByIdQuery({ videoId });
   //allvideofetch
-  const [page, setPage] = useState<number>(1);
-  const [videos, setVideos] = useState<Video[]>([]);
-  const {
-    data: videoData,
-    isLoading: loading,
-    isFetching,
-  } = useGetVideosQuery({ page });
-
-  useEffect(() => {
-    if (page === 1) {
-      setVideos(videoData?.docs);
-    } else {
-      setVideos(prev => [...prev, ...videoData?.docs]);
-    }
-  }, [videoData, page]);
-
-  const handleLoadMore = () => {
-    if (!isFetching && videoData?.hasNextPage) {
-      setPage(prev => prev + 1);
-    }
-  };
-
-  const isLikedHandle = () => {
-    if (isLiked) {
+  const {videos, isLoading:loading, isFetching, handleLoadMore, page} = usePaginatedVideos({})
+  const [isLiked, setIsLiked] = useState<boolean>(data?.data.isLiked);
+  const [like, setLike] = useState(data?.data.likesCount);
+  const [toggleLike] = useToggleLikeMutation()
+  const isLikedHandle = async() => {
+      try {
+      if (isLiked) {
       setLike(like - 1);
       setIsLiked(false);
-      ToastShow('Unliked', 'success');
     } else {
       setLike(like + 1);
       setIsLiked(true);
-      ToastShow('Liked', 'success');
     }
-  };
+        const toggledLike = await toggleLike(videoId).unwrap()
+        setIsLiked(toggledLike.data.liked)
+      } catch (error) {
+        setIsLiked(false)
+        setLike(like - 1)
+        console.log("error message",error.message)
+        ToastShow(error.data.message)
+      }
 
-  //share to social media handler
-  const handleShareSocialMedia = async () => {
-    const shareOptions = {
-      message: data?.data.title,
-      url: `https://clizpy.vercel.app/videos/${videoId}`,
-    };
-    try {
-      const ShareResponse = await Share.open(shareOptions);
-      console.log(JSON.stringify(ShareResponse));
-    } catch (error) {
-      console.log('Error => ', error);
-    }
   };
-  console.log("viddfidsf", data)
 
   let comment =
     'Waiting for the blink it zomato and other video with new names';
@@ -166,7 +139,7 @@ const VideoDetails: FC = ({ route }) => {
                     }
                   />
                   <Text className="font-rubik-medium dark:text-white">
-                    {data?.data.owner.fullname}
+                    {data?.data.owner.username}
                   </Text>
                   <Text className="text-sm text-gray-500 font-rubik dark:text-gray-300">
                     {data?.data.owner.subscribersCount}
@@ -182,15 +155,19 @@ const VideoDetails: FC = ({ route }) => {
                 showsHorizontalScrollIndicator={false}
               >
                 <CustomVideoSliderCard
-                  title={data?.data.likesCount}
+                  title={like || data?.data.likesCount}
                   icon="Heart"
-                  focused={isLiked}
+                  focused={isLiked || data?.data.isLiked}
                   handlePress={isLikedHandle}
                 />
                 <CustomVideoSliderCard
                   title="Share"
                   icon="Share"
-                  handlePress={handleShareSocialMedia}
+                  handlePress={()=>handleShareToSocialMedia({
+                      message:data?.data.title,
+                      url_id:videoId
+                    }
+                  )}
                 />
                 <CustomVideoSliderCard
                   title="Save"

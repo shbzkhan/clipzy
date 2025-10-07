@@ -1,10 +1,9 @@
-import {FlatList, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native'
-import React, { FC, useState } from 'react'
+import React from 'react'
+import { FlatList, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
-import HomeHeader from '../components/Header/HomeHeader'
-import { goBack, navigate } from '../navigation/NavigationUtils'
-import VideoCard from '../components/VideoCard'
 import ChannelBox from '../components/ChannelBox'
+import HomeHeader from '../components/Header/HomeHeader'
+import VideoCard from '../components/VideoCard'
 
 
 const Video =[
@@ -84,7 +83,7 @@ const Subscriptions = () => {
   const insets = useSafeAreaInsets();
 
   return (
-     <SafeAreaView className='bg-white dark:bg-dark'>
+     <SafeAreaView className='flex-1 bg-white dark:bg-dark'>
       <HomeHeader/>
     <FlatList
     data={Video}

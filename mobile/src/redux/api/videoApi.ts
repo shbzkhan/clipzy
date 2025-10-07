@@ -28,6 +28,14 @@ export const videoApi = createApi({
             query: ({videoId}) => `/${videoId}`
          }),
 
+        // delete video
+        videoDelete: builder.mutation<any,string>({
+            query:(id)=> ({
+                url:`/${id}`,
+                method:"DELETE",
+            })
+        }),
+
 
     })
 })
@@ -37,4 +45,5 @@ export const {
     useVideoUploadMutation,
     useGetVideosQuery,
     useGetVideoByIdQuery,
+    useVideoDeleteMutation
     } = videoApi

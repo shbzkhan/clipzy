@@ -20,6 +20,11 @@ export const settingData = [
     href:"Playlist"
   },
   {
+    title: "Liked Videos",
+    icon: "Play",
+    href:"LikesVideo"
+  },
+  {
     title: "Notifications",
     icon: "Bell",
     href:"Notification"

@@ -89,7 +89,6 @@ const PlaylistSheet = (props: SheetProps<'playlist-sheet'>) => {
                   <Icon
                     name="ListVideo"
                     size={20}
-                    // color={iconColor}
                   />
                   <Text
                     className={`text-lg font-rubik-medium text-black-300 dark:text-white`}

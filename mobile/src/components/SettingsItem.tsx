@@ -9,12 +9,14 @@ interface SettingsItemProps {
   textStyle?: string;
   showArrow?: boolean;
   iconColor?:string
+  disabled?:boolean
 }
 
-const SettingsItem = ({icon, title, onPress, textStyle,iconColor, showArrow = true}: SettingsItemProps)=>{
+const SettingsItem = ({icon, title, onPress, textStyle,iconColor, disabled, showArrow = true}: SettingsItemProps)=>{
 return (
   <TouchableOpacity
   onPress={onPress}
+  disabled={disabled}
   className='flex flex-row items-center justify-between py-3'
   >
     <View className='flex flex-row gap-3 items-center'>
