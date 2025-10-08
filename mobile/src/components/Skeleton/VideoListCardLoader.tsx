@@ -1,31 +1,30 @@
+import { useColorScheme } from "nativewind"
 import { View } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder'
 
+const VideoListCardLoader = () => {
+  const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient)
+  const { colorScheme } = useColorScheme()
 
+  const shimmerColors =
+    colorScheme === 'dark'
+      ? ['#22313F', '#506A85', '#22313F'] 
+      : ['#ebebeb', '#c5c5c5', '#ebebeb'] 
 
-
-const VideoListCardLoader= () => {
-    const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient)
-  
   return (
-    <View className='flex-row gap-2'>
-      <View className="w-48 h-28 rounded-xl overflow-hidden bg-secondary">
-        <ShimmerPlaceholder style={{ flex: 1, width: "100%", borderRadius: 12}} />
-      </View>
-      <View className='flex-1 gap-2'>
-        <View className='rounded-full bg-secondary overflow-hidden'>
-            <ShimmerPlaceholder style={{ flex: 1, width: "100%",}} />
-        </View>
-        <View className='rounded-full bg-secondary overflow-hidden'>
-            <ShimmerPlaceholder style={{ flex: 1, width: "100%", }} />
-        </View>
-        <View className='w-32 rounded-full overflow-hidden bg-secondary'>
-            <ShimmerPlaceholder style={{ flex: 1, width: "100%"}} />
-        </View>
-        <View className='w-24 rounded-full overflow-hidden bg-secondary'>
-            <ShimmerPlaceholder style={{ flex: 1, width: "100%"}} />
-        </View>
+    <View className="flex-row gap-2">
+      <ShimmerPlaceholder
+        style={{ width: 180, height: 98, borderRadius: 12 }}
+        shimmerColors={shimmerColors}
+      />
+
+      {/* Text placeholders */}
+      <View className="flex-1 gap-2 mt-2">
+        <ShimmerPlaceholder style={{ width: '100%', height: 13, borderRadius: 9999 }} shimmerColors={shimmerColors} />
+        <ShimmerPlaceholder style={{ width: '100%', height: 13, borderRadius: 9999 }} shimmerColors={shimmerColors} />
+        <ShimmerPlaceholder style={{ width: 128, height: 11, borderRadius: 9999 }} shimmerColors={shimmerColors} />
+        <ShimmerPlaceholder style={{ width: 60, height: 10, borderRadius: 9999 }} shimmerColors={shimmerColors} />
       </View>
     </View>
   )

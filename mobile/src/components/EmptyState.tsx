@@ -7,7 +7,7 @@ interface EmptyStateProps {
 }
 const EmptyState:FC<EmptyStateProps> = ({title, description}) => {
   return (
-    <View className="items-center justify-center flex-1 gap-5 bg-white dark:bg-dark">
+    <View className="items-center justify-center flex-1 gap-5">
           <Text className="text-2xl dark:text-white font-rubik-bold">{title}</Text>
           <Text className="text-gray-400 dark:text-gray-400 font-rubik">{description}</Text>
     </View>

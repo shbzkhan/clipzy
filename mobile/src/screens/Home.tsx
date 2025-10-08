@@ -44,12 +44,6 @@ const Home = () => {
           <ActivityIndicator  size="small" color="#2563EB" />
         ) : null
       }
-      ListEmptyComponent={
-        <EmptyState
-          title='No Video Published'
-          description='please published a videos'
-          />
-      }
     />
     </SafeAreaView>
   )

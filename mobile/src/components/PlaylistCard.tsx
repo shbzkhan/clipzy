@@ -1,8 +1,6 @@
 import { View, Text, TouchableOpacity, Image } from 'react-native'
 import React, { FC, useState } from 'react'
 import { navigate } from '../navigation/NavigationUtils'
-import { SheetManager } from 'react-native-actions-sheet'
-import PlaylistUploader from './playlist/PlaylistUploader'
 
 
 interface videoCardProps{

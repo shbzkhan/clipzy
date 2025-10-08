@@ -26,12 +26,33 @@ export const commentApi = createApi({
             }),
             invalidatesTags:["fetchComment"],
         }),
+
+        //update comment
+        updateComment: builder.mutation<any,{commentId:string, content:string}>({
+            query:({commentId, content})=> ({
+                url:`/c/${commentId}`,
+                method:"PATCH",
+                body:{content}
+            }),
+            invalidatesTags:["fetchComment"],
+        }),
+
+        // delete comment
+        deleteComment: builder.mutation<any,string>({
+            query:(commentId)=> ({
+                url:`/c/${commentId}`,
+                method:"DELETE"
+            }),
+            invalidatesTags:["fetchComment"],
+        }),
     })
 })
 
 
 export const {
     useVideoCommentsQuery,
-    useAddCommentMutation
+    useAddCommentMutation,
+    useUpdateCommentMutation,
+    useDeleteCommentMutation
     
     } = commentApi

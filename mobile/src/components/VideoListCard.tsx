@@ -33,7 +33,7 @@ const VideoListCard:FC<videoCardProps> = ({_id, title, thumbnail,views, owner: {
         })
   }
   return (
-    <TouchableOpacity className='flex-row gap-2 px-3'
+    <TouchableOpacity className='flex-row gap-2'
     onPress={()=>navigate("Video",{id:_id})}
     onLongPress={()=>handleSheetOpen(_id, userId)}
     >

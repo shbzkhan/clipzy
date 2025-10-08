@@ -1,14 +1,38 @@
 import { View, Text, TextInput, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import UserLogo from './UserLogo'
 import CustomIcon from './CustomIcon'
 import { EmojiData } from '../utils/emojiData'
 import { ToastShow } from '../utils/Tost'
-import { useAddCommentMutation } from '../redux/api/commentApi'
+import { useAddCommentMutation, useUpdateCommentMutation } from '../redux/api/commentApi'
+import { useSelector } from 'react-redux'
+import { RootState } from '../redux/store'
 
-const CommentBox = ({videoId}:{videoId:string}) => {
+interface commentBoxProps {
+  videoId:string
+  update:boolean
+  setUpdate:any
+  setEdit:any
+  updateData:{
+    id:string
+    content:string
+  }
+}
+const CommentBox:FC<commentBoxProps> = ({videoId, update, updateData, setUpdate, setEdit}) => {
+  const {user} = useSelector((state:RootState)=>state.user)
     const [comment, setComment] = useState<string>("")
   const [isFocused, setIsFocused] = useState(false);
+
+  useEffect(()=>{
+    if(update){
+      setEdit(false)
+      setComment(updateData.content)
+      console.log("commentId", updateData.id)
+    }else{
+      setComment("")
+    }
+    
+  },[update])
 
   const handleEmojiClick =(emoji:string)=>{
     setComment((prevComment)=>prevComment + emoji)
@@ -16,8 +40,9 @@ const CommentBox = ({videoId}:{videoId:string}) => {
 
 
   const [addComment, {isLoading}] = useAddCommentMutation()
+  const[updateComment,{isLoading:updateCommentLoading}] = useUpdateCommentMutation()
   
-    const handleComment = async()=>{
+    const handleAddComment = async()=>{
       try {
         const commented = await addComment({videoId, content:comment}).unwrap()
         console.log("commented", commented)
@@ -28,11 +53,24 @@ const CommentBox = ({videoId}:{videoId:string}) => {
         ToastShow(error.data.message)
       }
     }
+    const handleUpdateComment = async()=>{
+      try {
+        setEdit(false)
+        const commentUpdated= await updateComment({commentId: updateData.id, content:comment}).unwrap()
+        console.log("commented", commentUpdated)
+        ToastShow(commentUpdated.message)
+        setComment("")
+        setUpdate(false)
+      } catch (error) {
+        console.log("Error ",error)
+        ToastShow(error.data.message)
+      }
+    }
   return (
     <View className={`bg-dark border-t border-gray-500 w-full px-4 py-2 gap-2 ${isFocused && "pb-14"}`}>
         <View className='flex-row gap-2 '>
         <UserLogo
-                uri={"https://api.dicebear.com/9.x/initials/png?seed=Z Khan"}
+                uri={user.avatar}
                 heightAndWidth={9}
               />
         <TextInput
@@ -48,7 +86,22 @@ const CommentBox = ({videoId}:{videoId:string}) => {
 
         />
         {
-          (comment.trim() !=="") && <CustomIcon name="Send" className='bg-primary-600' color='white' handlePress={handleComment}/>
+          !update?(
+            
+            (comment.trim() !=="") && <CustomIcon 
+                                        name={!isLoading?"Send":"Loader"} 
+                                        className='bg-primary-600' color='white' 
+                                        handlePress={handleAddComment}
+                                        disabled={isLoading}
+                                        />
+          ):(
+            (comment.trim() !=="") && <CustomIcon 
+                                        name={!updateCommentLoading?"SquarePen":"Loader"} 
+                                        className='bg-primary-600' color='white' 
+                                        handlePress={handleUpdateComment}
+                                        disabled={updateCommentLoading}
+                                        />
+          )
         }
         </View>
         { isFocused &&

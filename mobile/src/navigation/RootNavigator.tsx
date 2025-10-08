@@ -10,6 +10,7 @@ import { setTheme } from '../redux/slice/themeSlice';
 import { RootState } from '../redux/store';
 import Splash from '../screens/Splash';
 import { allStack } from './ScreenCollection';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 
 const Stack = createNativeStackNavigator();
@@ -69,6 +70,10 @@ const RootNavigator = () => {
   return (
     <>
     <ToastProvider>
+    <GestureHandlerRootView
+        style={{
+          flex: 1,
+        }}>
     <SheetProvider>
     <StatusBar barStyle={colorSchemaD === "dark" ? "light-content":"dark-content"} />
     <Stack.Navigator
@@ -86,6 +91,7 @@ const RootNavigator = () => {
       }
     </Stack.Navigator>
     </SheetProvider>
+    </GestureHandlerRootView>
     </ToastProvider>
     </>
   )

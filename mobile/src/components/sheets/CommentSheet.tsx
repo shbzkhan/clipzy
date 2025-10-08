@@ -1,7 +1,6 @@
-import React from 'react'
-import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import ActionSheet, { SheetManager, SheetProps } from 'react-native-actions-sheet'
-import { FlatList } from 'react-native-gesture-handler'
+import React, { useState } from 'react'
+import { ActivityIndicator, Keyboard, KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import ActionSheet, { SheetManager, SheetProps, FlatList } from 'react-native-actions-sheet'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Icon from '../../constants/Icons'
 import { timeAgo } from '../../constants/TimeAgo'
@@ -10,14 +9,38 @@ import { ToastShow } from '../../utils/Tost'
 import CommentBox from '../CommentBox'
 import GlobalLoader from '../GlobalLoader'
 import UserLogo from '../UserLogo'
+import EmptyState from '../EmptyState'
+import { useDeleteCommentMutation } from '../../redux/api/commentApi'
+import CommentCardLoader from '../comment/CommentCardLoader'
 
 const CommentSheet = (props:SheetProps<"comment-sheet">) => {
   const videoId = props.payload?.entityId;
-  const {comments, isLoading} = usePaginatedComments({videoId})
+  const {comments, isLoading, isFetching, page} = usePaginatedComments({videoId})
+  const [deleteComment,{isLoading:deletingComment} ] = useDeleteCommentMutation()
+  const [edit, setEdit] = useState(false)
+  const [update, setUpdate] = useState(false)
+  const [editData, setEditData] =useState({
+    id:"",
+    content:""
+  })
 
-  if(isLoading){
-    return <GlobalLoader/>
+const handleDeleteComment = async(commentId:string)=>{
+              setUpdate(false)
+              setEdit(false)
+  try {
+    const deletedComment = await deleteComment(commentId).unwrap()
+    console.log("deleted comment", deletedComment)
+    ToastShow(deletedComment.message)
+    setEditData({
+                id:"",
+                content:""
+              })
+  } catch (error) {
+    console.log("Error", error)
+    ToastShow(error?.data.message,"danger")
   }
+}
+
   return (
     <ActionSheet 
     id={props.sheetId}
@@ -35,35 +58,41 @@ const CommentSheet = (props:SheetProps<"comment-sheet">) => {
     >
 
       <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "position"}
+        behavior={Platform.OS === "ios" ? "padding" : "padding"}
         className='max-h-full'
       >
       <SafeAreaView className='max-h-full'>
-      <View className='flex-row justify-between px-4 py-4 border-b border-gray-500'>
-        <Text className='text-xl text-white font-rubik-bold'>Comment</Text>
-        <TouchableOpacity
-        onPress={()=>SheetManager.hide(props.sheetId)}
-        >
-          <Icon name="X" color='white'/>
-        </TouchableOpacity>
+      <View className='flex-row justify-center px-4 py-4 border-b border-gray-500'>
+        <Text className='text-lg text-white center text- font-rubik-bold'>Comment</Text>
       </View>
-      {/* <View className='h-full'> */}
       <FlatList
-       data={comments}
+       data={isLoading?comments:[1,2,3,4,5,6,7]}
        keyExtractor={(item)=>item._id}
-       contentContainerClassName='px-3 mt-5 gap-5 pb-24 h-full'
+       contentContainerClassName='px-3 mt-5 gap-5 pb-24'
        showsVerticalScrollIndicator={false}
-      //  bounces={false}
-      //  keyboardShouldPersistTaps="handled"
-      //  keyboardDismissMode='on-drag'
+       bounces={false}
+       className='h-full'
+       keyboardShouldPersistTaps="handled"
+       keyboardDismissMode='on-drag'
        renderItem={({item})=>(
-        <View className='flex-row gap-3'>
+        isLoading?(
+        <>
+        <Pressable className='flex-row gap-3'
+        onPress={()=>{
+          setUpdate(false)
+          setEdit(false)
+          setEditData({
+            id:"",
+            content:""
+          })
+        }}
+        >
           <UserLogo
                 uri={item.owner.avatar}
                 heightAndWidth={8}
               />
           <View className='flex-1 gap-1'>
-          <Text className='text-xs text-gray-300 font-rubik'>@{item.owner.username} . {timeAgo(item.createdAt)} ago</Text>
+          <Text className='text-xs text-gray-300 font-rubik'>@{item.owner.username} • {timeAgo(item.createdAt)}</Text>
           <Text className='text-white font-rubik'>{item.content}</Text>
           <View className='flex-row gap-5'>
           <TouchableOpacity className='flex-row gap-1'>
@@ -78,14 +107,62 @@ const CommentSheet = (props:SheetProps<"comment-sheet">) => {
           </TouchableOpacity>
           </View>
           </View>
-          <TouchableOpacity>
-          <Icon name='EllipsisVertical' color='white' size={18}/>
+          <TouchableOpacity
+          disabled={deletingComment}
+          onPress={()=>{
+            setEdit(true)
+            setEditData({
+              id:item._id,
+              content:item.content
+            })
+          }}
+          >
+          <Icon name={!deletingComment?('EllipsisVertical'):(editData.id===item._id?"Loader":'EllipsisVertical')} color='white' size={18}/>
           </TouchableOpacity>
-        </View>
+        </Pressable>
+          {
+            (edit && item._id === editData.id) &&(
+          <View className='absolute justify-center gap-4 px-3 py-3 rounded-md right-5 top-2 bg-dark-100'>
+            <TouchableOpacity className='flex-row items-center gap-1'
+            onPress={()=>setUpdate(!update)}
+            >
+              <Icon name='Pencil' size={15}/>
+              <Text className='text-white font-rubik-bold'>Edit</Text>
+          </TouchableOpacity>
+            <TouchableOpacity className='flex-row items-center gap-1'
+            onPress={()=>handleDeleteComment(item._id)}
+            >
+              <Icon name='Trash2' size={15}/>
+              <Text className='text-sm text-danger font-rubik-bold'>Delete</Text>
+          </TouchableOpacity>
+          </View>
+            )
+          }
+        </>
+        )
+        :
+        <CommentCardLoader/>
        )}
+       ListFooterComponent={
+               isFetching && page > 1 ? (
+                 <ActivityIndicator  size="small" color="#2563EB" />
+               ) : null
+             }
+       ListEmptyComponent={
+        <EmptyState
+        title='No comments yet'
+        description='Start the conversation'
+        />
+       }
       />
-      {/* </View> */}
-      <CommentBox videoId={videoId}/>
+      <CommentBox 
+      videoId={videoId} 
+      update ={update} 
+      updateData={editData}
+      setUpdate={setUpdate}
+      setEdit={setEdit}
+      />
+      
       </SafeAreaView>
       </KeyboardAvoidingView>
     </ActionSheet>

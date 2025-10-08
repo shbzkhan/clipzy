@@ -8,11 +8,13 @@ interface CustomIconsTypes{
     className?:string,
     badge?:boolean,
     handlePress?:()=>void
+    disabled?:boolean
 }
-const CustomIcon:FC<CustomIconsTypes> = ({className, name, color = "#1D4ED8", size=20, badge=false, handlePress}) => {
+const CustomIcon:FC<CustomIconsTypes> = ({className, name, color = "#1D4ED8", size=20, badge=false, handlePress, disabled}) => {
   return (
     <TouchableOpacity className={`bg-primary-50 h-9 w-9 justify-center items-center border border-primary-600 rounded-md relative dark:bg-primary-600 ${className}`}
     onPress={handlePress}
+    disabled={disabled}
     >
         <Icon name={name} color={color} size={size}/>
         {badge &&<View className='absolute -top-1.5 -right-1.5 bg-danger h-5 w-5 rounded-full justify-center items-center'>
