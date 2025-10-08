@@ -12,17 +12,23 @@ import SettingsItem from '../SettingsItem';
 import { View } from 'react-native';
 import { navigate } from '../../navigation/NavigationUtils';
 import { useVideoDeleteMutation } from '../../redux/api/videoApi';
-import { ToastLoadShow, ToastShow } from '../../utils/Tost';
+import { ToastLoading, ToastLoadShow, ToastShow } from '../../utils/Tost';
 import { Toast } from "react-native-toast-notifications"
 import { handleShareToSocialMedia } from '../../utils/ShareToSocialMedia';
+import { usePlaylistDeleteVideoMutation } from '../../redux/api/playlistApi';
 
 const VideoDetailsSheet = (props: SheetProps<'videoDetails-sheet'>) => {
   const { user } = useSelector((state: RootState) => state.user);
-  const {video_id, owner_id} = props.payload?.entityId;
+  const {video_id, owner_id, isPlaylist, playlistId} = props.payload?.entityId;
   const { colorScheme } = useColorScheme();
+  console.log("playlist id ", playlistId)
 
-  // video delete handler
-  const [videoDelete, {isLoading}] = useVideoDeleteMutation()
+ //api's
+  const [videoDelete] = useVideoDeleteMutation()
+  const [playlistDeleteVideo]  = usePlaylistDeleteVideoMutation()
+
+  
+ // video delete handler
   const handleVideoDeletion = async() =>{
         try {
           SheetManager.hide(props.sheetId)
@@ -33,6 +39,21 @@ const VideoDetailsSheet = (props: SheetProps<'videoDetails-sheet'>) => {
           console.log("Error", error.message)
           ToastShow(error.data.message,"danger")
         }
+      }
+      
+      
+// video delete form playlist handler
+  const handleDeleteVideoFromPlaylist =async() =>{
+    console.log("dskjdfsksdf")
+    try {
+      SheetManager.hide(props.sheetId)
+      const toastId = ToastLoading("Video removing form palylist...")
+      const deletedVideo = await playlistDeleteVideo({videoId:video_id, playlistId}).unwrap()
+      ToastShow(deletedVideo?.message,"success",toastId)
+    } catch (error) {
+      console.log("video not deleted form playlist ", error.message || error)
+      ToastShow(errr.data.message, 'danger',toastId)
+    }
   }
   
 
@@ -48,7 +69,7 @@ const VideoDetailsSheet = (props: SheetProps<'videoDetails-sheet'>) => {
       enableGesturesInScrollView={true}
       containerStyle={{
         backgroundColor: colorScheme === 'light' ? '#FFFFFF' : '#071825', 
-        height:(owner_id === user?._id)?"40%":"30%",
+        height:(owner_id === user?._id)?isPlaylist?"45%":"40%":isPlaylist?"35%":"30%",
       }}
     >
       <SafeAreaView className="px-4 pb-3">
@@ -105,6 +126,16 @@ const VideoDetailsSheet = (props: SheetProps<'videoDetails-sheet'>) => {
                       textStyle='text-danger dark:text-danger'
                     />
                   </>
+                )
+              }
+              {
+                isPlaylist &&(
+                  <SettingsItem
+                  icon={"Trash2"}
+                  onPress={handleDeleteVideoFromPlaylist}
+                  showArrow={false}
+                  title='Remove from playlist'
+                /> 
                 )
               }
             

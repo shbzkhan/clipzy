@@ -15,11 +15,10 @@ interface videoCardProps{
       fullname:string
     }
     views:string
-    isPlaylistVideo?:any
+    isPlaylist?:any
     playlistId?:string
-    handleDeleteVideoFromPlaylist?: (videoId: string) => Promise<void>;
 }
-const VideoListCard:FC<videoCardProps> = ({_id, title, thumbnail,views, owner: { _id:userId, fullname,}, isPlaylistVideo, handleDeleteVideoFromPlaylist}) => {
+const VideoListCard:FC<videoCardProps> = ({_id, title, thumbnail,views, owner: { _id:userId, fullname,}, isPlaylist = false, playlistId}) => {
   const {user} = useSelector((state:RootState)=>state.user)
 
   const handleSheetOpen = (video_id:string, owner_id:string)=>{
@@ -27,7 +26,9 @@ const VideoListCard:FC<videoCardProps> = ({_id, title, thumbnail,views, owner: {
           payload:{
             entityId:{
               video_id,
-              owner_id
+              owner_id,
+              isPlaylist,
+              playlistId
             }
           }
         })
@@ -47,16 +48,6 @@ const VideoListCard:FC<videoCardProps> = ({_id, title, thumbnail,views, owner: {
         <Text className='text-sm text-gray-600 font-rubik dark:text-gray-300'>{fullname}</Text>
         <Text className='text-sm text-gray-600 font-rubik dark:text-gray-300'>{views} Views</Text>
       </View>
-      {
-        (isPlaylistVideo && userId === user?._id) && (
-          <TouchableOpacity className='h-full py-5'
-           onPress={() => handleDeleteVideoFromPlaylist?.(_id)}
-          // disabled={isLoading}
-          >
-            <Trash2 color={"red"}/>
-          </TouchableOpacity>
-        )
-      }
     </TouchableOpacity>
   )
 }

@@ -34,7 +34,8 @@ const VideoCard:FC<videoCardProps> = ({_id, title, thumbnail, views, duration, c
              payload:{
                entityId:{
                  video_id,
-                 owner_id
+                 owner_id,
+                 isPlaylist:false
                }
              }
            })
@@ -58,11 +59,11 @@ const VideoCard:FC<videoCardProps> = ({_id, title, thumbnail, views, duration, c
         resizeMode='cover'
         />
         
-        <View className='bg-black/50 absolute right-2 bottom-2 px-1 rounded-md'>
-            <Text className='text-white font-rubik text-sm'>{format(duration)}</Text>
+        <View className='absolute px-1 rounded-md bg-black/50 right-2 bottom-2'>
+            <Text className='text-sm text-white font-rubik'>{format(duration)}</Text>
         </View>
       </View>
-      <View className='px-3 flex-row gap-2  items-center'>
+      <View className='flex-row items-center gap-2 px-3'>
         <UserLogo
         handlePress={()=>navigate("Channel",{channelId:owner.username})}
         uri={owner.avatar}
@@ -70,7 +71,7 @@ const VideoCard:FC<videoCardProps> = ({_id, title, thumbnail, views, duration, c
 
         <View className='flex-1'>
             <Text className='text-black font-rubik-bold dark:text-white' numberOfLines={2}>{title}</Text>
-            <Text className='text-gray-600 text-xs font-rubik dark:text-gray-300'>{`${owner.username}  •  ${views} views  •  ${timeAgo(createdAt)}`}</Text>
+            <Text className='text-xs text-gray-600 font-rubik dark:text-gray-300'>{`${owner.username}  •  ${views} views  •  ${timeAgo(createdAt)}`}</Text>
         </View>
       </View>
     </TouchableOpacity>

@@ -24,6 +24,7 @@ const CommentSheet = (props:SheetProps<"comment-sheet">) => {
     content:""
   })
 
+
 const handleDeleteComment = async(commentId:string)=>{
               setUpdate(false)
               setEdit(false)
@@ -41,6 +42,26 @@ const handleDeleteComment = async(commentId:string)=>{
   }
 }
 
+//comment likes handler
+// const isLikedHandle = async(commentId:string) => {
+//       try {
+//       if (isLiked) {
+//       setLike(like - 1);
+//       setIsLiked(false);
+//     } else {
+//       setLike(like + 1);
+//       setIsLiked(true);
+//     }
+//         const toggledLike = await toggleLike(videoId).unwrap()
+//         setIsLiked(toggledLike.data.liked)
+//       } catch (error) {
+//         setIsLiked(false)
+//         setLike(like - 1)
+//         console.log("error message",error.message)
+//         ToastShow(error.data.message)
+//       }
+
+//   };
   return (
     <ActionSheet 
     id={props.sheetId}
@@ -66,7 +87,7 @@ const handleDeleteComment = async(commentId:string)=>{
         <Text className='text-lg text-white center text- font-rubik-bold'>Comment</Text>
       </View>
       <FlatList
-       data={isLoading?comments:[1,2,3,4,5,6,7]}
+       data={!isLoading?comments:[1,2,3,4,5,6,7]}
        keyExtractor={(item)=>item._id}
        contentContainerClassName='px-3 mt-5 gap-5 pb-24'
        showsVerticalScrollIndicator={false}
@@ -75,7 +96,7 @@ const handleDeleteComment = async(commentId:string)=>{
        keyboardShouldPersistTaps="handled"
        keyboardDismissMode='on-drag'
        renderItem={({item})=>(
-        isLoading?(
+        !isLoading?(
         <>
         <Pressable className='flex-row gap-3'
         onPress={()=>{

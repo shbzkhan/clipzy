@@ -12,27 +12,31 @@ import { usePlaylistByIdQuery, usePlaylistDeleteVideoMutation } from '../redux/a
 import GlobalLoader from '../components/GlobalLoader';
 import EmptyState from '../components/EmptyState';
 import { ToastShow } from '../utils/Tost';
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/store';
 
 interface playlistProps {
   route: any;
 }
 const PlaylistVideo: FC<playlistProps> = ({ route }) => {
   const { id: playlistId } = route.params as string;
+  const {user} = useSelector((state:RootState)=>state.user)
   const { data, isLoading,} = usePlaylistByIdQuery({ playlistId });
-  const [playlistDeleteVideo]  = usePlaylistDeleteVideoMutation()
+  // const [playlistDeleteVideo]  = usePlaylistDeleteVideoMutation()
+  console.log('data', data?.data?.videos)
 
 
-  const handleDeleteVideoFromPlaylist =async(videoId:string) =>{
-    console.log("dskjdfsksdf")
-    try {
-      const deletedVideo = await playlistDeleteVideo({videoId:videoId, playlistId:playlistId}).unwrap()
-      console.log("delete video from Playlist ", deletedVideo)
-      ToastShow(deletedVideo?.message)
-    } catch (error) {
-      console.log("video not deleted form playlist ", error.message || error)
-      ToastShow(errr.data.message, 'danger')
-    }
-  }
+  // const handleDeleteVideoFromPlaylist =async(videoId:string) =>{
+  //   console.log("dskjdfsksdf")
+  //   try {
+  //     const deletedVideo = await playlistDeleteVideo({videoId:videoId, playlistId:playlistId}).unwrap()
+  //     console.log("delete video from Playlist ", deletedVideo)
+  //     ToastShow(deletedVideo?.message)
+  //   } catch (error) {
+  //     console.log("video not deleted form playlist ", error.message || error)
+  //     ToastShow(errr.data.message, 'danger')
+  //   }
+  // }
 
   if (isLoading) {
     return <GlobalLoader />;
@@ -41,13 +45,13 @@ const PlaylistVideo: FC<playlistProps> = ({ route }) => {
     <SafeAreaView className="flex-1 bg-white dark:bg-dark">
       <CustomHeader title="Likes Playlist" />
       <FlatList
-        data={!isLoading ? data.data.videos : [1, 2, 3, 4]}
-        keyExtractor={video => video._id}
+        data={!isLoading ? data?.data?.videos : [1, 2, 3, 4]}
+        keyExtractor={(item, index) => !isLoading?item._id:index}
         showsVerticalScrollIndicator={false}
         contentContainerClassName="gap-6 pt-2 pb-14"
         renderItem={({ item }) =>
           !isLoading ? (
-            <VideoListCard {...item} isPlaylistVideo={true} handleDeleteVideoFromPlaylist={handleDeleteVideoFromPlaylist} />
+            <VideoListCard {...item} isPlaylist={data?.data?.owner._id === user?._id} playlistId={data?.data?._id} />
           ) : (
             <VideoListCardLoader />
           )
@@ -93,7 +97,7 @@ const PlaylistVideo: FC<playlistProps> = ({ route }) => {
 
                   <TouchableOpacity
                     className="items-center w-40 py-2 mt-2 bg-white rounded-xl"
-                    onPress={() => navigate('Video', { id: 1 })}
+                    onPress={() => navigate('Video', { id:data?.data?.videos[0]?._id })}
                   >
                     <Text className="font-rubik-semibold">Play</Text>
                   </TouchableOpacity>

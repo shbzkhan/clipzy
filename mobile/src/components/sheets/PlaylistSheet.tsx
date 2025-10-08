@@ -23,7 +23,6 @@ import CustomButton from '../CustomButton';
 const PlaylistSheet = (props: SheetProps<'playlist-sheet'>) => {
   const { user } = useSelector((state: RootState) => state.user);
   const sheet_id = props.payload?.entityId;
-  // console.log('id', sheet_id);
   const { colorScheme } = useColorScheme();
   const [isSelected, setSelection] = useState<string | null>(null);
   const { data, isLoading } = useUserPlaylistQuery({ userId: user?._id });

@@ -8,7 +8,7 @@ import { PlaylistProps, PlaylistResponse } from "../../types/playlist";
 export const playlistApi = createApi({
     reducerPath:"playlist",
     baseQuery:customBaseQuery("playlist/"),
-    tagTypes: ["PlaylistFetch","videoDeleteFromPlaylist"],
+    tagTypes: ["PlaylistFetch","videoFromPlaylist"],
     endpoints:(builder)=>({
        
         //user playlist
@@ -49,7 +49,7 @@ export const playlistApi = createApi({
         //playlist by id
         playlistById :builder.query<PlaylistProps, {playlistId:string}>({
             query:({playlistId})=> `${playlistId}`,
-            providesTags:['videoDeleteFromPlaylist']
+            providesTags:['videoFromPlaylist']
         }),
 
         // video of playlist
@@ -58,13 +58,14 @@ export const playlistApi = createApi({
                 url:`add/${videoId}/${playlistId}`,
                 method:"PATCH",
             }),
+            invalidatesTags:["videoFromPlaylist"]
         }),
         playlistDeleteVideo: builder.mutation<PlaylistResponse,{videoId:string, playlistId:string}>({
             query:({videoId, playlistId})=> ({
                 url:`remove/${videoId}/${playlistId}`,
                 method:"PATCH",
             }),
-            invalidatesTags:["videoDeleteFromPlaylist"]
+            invalidatesTags:["videoFromPlaylist"]
         }),
         
     })
