@@ -12,6 +12,7 @@ import Post from '../screens/Post';
 import Register from '../screens/Register';
 import SearchVideo from '../screens/SearchVideo';
 import Splash from '../screens/Splash';
+import Tweet from '../screens/Tweet';
 import UploadVideo from '../screens/UploadVideo';
 import UserDetail from '../screens/UserDetail';
 import VideoDetails from '../screens/Video';
@@ -107,6 +108,10 @@ const dashboardStack = [
   {
     name: 'LikesVideo',
     component: LikesVideo,
+  },
+  {
+    name: 'Tweet',
+    component: Tweet,
   },
 ];
 

@@ -33,6 +33,8 @@ import { timeAgo } from '../constants/TimeAgo';
 import { useToggleLikeMutation } from '../redux/api/likeApi';
 import { usePaginatedVideos } from '../hooks/usePaginatedVideos';
 import { handleShareToSocialMedia } from '../utils/ShareToSocialMedia';
+import { ChevronsLeftIcon } from 'lucide-react-native';
+import { useToggleConnetionMutation } from '../redux/api/connectionApi';
 
 const VideoDetails: FC = ({ route }) => {
   const user = useSelector((state: RootState) => state.user.user);
@@ -40,11 +42,24 @@ const VideoDetails: FC = ({ route }) => {
   const video = route.params as string;
   const videoId = video.id;
   const { data, isLoading } = useGetVideoByIdQuery({ videoId });
-   const [isLiked, setIsLiked] = useState<boolean>(data?.data.isLiked);
-  const [like, setLike] = useState(data?.data.likesCount);
-  //allvideofetch
+   const [isLiked, setIsLiked] = useState(false);
+   const [like, setLike] = useState(0);
+   const [isConnected, setIsConnected] = useState(false);
+   console.log("Video Data", data)
+
+  //apis
   const {videos, isLoading:loading, isFetching, handleLoadMore, page} = usePaginatedVideos({})
   const [toggleLike] = useToggleLikeMutation()
+  const [toggleConnetion] = useToggleConnetionMutation()
+  
+  useEffect(()=>{
+    if(!isLoading){
+      setIsLiked(data?.data.isLiked)
+      setLike(data?.data.likesCount)
+      setIsConnected(data?.data.owner.isSubscribed)
+    }
+  },[isLoading])
+  
   const isLikedHandle = async() => {
       try {
       if (isLiked) {
@@ -56,6 +71,7 @@ const VideoDetails: FC = ({ route }) => {
     }
         const toggledLike = await toggleLike(videoId).unwrap()
         setIsLiked(toggledLike.data.liked)
+        console.log(toggledLike.data)
       } catch (error) {
         setIsLiked(false)
         setLike(like - 1)
@@ -65,7 +81,25 @@ const VideoDetails: FC = ({ route }) => {
 
   };
 
+  const isConnetionHandle = async()=>{
+    try {
+    if (isConnected) {
+      setIsConnected(false);
+    } else {
+      setIsConnected(true);
+    }
+     const toggledConnection = await toggleConnetion(data?.data?.owner?._id).unwrap()
+     console.log("toggled Connection", toggledConnection)
+     setIsConnected(toggledConnection.data.subscribed)
+    } catch (error) {
+      setIsConnected(false)
+      console.log("error message",error.message)
+      ToastShow(error.data.message)
+    }
+  }
+
   if (!user) return <AuthBox name="Video Creation" />;
+
   if (isLoading) {
     return <GlobalLoader />;
   }
@@ -139,12 +173,13 @@ const VideoDetails: FC = ({ route }) => {
                   <Text className="font-rubik-medium dark:text-white">
                     {data?.data.owner.username}
                   </Text>
-                  <Text className="text-sm text-gray-500 font-rubik dark:text-gray-300">
+                  {/* <Text className="text-sm text-gray-500 font-rubik dark:text-gray-300">
                     {data?.data.owner.subscribersCount}
-                  </Text>
+                  </Text> */}
                 </View>
                 <SubscribedButton
-                  isSubscribed={data?.data.owner.isSubscribed}
+                  handlePress={isConnetionHandle}
+                  isConnected={isConnected}
                 />
               </Pressable>
               <ScrollView
@@ -153,9 +188,9 @@ const VideoDetails: FC = ({ route }) => {
                 showsHorizontalScrollIndicator={false}
               >
                 <CustomVideoSliderCard
-                  title={like || data?.data.likesCount}
+                  title={like}
                   icon="Heart"
-                  focused={isLiked || data?.data.isLiked}
+                  focused={isLiked}
                   handlePress={isLikedHandle}
                 />
                 <CustomVideoSliderCard

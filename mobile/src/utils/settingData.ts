@@ -25,6 +25,11 @@ export const settingData = [
     href:"LikesVideo"
   },
   {
+    title: "Your Tweet",
+    icon: "ScrollText",
+    href:"Tweet"
+  },
+  {
     title: "Notifications",
     icon: "Bell",
     href:"Notification"

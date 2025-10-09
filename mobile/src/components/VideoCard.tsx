@@ -26,7 +26,13 @@ interface videoCardProps{
 }
 const VideoCard:FC<videoCardProps> = ({_id, title, thumbnail, views, duration, createdAt, owner }) => {
   const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient)
-  //  const { colorScheme} = useColorScheme();
+  const { colorScheme } = useColorScheme()
+  
+    const shimmerColors =
+      colorScheme === 'dark'
+        ? ['#22313F', '#506A85', '#22313F'] 
+        : ['#ebebeb', '#c5c5c5', '#ebebeb'] 
+  
    const[thumbLoading, setThumbLoading]=useState(true)
 
    const handleSheetOpen = (video_id:string, owner_id:string)=>{
@@ -47,9 +53,10 @@ const VideoCard:FC<videoCardProps> = ({_id, title, thumbnail, views, duration, c
     >
       <View className='relative'>
         {thumbLoading && (
-        <View className="absolute inset-0 bg-secondary">
-          <ShimmerPlaceholder style={{ flex: 1, width: "100%" }} />
-        </View>
+          <ShimmerPlaceholder
+            style={{ width: '100%', height: 200 }}
+            shimmerColors={shimmerColors}
+          />
         )}
         <Image
         source={{uri:thumbnail}}
