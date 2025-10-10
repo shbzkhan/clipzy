@@ -13,19 +13,23 @@ import { useCurrentUserQuery } from '../redux/api/authApi';
 import { userData } from '../redux/slice/userSlice';
 import Search from '../screens/SearchHistory';
 import GlobalLoader from '../components/GlobalLoader';
+import { useRoute } from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator<TabNavigatorParamList>();
 
 
 const TabNavigator = () => {
   const dispatch = useDispatch()
+  const route = useRoute();
+  const userLoading = route.params.refresh as boolean;
   const {data, isLoading:currentDataLoading} = useCurrentUserQuery()
   useEffect(()=>{
-     if(currentDataLoading) return;
-      if(data){
-      const user = data.data.user
-      console.log("user data splace screen", user)
-    dispatch(userData(user))
+      if(userLoading){
+        if(currentDataLoading) return;
+         if(data){
+         const user = data.data.user
+         dispatch(userData(user))
+      }
     }
   },[data, dispatch])
   const { colorScheme} = useColorScheme();
@@ -36,7 +40,7 @@ const TabNavigator = () => {
   }
   return (
      <Tab.Navigator
-     screenOptions={({route})=>({
+     screenOptions={()=>({
        headerShown:false,
       tabBarActiveTintColor:colorScheme === "dark" ? "white":"#2563EB",
       tabBarInactiveTintColor:colorScheme === "dark" ? "white":"#000000",

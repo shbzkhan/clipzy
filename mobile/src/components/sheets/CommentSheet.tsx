@@ -6,41 +6,23 @@ import Icon from '../../constants/Icons'
 import { timeAgo } from '../../constants/TimeAgo'
 import { usePaginatedComments } from '../../hooks/usePaginatedComment'
 import { ToastShow } from '../../utils/Tost'
-import CommentBox from '../CommentBox'
+import CommentBox from '../comment/CommentBox'
 import GlobalLoader from '../GlobalLoader'
 import UserLogo from '../UserLogo'
 import EmptyState from '../EmptyState'
 import { useDeleteCommentMutation } from '../../redux/api/commentApi'
 import CommentCardLoader from '../comment/CommentCardLoader'
+import CommentCard from '../comment/CommentCard'
 
 const CommentSheet = (props:SheetProps<"comment-sheet">) => {
   const videoId = props.payload?.entityId;
   const {comments, isLoading, isFetching, page} = usePaginatedComments({videoId})
-  const [deleteComment,{isLoading:deletingComment} ] = useDeleteCommentMutation()
   const [edit, setEdit] = useState(false)
   const [update, setUpdate] = useState(false)
   const [editData, setEditData] =useState({
     id:"",
     content:""
   })
-
-
-const handleDeleteComment = async(commentId:string)=>{
-              setUpdate(false)
-              setEdit(false)
-  try {
-    const deletedComment = await deleteComment(commentId).unwrap()
-    console.log("deleted comment", deletedComment)
-    ToastShow(deletedComment.message)
-    setEditData({
-                id:"",
-                content:""
-              })
-  } catch (error) {
-    console.log("Error", error)
-    ToastShow(error?.data.message,"danger")
-  }
-}
 
 //comment likes handler
 // const isLikedHandle = async(commentId:string) => {
@@ -97,69 +79,78 @@ const handleDeleteComment = async(commentId:string)=>{
        keyboardDismissMode='on-drag'
        renderItem={({item})=>(
         !isLoading?(
-        <>
-        <Pressable className='flex-row gap-3'
-        onPress={()=>{
-          setUpdate(false)
-          setEdit(false)
-          setEditData({
-            id:"",
-            content:""
-          })
-        }}
-        >
-          <UserLogo
-                uri={item.owner.avatar}
-                heightAndWidth={8}
-              />
-          <View className='flex-1 gap-1'>
-          <Text className='text-xs text-gray-300 font-rubik'>@{item.owner.username} • {timeAgo(item.createdAt)}</Text>
-          <Text className='text-white font-rubik'>{item.content}</Text>
-          <View className='flex-row gap-5'>
-          <TouchableOpacity className='flex-row gap-1'>
-            <Icon name='Heart' size={17}/>
-            <Text className='text-sm text-white font-rubik'>{item.likes}</Text>
-          </TouchableOpacity>
-         <TouchableOpacity className='flex-row items-center gap-1'
-         onPress={()=>ToastShow("Thanks for share comment", "success")}
-         >
-            <Icon name='Send' size={16}/>
-            <Text className='text-sm text-white font-rubik'>Share</Text>
-          </TouchableOpacity>
-          </View>
-          </View>
-          <TouchableOpacity
-          disabled={deletingComment}
-          onPress={()=>{
-            setEdit(true)
-            setEditData({
-              id:item._id,
-              content:item.content
-            })
-          }}
-          >
-          <Icon name={!deletingComment?('EllipsisVertical'):(editData.id===item._id?"Loader":'EllipsisVertical')} color='white' size={18}/>
-          </TouchableOpacity>
-        </Pressable>
-          {
-            (edit && item._id === editData.id) &&(
-          <View className='absolute justify-center gap-4 px-3 py-3 rounded-md right-5 top-2 bg-dark-100'>
-            <TouchableOpacity className='flex-row items-center gap-1'
-            onPress={()=>setUpdate(!update)}
-            >
-              <Icon name='Pencil' size={15}/>
-              <Text className='text-white font-rubik-bold'>Edit</Text>
-          </TouchableOpacity>
-            <TouchableOpacity className='flex-row items-center gap-1'
-            onPress={()=>handleDeleteComment(item._id)}
-            >
-              <Icon name='Trash2' size={15}/>
-              <Text className='text-sm text-danger font-rubik-bold'>Delete</Text>
-          </TouchableOpacity>
-          </View>
-            )
-          }
-        </>
+          <CommentCard 
+          item={item}
+          edit={edit}
+          setEdit={setEdit}
+          update={update}
+          setUpdate={setUpdate}
+          editData={editData}
+          setEditData={setEditData}
+          />
+        // <>
+        // <Pressable className='flex-row gap-3'
+        // onPress={()=>{
+        //   setUpdate(false)
+        //   setEdit(false)
+        //   setEditData({
+        //     id:"",
+        //     content:""
+        //   })
+        // }}
+        // >
+        //   <UserLogo
+        //         uri={item.owner.avatar}
+        //         heightAndWidth={8}
+        //       />
+        //   <View className='flex-1 gap-1'>
+        //   <Text className='text-xs text-gray-300 font-rubik'>@{item.owner.username} • {timeAgo(item.createdAt)}</Text>
+        //   <Text className='text-white font-rubik'>{item.content}</Text>
+        //   <View className='flex-row gap-5'>
+        //   <TouchableOpacity className='flex-row gap-1'>
+        //     <Icon name='Heart' size={17}/>
+        //     <Text className='text-sm text-white font-rubik'>{item.likes}</Text>
+        //   </TouchableOpacity>
+        //  <TouchableOpacity className='flex-row items-center gap-1'
+        //  onPress={()=>ToastShow("Thanks for share comment", "success")}
+        //  >
+        //     <Icon name='Send' size={16}/>
+        //     <Text className='text-sm text-white font-rubik'>Share</Text>
+        //   </TouchableOpacity>
+        //   </View>
+        //   </View>
+        //   <TouchableOpacity
+        //   disabled={deletingComment}
+        //   onPress={()=>{
+        //     setEdit(true)
+        //     setEditData({
+        //       id:item._id,
+        //       content:item.content
+        //     })
+        //   }}
+        //   >
+        //   <Icon name={!deletingComment?('EllipsisVertical'):(editData.id===item._id?"Loader":'EllipsisVertical')} color='white' size={18}/>
+        //   </TouchableOpacity>
+        // </Pressable>
+        //   {
+        //     (edit && item._id === editData.id) &&(
+        //   <View className='absolute justify-center gap-4 px-3 py-3 rounded-md right-5 top-2 bg-dark-100'>
+        //     <TouchableOpacity className='flex-row items-center gap-1'
+        //     onPress={()=>setUpdate(!update)}
+        //     >
+        //       <Icon name='Pencil' size={15}/>
+        //       <Text className='text-white font-rubik-bold'>Edit</Text>
+        //   </TouchableOpacity>
+        //     <TouchableOpacity className='flex-row items-center gap-1'
+        //     onPress={()=>handleDeleteComment(item._id)}
+        //     >
+        //       <Icon name='Trash2' size={15}/>
+        //       <Text className='text-sm text-danger font-rubik-bold'>Delete</Text>
+        //   </TouchableOpacity>
+        //   </View>
+        //     )
+        //   }
+        // </>
         )
         :
         <CommentCardLoader/>

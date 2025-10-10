@@ -8,6 +8,7 @@ import { playlistApi } from './api/playlistApi'
 import { likeApi } from './api/likeApi'
 import { commentApi } from './api/commentApi'
 import { connetionApi } from './api/connectionApi'
+import { tweetApi } from './api/tweetApi'
 
 export const store = configureStore({
   reducer: {
@@ -19,6 +20,7 @@ export const store = configureStore({
     [likeApi.reducerPath]: likeApi.reducer,
     [commentApi.reducerPath]: commentApi.reducer,
     [connetionApi.reducerPath]: connetionApi.reducer,
+    [tweetApi.reducerPath]: tweetApi.reducer,
   },
   
   middleware: (getDefaultMiddleware) =>
@@ -29,6 +31,7 @@ export const store = configureStore({
   .concat(likeApi.middleware)
   .concat(commentApi.middleware)
   .concat(connetionApi.middleware)
+  .concat(tweetApi.middleware)
 })
 
 setupListeners(store.dispatch)

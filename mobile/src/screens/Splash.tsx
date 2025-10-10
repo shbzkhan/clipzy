@@ -42,7 +42,7 @@ const [refreshAccessToken,{isLoading:refreshTokenLoading}] = useRefreshAccessTok
               return
             }
           }
-          resetAndNavigate("MainTabs")
+          resetAndNavigate("MainTabs",{refresh:true})
           return
         }
         resetAndNavigate("WelcomeScreen")
@@ -60,7 +60,7 @@ const [refreshAccessToken,{isLoading:refreshTokenLoading}] = useRefreshAccessTok
     })
 
   return (
-    <View className='bg-primary-600 h-full flex justify-center items-center'>
+    <View className='flex items-center justify-center h-full bg-primary-600'>
       <StatusBar barStyle={"light-content"} />
       <Image
       source={require("../assets/images/clipzylogo.png")}

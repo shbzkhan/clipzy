@@ -27,7 +27,7 @@ const Login = () => {
              dispatch(userData(userLoggedIn.data.user))
              await AsyncStorage.setItem("access-token", userLoggedIn?.data.accessToken)
              await AsyncStorage.setItem("refresh-token", userLoggedIn?.data.refreshToken)
-             resetAndNavigate("MainTabs")
+             resetAndNavigate("MainTabs",{refresh:false})
              resetForm()
 
            } catch (err) {
@@ -42,22 +42,22 @@ const SignupSchema = Yup.object().shape({
                     password: Yup.string().min(6, 'Minimum 6 characters').required('Password is required'),
 });
   return (
-    <SafeAreaView className=' bg-white flex-1 dark:bg-dark'>
+    <SafeAreaView className='flex-1 bg-white dark:bg-dark'>
         <KeyboardAvoidingView
         behavior={Platform.OS ==="ios" ? "padding":"height"}
         style={{flex:1}}
         >
-        <ScrollView className='flex item-center px-4'>
+        <ScrollView className='flex px-4 item-center'>
             <View className='justify-center pb-4'>
-            <View className="items-center justify-center pb-14 pt-24 gap-2">
-            <View className='h-24 w-24 rounded-full bg-primary-50 justify-center items-center'>
+            <View className="items-center justify-center gap-2 pt-24 pb-14">
+            <View className='items-center justify-center w-24 h-24 rounded-full bg-primary-50'>
                 <Logo
                 containerStyle='w-12 h-10'
                 imageStyle='h-10 w-12'
                 />
             </View>
-                <Text className='text-primary-600 font-tinos-bold text-4xl pt-4'>CLIPZY</Text>
-                <Text className='text-gray-300 text-xl'>Login a account</Text>
+                <Text className='pt-4 text-4xl text-primary-600 font-tinos-bold'>CLIPZY</Text>
+                <Text className='text-xl text-gray-300'>Login a account</Text>
             </View>
         <Formik
             initialValues={{
@@ -98,13 +98,13 @@ const SignupSchema = Yup.object().shape({
                 isLoading={isLoading}
                 containerStyles='mt-4'
                 />
-                <View className='mx-auto mt-3 flex-row items-center gap-1'>
-                    <Text className='text-gray-300 font-tinos text-xl'>Create a new account?</Text>
+                <View className='flex-row items-center gap-1 mx-auto mt-3'>
+                    <Text className='text-xl text-gray-300 font-tinos'>Create a new account?</Text>
                     <TouchableOpacity
                     className=''
                     onPress={()=>{navigate("Register")}}
                     >
-                        <Text className='text-primary-600 font-tinos text-xl'>Register</Text>
+                        <Text className='text-xl text-primary-600 font-tinos'>Register</Text>
                     </TouchableOpacity>
                 </View>
                 </View>

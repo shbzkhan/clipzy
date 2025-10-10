@@ -6,7 +6,7 @@ import * as Yup from "yup"
 import CustomTextInput from '../components/CustomTextInput'
 import Logo from '../constants/Logo'
 import CustomButton from '../components/CustomButton'
-import { goBack} from '../navigation/NavigationUtils'
+import { goBack, resetAndNavigate} from '../navigation/NavigationUtils'
 import { useRegisterMutation } from '../redux/api/authApi'
 import { ToastShow } from '../utils/Tost'
 import { RegisterUser } from '../types/auth'
@@ -21,7 +21,7 @@ const Register = () => {
        try {
          const user = await register(newUser).unwrap()
          ToastShow(user.message, "success")
-         goBack()
+         resetAndNavigate("MainTabs",{refresh:false})
          resetForm()
        } catch (err) {
          const error = err as FetchBaseQueryError
@@ -38,22 +38,22 @@ const SignupSchema = Yup.object().shape({
                     terms: Yup.boolean().oneOf([true], 'You must accept the terms')
 });
   return (
-    <SafeAreaView className=' bg-white dark:bg-dark flex-1'>
+    <SafeAreaView className='flex-1 bg-white dark:bg-dark'>
         <KeyboardAvoidingView
         behavior={Platform.OS ==="ios" ? "padding":"height"}
         className='flex-1'
         >
-        <ScrollView className='flex item-center px-4'>
+        <ScrollView className='flex px-4 item-center'>
             <View className='justify-center pb-4'>
-            <View className="items-center justify-center pb-14 pt-24 gap-2">
-            <View className='h-24 w-24 rounded-full bg-primary-50 justify-center items-center'>
+            <View className="items-center justify-center gap-2 pt-24 pb-14">
+            <View className='items-center justify-center w-24 h-24 rounded-full bg-primary-50'>
                 <Logo
                 containerStyle='w-12 h-10'
                 imageStyle='h-10 w-12'
                 />
             </View>
-                <Text className='text-primary-600 font-tinos-bold text-4xl pt-4'>CLIPZY</Text>
-                <Text className='text-gray-300 text-xl'>Create a new account</Text>
+                <Text className='pt-4 text-4xl text-primary-600 font-tinos-bold'>CLIPZY</Text>
+                <Text className='text-xl text-gray-300'>Create a new account</Text>
             </View>
         <Formik
             initialValues={{
@@ -106,8 +106,8 @@ const SignupSchema = Yup.object().shape({
                 isLoading={isLoading}
                 containerStyles='mt-4'
                 />
-                <View className='mx-auto mt-3 flex-row items-center gap-1'>
-                    <Text className='text-gray-300 font-tinos text-xl'>Already have a account?</Text>
+                <View className='flex-row items-center gap-1 mx-auto mt-3'>
+                    <Text className='text-xl text-gray-300 font-tinos'>Already have a account?</Text>
                     <TouchableOpacity
                     className=''
                     // onPress={()=>{
@@ -120,7 +120,7 @@ const SignupSchema = Yup.object().shape({
                     // }}
                     onPress={()=>goBack()}
                     >
-                        <Text className='text-primary-600 font-tinos text-xl'>Sign in</Text>
+                        <Text className='text-xl text-primary-600 font-tinos'>Sign in</Text>
                     </TouchableOpacity>
                 </View>
                 </View>
