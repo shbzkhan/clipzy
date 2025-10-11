@@ -320,16 +320,15 @@ const updateAccoutDetails = asyncHandler(async(req, res)=>{
     find user from req.user and update fileds
     send res
      */
-    const {fullname, email}= req.body;
-    if(!fullname || !email){
-     throw new apiError(400, "All fields are required")
+    const {fullname}= req.body;
+    if(!fullname){
+     throw new apiError(400, "Fullname are required")
    }
    const user = await User.findByIdAndUpdate(
     req.user._id,
     {
         $set:{
             fullname,
-            email
         }
     },
     {new: true}
