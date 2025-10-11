@@ -5,8 +5,11 @@ import SubscribedButton from './SubscribedButton'
 import { navigate } from '../navigation/NavigationUtils'
 import { useToggleConnetionMutation } from '../redux/api/connectionApi'
 import { ToastShow } from '../utils/Tost'
+import { useSelector } from 'react-redux'
+import { RootState } from '../redux/store'
 
 const ChannelBox = ({item}) => {
+  const {user} = useSelector((state:RootState)=>state.user)
   console.log("channelbox",item)
     const [isConnected, setIsConnected] = useState(item.isSubscribed);
      const [toggleConnetion] = useToggleConnetionMutation()
@@ -53,10 +56,15 @@ const ChannelBox = ({item}) => {
                     {data?.data.owner.subscribersCount}
                   </Text> */}
                 </View>
-                <SubscribedButton
-                  handlePress={isConnetionHandle}
-                  isConnected={isConnected}
-                />
+                {
+                  item._id !== user._id && (
+                    <SubscribedButton
+                      handlePress={isConnetionHandle}
+                      isConnected={isConnected}
+                    />
+  
+                  )
+                }
     </Pressable>
 
   )

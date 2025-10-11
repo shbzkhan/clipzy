@@ -5,10 +5,12 @@ import SubscribedButton from './SubscribedButton'
 import UserLogo from './UserLogo'
 import { ToastShow } from '../utils/Tost'
 import { useToggleConnetionMutation } from '../redux/api/connectionApi'
+import { useSelector } from 'react-redux'
+import { RootState } from '../redux/store'
 
 
 const ChannelHeader =({user, totalVideos})=>{
-  console.log("video Details", user)
+  const userDetails = useSelector((state:RootState)=>state.user.user)
     const [isConnected, setIsConnected] = useState(user.isSubscribed);
      const [toggleConnetion] = useToggleConnetionMutation()
 
@@ -30,7 +32,7 @@ const ChannelHeader =({user, totalVideos})=>{
       }
       return (
         <>
-        <View className='h-24 w-full'>
+        <View className='w-full h-24'>
                 {user.coverImage ?( 
                   <Image
                   source={{uri:user.coverImage}}
@@ -38,16 +40,16 @@ const ChannelHeader =({user, totalVideos})=>{
                   resizeMode='cover'
                   />
                 ):(
-                <TouchableOpacity className='h-full w-full bg-secondary dark:bg-black/30' 
+                <TouchableOpacity className='w-full h-full bg-secondary dark:bg-black/30' 
                 >
-                <View className='justify-center items-center h-full'>
+                <View className='items-center justify-center h-full'>
                 <Icon name='Camera' size={38}/>
                 </View>
                 </TouchableOpacity>
                 )}
                 
       </View>
-      <View className='px-4 gap-5 mt-5 mb-4'>
+      <View className='gap-5 px-4 mt-5 mb-4'>
           <View className='flex-row items-center gap-5'>
                   <UserLogo
                   heightAndWidth={24}
@@ -55,15 +57,20 @@ const ChannelHeader =({user, totalVideos})=>{
                   />
               <View className=''>
                   <Text className='text-2xl font-rubik-bold dark:text-white' numberOfLines={1}>{user.fullname}</Text>
-                  <Text className='text-black dark:text-gray-300 text-sm font-rubik-medium'>@{user.username}</Text>
-                  <Text className='text-gray-600 dark:text-gray-300 text-xs font-rubik'>{`${user.subscribersCount} connetions • ${totalVideos} videos`}</Text>
+                  <Text className='text-sm text-black dark:text-gray-300 font-rubik-medium'>@{user.username}</Text>
+                  <Text className='text-xs text-gray-600 dark:text-gray-300 font-rubik'>{`${user.subscribersCount} connetions • ${totalVideos} videos`}</Text>
                 </View>
               </View>
-              <SubscribedButton 
-              handlePress={isConnetionHandle}
-              isConnected={isConnected}
-              className='py-2'
-              />      
+              {
+                user._id !== userDetails?._id &&(
+                  <SubscribedButton 
+                  handlePress={isConnetionHandle}
+                  isConnected={isConnected}
+                  className='py-2'
+                  />      
+                  
+                )
+              }
               </View></>
       )
     }

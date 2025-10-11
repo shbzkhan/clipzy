@@ -22,7 +22,7 @@ const Following = () => {
     <SafeAreaView edges={["top","right","left"]} className='flex-1 bg-white dark:bg-dark'>
       <HomeHeader/>
       <View className='flex-row flex-1 gap-2'>
-      <View className='w-[17%] bg-secondary pt-4 px-1 dark:bg-dark-50'>
+      <View className='w-[17%] bg-secondary pt-4 px-1 dark:bg-dark-200'>
         <FlatList
         data={data}
         keyExtractor={item=>item._id}

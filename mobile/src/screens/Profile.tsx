@@ -17,7 +17,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const Profile = () => {
 const dispatch = useDispatch();
 const {user} = useSelector((state:RootState)=>state.user)
-console.log("user data", user)
 
 const logout = async()=>{
   await AsyncStorage.removeItem("access-token")
@@ -33,7 +32,7 @@ const logout = async()=>{
       showsVerticalScrollIndicator={false}
       contentContainerClassName='pb-32 px-4'
       >
-        <View className='flex flex-row justify-between items-center 2'>
+        <View className='flex flex-row items-center justify-between 2'>
           <Text className='text-2xl font-rubik-bold dark:text-white' >Profile</Text>
 
          <CustomIcon
@@ -52,7 +51,7 @@ const logout = async()=>{
             
             <View className=''>
             <Text className='text-2xl font-rubik-bold dark:text-white' numberOfLines={1}>{user.fullname}</Text>
-            <Text className='text-gray-600 dark:text-gray-300 text-sm'>@{user.username}</Text>
+            <Text className='text-sm text-gray-600 dark:text-gray-300'>@{user.username}</Text>
           </View>
         </TouchableOpacity>
 
@@ -84,7 +83,7 @@ const logout = async()=>{
             
         </View>
 
-        <View className='flex flex-col mt-5 border-t pt-5 border-primary-200 dark:border-secondary'>
+        <View className='flex flex-col pt-5 mt-5 border-t border-primary-200 dark:border-secondary'>
           <SettingsItem
             icon={"LogOut"}
             onPress={logout}
@@ -94,11 +93,11 @@ const logout = async()=>{
             showArrow={false}
             
           />
-          {/* <TouchableOpacity className='bg-red-100/50 dark:bg-red-100/10 py-4 justify-center items-center flex-row gap-3 rounded-md border-2 border-danger'
+          {/* <TouchableOpacity className='flex-row items-center justify-center gap-3 py-4 border-2 rounded-md bg-red-100/50 dark:bg-red-100/10 border-danger'
           onPress={logout}
           >
             <Icon name='LogOut' color='red'/>
-            <Text className='text-danger font-rubik-semibold text-lg'>Logout</Text>
+            <Text className='text-lg text-danger font-rubik-semibold'>Logout</Text>
           </TouchableOpacity> */}
         </View>
       </ScrollView>
