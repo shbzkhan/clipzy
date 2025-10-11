@@ -115,7 +115,7 @@ const Channel = () => {
           data={tweetData}
           keyExtractor={item => item._id}
           showsVerticalScrollIndicator={false}
-          contentContainerClassName="gap-8 pt-2 pb-8 mt-7 px-3"
+          contentContainerClassName="gap-8 pt-2 pb-8 mt-7 px-3 pb-8"
           renderItem={({ item }) => <TweetCard item={item} />}
           ListEmptyComponent={
             <EmptyState

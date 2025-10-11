@@ -2,6 +2,7 @@ import About from '../screens/About';
 import AppearanceToggle from '../screens/Appearance';
 import ChangePassword from '../screens/ChangePassword';
 import Channel from '../screens/Channel';
+import Connections from '../screens/Connections';
 import ForgetPassword from '../screens/ForgetPassword';
 import LikesVideo from '../screens/LikesVideo';
 import Login from '../screens/Login';
@@ -112,6 +113,10 @@ const dashboardStack = [
   {
     name: 'Tweet',
     component: Tweet,
+  },
+  {
+    name: 'Connections',
+    component: Connections,
   },
 ];
 

@@ -20,7 +20,6 @@ const WelcomeScreen = ({name}:any) => {
 const dispatch = useDispatch();
 const [googleLogin,{isLoading}] = useGoogleLoginMutation()
 
-
    const handleGoogle = async () => {
     try {
       await GoogleSignin.hasPlayServices();
@@ -47,9 +46,7 @@ const [googleLogin,{isLoading}] = useGoogleLoginMutation()
   };
   
   return (
-    <SafeAreaView className={`flex-1 ${isLoading ?"bg-white":"bg-primary-50"} items-center px-4 dark:bg-dark`}>
-        {
-          !isLoading ?(
+    <SafeAreaView className={`flex-1 bg-primary-50 items-center px-4 dark:bg-dark`}>
             <View className='items-center justify-center gap-4'>
               <View className='items-center justify-center h-[400px]'>
                 <LottieView 
@@ -66,6 +63,7 @@ const [googleLogin,{isLoading}] = useGoogleLoginMutation()
             containerStyles='w-72 h-12 bg-white'
             textStyles='text-black dark:text-black'
             handlePress={handleGoogle}
+            isLoading={isLoading}
             />
             <View className='flex-row items-center gap-5 rounded-full'>
               <View className='h-0.5 bg-primary-100 dark:bg-gray-400 w-16'/>
@@ -75,21 +73,10 @@ const [googleLogin,{isLoading}] = useGoogleLoginMutation()
             <CustomButton
             title='Continue with Email'
             containerStyles='w-72 h-12 mt-3'
-            // handlePress={()=>{
-            //             SheetManager.show("login-sheet",{
-            //             payload:{
-            //               entityId:"hello",
-            //             }
-            //           })
-            //         }}
             handlePress={()=>navigate("Login")}
             />
           
         </View>
-          ):(
-            <GlobalLoader/>
-          )
-        }
       
     </SafeAreaView>
   )

@@ -23,7 +23,7 @@ export type RootStackParamList = {
 export type TabNavigatorParamList = {
     Home:undefined,
     Search:undefined,
-    Subscriptions:undefined
+    Following:undefined
     Profile:undefined,
     Post:undefined
 }

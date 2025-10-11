@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../screens/Home';
-import Subscriptions from '../screens/Subscriptions';
+import Subscriptions from '../screens/Following';
 import Profile from '../screens/Profile';
 import { TabNavigatorParamList } from '../types';
 import Icon from '../constants/Icons';
@@ -14,6 +14,7 @@ import { userData } from '../redux/slice/userSlice';
 import Search from '../screens/SearchHistory';
 import GlobalLoader from '../components/GlobalLoader';
 import { useRoute } from '@react-navigation/native';
+import Following from '../screens/Following';
 
 const Tab = createBottomTabNavigator<TabNavigatorParamList>();
 
@@ -35,7 +36,8 @@ const TabNavigator = () => {
   const { colorScheme} = useColorScheme();
   const user = useSelector((state:any)=>state.user.user)
 
-  if(currentDataLoading){
+  if(currentDataLoading && userLoading){
+    console.log("loading work")
     return <GlobalLoader/>
   }
   return (
@@ -84,7 +86,7 @@ const TabNavigator = () => {
         }
       }}
       />
-      <Tab.Screen name="Subscriptions" component={Subscriptions}
+      <Tab.Screen name="Following" component={Following}
       options={{
         tabBarIcon:({focused, size})=>{
           return <Icon name='Play' color={"#2563EB"} focused={focused} size={size} />

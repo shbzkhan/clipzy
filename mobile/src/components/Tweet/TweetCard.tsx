@@ -10,6 +10,7 @@ import {
 import { RootState } from '../../redux/store';
 import { ToastLoading, ToastShow } from '../../utils/Tost';
 import UserLogo from '../UserLogo';
+import { useToggleTweetLikeMutation } from '../../redux/api/likeApi';
 interface TweetProps {
   item: {
     _id: string;
@@ -32,10 +33,13 @@ const TweetCard: FC<TweetProps> = ({
 }) => {
   const { user } = useSelector((state: RootState) => state.user);
   const [content, setContent] = useState(tweetCreator ? '' : item.content);
+  const [like, setLike] = useState(item.likeCount);
+    const [isLiked, setIsLiked] = useState(item.isLiked);
   const [updateContent, setUpdateContent] = useState(false);
   const [createTweet] = useCreateTweetMutation();
   const [updateTweet, { isLoading }] = useUpdateTweetMutation();
   const [deleteTweet, { isLoading: isDeleting }] = useDeleteTweetMutation();
+  const [toggleTweetLike] = useToggleTweetLikeMutation();
 
   //create tweet handler
   const handleCreateTweet = async () => {
@@ -72,9 +76,30 @@ const TweetCard: FC<TweetProps> = ({
     }
   };
 
+
+   //tweet likes handler
+    const isLikedHandle = async () => {
+      try {
+        if (isLiked) {
+          setLike(like - 1);
+          setIsLiked(false);
+        } else {
+          setLike(like + 1);
+          setIsLiked(true);
+        }
+        const toggledTweetLike = await toggleTweetLike(item._id).unwrap();
+        console.log("Toggle Liked",toggledTweetLike)
+        setIsLiked(toggledTweetLike.data.liked);
+      } catch (error) {
+        setIsLiked(false);
+        setLike(like - 1);
+        ToastShow(error.data.message);
+      }
+    };
+
   return (
     <View className="gap-2">
-      <View className="flex-row justify-between items-center gap-2 px-4">
+      <View className="flex-row items-center justify-between gap-2 px-4">
         <View className="flex-row items-center gap-2">
           <UserLogo
             uri={!tweetCreator ? item.owner.avatar : user?.avatar}
@@ -82,8 +107,9 @@ const TweetCard: FC<TweetProps> = ({
             heightAndWidth={9}
           />
           <Text className="text-sm text-gray-600 font-rubik-bold dark:text-gray-300">
-            {!tweetCreator ? item.owner.username : user?.username}
+            {!tweetCreator ? item.owner.username.slice(0,12) : user?.username.slice(0,12)}
           </Text>
+          <Text className="text-xs text-gray-400 font-rubik-medium dark:text-gray-300">•   {like} likes</Text>
         </View>
         {!tweetCreator && user?._id === item.owner._id && (
           <View className="flex-row gap-5">
@@ -103,7 +129,7 @@ const TweetCard: FC<TweetProps> = ({
       </View>
       <View className="p-3 border-2 rounded-md border-secondary dark:border-dark-100 min-h-32">
         <TextInput
-          className="text-lg font-rubik dark:text-white min-h-32 align-top"
+          className="text-lg align-top font-rubik dark:text-white min-h-32"
           multiline
           returnKeyType="send"
           // onSubmitEditing={}
@@ -124,8 +150,8 @@ const TweetCard: FC<TweetProps> = ({
             <Icon name="SquarePen" color="#60A5FA" size={20} />
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity>
-            <Icon name="Heart" color="#60A5FA" size={20} />
+          <TouchableOpacity onPress={isLikedHandle}>
+            <Icon name="Heart" color="#60A5FA" size={20} focused={isLiked} />
           </TouchableOpacity>
         )}
       </View>

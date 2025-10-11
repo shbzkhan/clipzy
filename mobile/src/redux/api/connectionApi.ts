@@ -15,10 +15,21 @@ export const connetionApi = createApi({
             })
         }),
 
+         followingConnetion: builder.query<any, string>({
+                    query: (connetionId) => `u/${connetionId}`,
+                    transformResponse: (response: { data: any}) => response.data,
+            }),
+         followersConnetions: builder.query<any, string>({
+                    query: (connetionId) => `c/${connetionId}`,
+                    transformResponse: (response: { data: any}) => response.data,
+        }),
+
     })
 })
 
 
 export const {
     useToggleConnetionMutation,
+    useFollowingConnetionQuery,
+    useFollowersConnetionsQuery
     } = connetionApi

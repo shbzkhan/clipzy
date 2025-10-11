@@ -7,21 +7,16 @@ import Slider from './Slider'
 
 const HomeHeader = () => {
   return (
-    <View className=' h-14 w-full flex-row gap-1 items-center justify-between px-4'>
-      <View className='flex-row gap-1 items-center'>
+    <View className='flex-row items-center justify-between w-full gap-1 px-4  h-14'>
+      <View className='flex-row items-center gap-1'>
       <Logo/>
-      <Text className='text-primary-600 font-tinos-bold text-2xl'>CLIPZY</Text>
+      <Text className='text-2xl text-primary-600 font-tinos-bold'>CLIPZY</Text>
       </View>
-      <View className='flex-row gap-4 items-center'>
+      <View className='flex-row items-center gap-4'>
       <CustomIcon
        name="Bell" 
        badge={true} 
        handlePress={()=>navigate("Notification")}/>
-
-      <CustomIcon 
-      name="Search"
-      handlePress={()=>navigate("Search")}
-      />
       </View>
     </View>
       

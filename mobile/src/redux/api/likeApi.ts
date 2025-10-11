@@ -28,10 +28,11 @@ export const likeApi = createApi({
                 method:"POST",
             })
         }),
-    //toggle like of tweet
+
+        //toggle like of tweet
         toggleTweetLike: builder.mutation<any,string>({
             query:(tweetId)=> ({
-                url:`toggle//${tweetId}`,
+                url:`toggle/t/${tweetId}`,
                 method:"POST",
             })
         }),

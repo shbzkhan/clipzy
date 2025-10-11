@@ -35,6 +35,7 @@ import { usePaginatedVideos } from '../hooks/usePaginatedVideos';
 import { handleShareToSocialMedia } from '../utils/ShareToSocialMedia';
 import { ChevronsLeftIcon } from 'lucide-react-native';
 import { useToggleConnetionMutation } from '../redux/api/connectionApi';
+import ChannelBox from '../components/ChannelBox';
 
 const VideoDetails: FC = ({ route }) => {
   const user = useSelector((state: RootState) => state.user.user);
@@ -44,19 +45,15 @@ const VideoDetails: FC = ({ route }) => {
   const { data, isLoading } = useGetVideoByIdQuery({ videoId });
    const [isLiked, setIsLiked] = useState(false);
    const [like, setLike] = useState(0);
-   const [isConnected, setIsConnected] = useState(false);
-   console.log("Video Data", data)
 
   //apis
   const {videos, isLoading:loading, isFetching, handleLoadMore, page} = usePaginatedVideos({})
   const [toggleLike] = useToggleLikeMutation()
-  const [toggleConnetion] = useToggleConnetionMutation()
   
   useEffect(()=>{
     if(!isLoading){
       setIsLiked(data?.data.isLiked)
       setLike(data?.data.likesCount)
-      setIsConnected(data?.data.owner.isSubscribed)
     }
   },[isLoading])
   
@@ -80,23 +77,6 @@ const VideoDetails: FC = ({ route }) => {
       }
 
   };
-
-  const isConnetionHandle = async()=>{
-    try {
-    if (isConnected) {
-      setIsConnected(false);
-    } else {
-      setIsConnected(true);
-    }
-     const toggledConnection = await toggleConnetion(data?.data?.owner?._id).unwrap()
-     console.log("toggled Connection", toggledConnection)
-     setIsConnected(toggledConnection.data.subscribed)
-    } catch (error) {
-      setIsConnected(false)
-      console.log("error message",error.message)
-      ToastShow(error.data.message)
-    }
-  }
 
   if (!user) return <AuthBox name="Video Creation" />;
 
@@ -153,35 +133,7 @@ const VideoDetails: FC = ({ route }) => {
                   </Text>
                 </Text>
               </TouchableOpacity>
-              <Pressable
-                className="flex-row items-center justify-between"
-                onPress={() =>
-                  navigate('Channel', {
-                    channelId: data?.data?.owner.username,
-                  })
-                }
-              >
-                <View className="flex-row items-center gap-1">
-                  <UserLogo
-                    uri={data?.data?.owner.avatar}
-                    handlePress={() =>
-                      navigate('Channel', {
-                        channelId: data?.data?.owner.username,
-                      })
-                    }
-                  />
-                  <Text className="font-rubik-medium dark:text-white">
-                    {data?.data.owner.username}
-                  </Text>
-                  {/* <Text className="text-sm text-gray-500 font-rubik dark:text-gray-300">
-                    {data?.data.owner.subscribersCount}
-                  </Text> */}
-                </View>
-                <SubscribedButton
-                  handlePress={isConnetionHandle}
-                  isConnected={isConnected}
-                />
-              </Pressable>
+              <ChannelBox item={data.data.owner}/>
               <ScrollView
                 horizontal
                 contentContainerClassName="gap-4 py-2"

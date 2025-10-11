@@ -30,6 +30,11 @@ export const settingData = [
     href:"Tweet"
   },
   {
+    title: "Connections",
+    icon: "Users",
+    href:"Connections"
+  },
+  {
     title: "Notifications",
     icon: "Bell",
     href:"Notification"
@@ -44,9 +49,9 @@ export const settingData = [
     icon: "SquarePen",
     href:"ChangePassword"
   },
-  {
-    title: "Forget Password",
-    icon: "PenOff",
-    href:"ForgetPassword"
-  },
+  // {
+  //   title: "Forget Password",
+  //   icon: "PenOff",
+  //   href:"ForgetPassword"
+  // },
 ];
