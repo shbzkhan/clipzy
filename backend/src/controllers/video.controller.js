@@ -253,6 +253,7 @@ const getVideoById = asyncHandler(async (req, res) => {
             $project:{
                 videoFile:1,
                 title:1,
+                thumbnail:1,
                 description:1,
                 owner:1,
                 likesCount:1,
@@ -326,12 +327,19 @@ const updateVideo = asyncHandler(async (req, res) => {
     }
     
     const thumbnailLocalPath = req.file?.path
+    console.log(thumbnailLocalPath)
+ 
     if(thumbnailLocalPath){
         const publicId = video.thumbnail.split("/").pop().split(".")[0]
-        const thumbnail = await updateOnCloudinary(publicId, thumbnailLocalPath)
+        const thumbnail = await uploadOnCloudinary(thumbnailLocalPath)
         if (!thumbnail.url) {
         throw new apiError(400, "thumbnail not update try again")
         }
+        const deletedThum = await deleteOnCloudinary(publicId)
+        if (!deletedThum) {
+            throw new apiError(400, "thumbnail not update try again")
+        }
+        video.thumbnail = thumbnail.url
     }
 
     video.title = title
