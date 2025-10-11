@@ -45,14 +45,15 @@ const toggleSubscription = asyncHandler(async (req, res) => {
 
 // controller to return subscriber list of a channel
 const getUserChannelSubscribers = asyncHandler(async (req, res) => {
-    const {channelId} = req.params
+    let {channelId} = req.params
     if(!isValidObjectId(channelId)){
         throw new apiError(400, "Invalid Channel ID")
     }
+    channelId = new mongoose.Types.ObjectId(channelId);
     const subscribers =  await Subscription.aggregate([
         {
             $match:{
-            channel:new mongoose.Types.ObjectId(channelId)
+            channel:channelId
             }
         },
         {
@@ -60,29 +61,30 @@ const getUserChannelSubscribers = asyncHandler(async (req, res) => {
                 from:"users",
                 localField:"subscriber",
                 foreignField:"_id",
-                as:"subscribers",
+                as:"subscriber",
                 pipeline:[
                     {
                         $lookup:{
                             from:"subscriptions",
                             localField:"_id",
                             foreignField:"channel",
-                            as:"subscribedToSbscriber"
+                            as:"subscribedToSubscriber"
                         }
                     },
                     
                     {
                         $addFields:{
-                            subscribersCount:{
-                               $size:"$subscribedToSbscriber" 
-                            },
+                            
                             isSubscribed:{
                                 $cond:{
-                                    if:{$in:[channelId, "$subscribedToSbscriber.subscriber"]},
+                                    if:{$in:[channelId, "$subscribedToSubscriber.subscriber"]},
                                     then:true,
                                     else:false
                                 }
-                            }
+                            },
+                            subscribersCount:{
+                               $size:"$subscribedToSubscriber" 
+                            },
                         }
                     }
                 ]
@@ -90,10 +92,10 @@ const getUserChannelSubscribers = asyncHandler(async (req, res) => {
             }
         },
         {
-            $unwind:"$subscribers"
+            $unwind:"$subscriber"
         },
         {
-            $replaceWith:"$subscribers"
+            $replaceWith:"$subscriber"
         },
         {
             $project:{
@@ -101,7 +103,7 @@ const getUserChannelSubscribers = asyncHandler(async (req, res) => {
                     fullname:1,
                     avatar:1,
                     username:1,
-                    subscribesCount:1,
+                    subscribersCount:1,
                     isSubscribed:1
             }
         }
@@ -114,7 +116,7 @@ const getUserChannelSubscribers = asyncHandler(async (req, res) => {
     return res
             .status(200)
             .json(
-                new apiResponse(200, subscribers, "Subscribers111111 fetched successfully")
+                new apiResponse(200, subscribers, "Subscribers fetched successfully")
             )
 })
 
