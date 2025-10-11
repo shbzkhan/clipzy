@@ -20,7 +20,6 @@ import { goBack } from '../navigation/NavigationUtils';
 const PostUpdate = () => {
   const route = useRoute();
   const { video_id } = route.params;
-  const { user } = useSelector((state: RootState) => state.user);
   const [thumbnail, setThumbnail] = useState('');
   const [desc, setDesc] = useState('');
   const [title, setTitle] = useState('');
@@ -28,7 +27,6 @@ const PostUpdate = () => {
     videoId: video_id,
   });
   const [videoUpdate, { isLoading }] = useVideoUpdateMutation();
-  console.log(data);
 
   useEffect(() => {
     if (!seachVideoLoading) {

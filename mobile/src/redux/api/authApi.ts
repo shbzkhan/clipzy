@@ -66,6 +66,14 @@ export const authApi = createApi({
         channel: builder.query<WatchHistory, {channelId:string}>({
                     query: ({channelId}) => `c/${channelId}`
         }),
+
+         changePassword: builder.mutation<any,{currentPassword:string, newPassword:string}>({
+            query:({currentPassword, newPassword})=> ({
+                url:"password-change",
+                method:"PATCH",
+                body:{currentPassword, newPassword},
+            })
+        }),
     })
 })
 
@@ -79,5 +87,6 @@ export const {
     useCoverImageMutation,
     useWatchHistoryQuery,
     useChannelQuery,
-    useRefreshAccessTokenMutation
+    useRefreshAccessTokenMutation,
+    useChangePasswordMutation
     } = authApi
