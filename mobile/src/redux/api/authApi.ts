@@ -74,6 +74,13 @@ export const authApi = createApi({
                 body:{currentPassword, newPassword},
             })
         }),
+         changeAccountDetails: builder.mutation<any,{fullname:string}>({
+            query:({fullname})=> ({
+                url:"update-account",
+                method:"PATCH",
+                body:{fullname},
+            })
+        }),
     })
 })
 
@@ -88,5 +95,6 @@ export const {
     useWatchHistoryQuery,
     useChannelQuery,
     useRefreshAccessTokenMutation,
-    useChangePasswordMutation
+    useChangePasswordMutation,
+    useChangeAccountDetailsMutation
     } = authApi
