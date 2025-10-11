@@ -51,7 +51,7 @@ const PostCard = ({item}:videoProp) => {
       source={{uri:item.uri}}
       />
       
-      <Text className='absolute bottom-1 right-3 text-gray-200 font-rubik-medium'>{format(item.playableDuration)}</Text>
+      <Text className='absolute text-gray-200 bottom-1 right-3 font-rubik-medium'>{format(item.playableDuration)}</Text>
       </TouchableOpacity>
     //   <Text>{playbleDuration}</Text>
     // </View>

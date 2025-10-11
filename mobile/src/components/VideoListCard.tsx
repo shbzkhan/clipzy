@@ -27,6 +27,8 @@ const VideoListCard:FC<videoCardProps> = ({_id, title, thumbnail,views, owner: {
             entityId:{
               video_id,
               owner_id,
+              thumb_uri:thumbnail,
+              video_title:title,
               isPlaylist,
               playlistId
             }

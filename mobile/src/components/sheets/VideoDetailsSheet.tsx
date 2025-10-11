@@ -19,7 +19,7 @@ import { usePlaylistDeleteVideoMutation } from '../../redux/api/playlistApi';
 
 const VideoDetailsSheet = (props: SheetProps<'videoDetails-sheet'>) => {
   const { user } = useSelector((state: RootState) => state.user);
-  const {video_id, owner_id, isPlaylist, playlistId} = props.payload?.entityId;
+  const {video_id, owner_id, isPlaylist, playlistId, thumb_uri,video_title} = props.payload?.entityId;
   const { colorScheme } = useColorScheme();
   console.log("playlist id ", playlistId)
 
@@ -114,7 +114,15 @@ const VideoDetailsSheet = (props: SheetProps<'videoDetails-sheet'>) => {
                   <>
                   <SettingsItem
                       icon={"UserRoundPen"}
-                      onPress={()=>navigate("")}
+                      onPress={()=>{
+                        navigate("PostUpdate",{
+                        video_id,
+                        thumb_uri,
+                        video_title
+                      })
+                      SheetManager.hide(props.sheetId)
+                    }
+                    }
                       title='Edit Video'
                     />
                     <SettingsItem

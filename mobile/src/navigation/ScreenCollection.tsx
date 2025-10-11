@@ -10,6 +10,7 @@ import Notification from '../screens/Notification';
 import Playlist from '../screens/Playlist';
 import PlaylistVideo from '../screens/PlaylistVideo';
 import Post from '../screens/Post';
+import PostUpdate from '../screens/PostUpdate';
 import Register from '../screens/Register';
 import SearchVideo from '../screens/SearchVideo';
 import Splash from '../screens/Splash';
@@ -118,6 +119,10 @@ const dashboardStack = [
     name: 'Connections',
     component: Connections,
   },
+  {
+    name:"PostUpdate",
+    component:PostUpdate
+  }
 ];
 
 export const allStack = [...authStack, ...dashboardStack];

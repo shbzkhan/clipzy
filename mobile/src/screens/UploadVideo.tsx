@@ -69,10 +69,10 @@ const UploadVideo = () => {
   
   
   return (
-    <SafeAreaView className='flex-1 bg-white dark:bg-dark px-4'>
+    <SafeAreaView className='flex-1 px-4 bg-white dark:bg-dark'>
       <KeyboardAwareScrollView>
       <CustomHeader title='Video Details'/>
-      <ScrollView className='py-5 mt-7 gap-3'>
+      <ScrollView className='gap-3 py-5 mt-7'>
         <View className='flex-row items-center gap-3'>
           <Image
           source={{uri: item.thumb_uri}}
@@ -84,7 +84,7 @@ const UploadVideo = () => {
           multiline
           onChangeText={(text)=>setCaption(text)}
           className='bg-secondary dark:bg-dark flex-1 px-2 w-full h-[150px] text-start align-top border-2 border-primary-200 rounded-md font-rubik-medium dark:text-white dark:border-dark-100'
-          placeholder='Write caption here'
+          placeholder='Write title here'
           />
         </View>
         <View className='mt-8'>
@@ -97,7 +97,7 @@ const UploadVideo = () => {
         </View>
       </ScrollView>
         </KeyboardAwareScrollView>
-        {/* {isLoading&&(<View className='absolute top-0 bottom-0 right-0 left-0 bg-black/80 justify-center items-center'>
+        {/* {isLoading&&(<View className='absolute top-0 bottom-0 left-0 right-0 items-center justify-center bg-black/80'>
           <ActivityIndicator color="#2563EB" size="large"/>
         </View>)} */}
         

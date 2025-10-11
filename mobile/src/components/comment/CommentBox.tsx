@@ -11,7 +11,6 @@ import { EmojiData } from '../../utils/emojiData';
 import { ToastShow } from '../../utils/Tost';
 import { RootState } from '../../redux/store';
 
-
 interface commentBoxProps {
   videoId: string;
   update: boolean;

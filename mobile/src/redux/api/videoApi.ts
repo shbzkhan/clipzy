@@ -35,6 +35,15 @@ export const videoApi = createApi({
                 method:"DELETE",
             })
         }),
+        videoUpdate: builder.mutation<any,{video_id:string}>({
+            query:({ video_id, formData })=> ({
+                url:`/${video_id}`,
+                method:"PATCH",
+                body:formData
+            })
+        }),
+
+
 
 
     })
@@ -45,5 +54,6 @@ export const {
     useVideoUploadMutation,
     useGetVideosQuery,
     useGetVideoByIdQuery,
-    useVideoDeleteMutation
+    useVideoDeleteMutation,
+    useVideoUpdateMutation
     } = videoApi

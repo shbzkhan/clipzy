@@ -19,8 +19,7 @@ const Home = () => {
   return (
      <SafeAreaView className='bg-white dark:bg-dark'>
       <View className='gap-4 mb-2'>
-      <HomeHeader/>  
-      <Slider/>
+      <HomeHeader/> 
       </View>
     <FlatList
     data={!isLoading?videos:[1,2,3,4]}

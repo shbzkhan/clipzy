@@ -11,7 +11,6 @@ import { Video } from '../../types/video'
 const DescriptionSheet = (props:SheetProps<"comment-sheet">) => {
   // const 
   const videoData:Video = props.payload?.entityId
-  const [desc, setDesc] = useState<string>("")
   return (
     <ActionSheet 
     id={props.sheetId}
@@ -27,8 +26,8 @@ const DescriptionSheet = (props:SheetProps<"comment-sheet">) => {
       
     <SafeAreaView className='h-full'>
       
-      <View className='flex-row justify-between px-4 border-b border-gray-500 py-4'>
-        <Text className='text-white font-rubik-bold text-xl'>
+      <View className='flex-row justify-between px-4 py-4 border-b border-gray-500'>
+        <Text className='text-xl text-white font-rubik-bold'>
             Description
         </Text>
         <TouchableOpacity
@@ -38,25 +37,25 @@ const DescriptionSheet = (props:SheetProps<"comment-sheet">) => {
         </TouchableOpacity>
       </View>
       <ScrollView contentContainerClassName='px-4 gap-3'>
-        <View className='my-6 gap-5'>
-            <Text className='text-white font-rubik-bold text-2xl'>{videoData.title}</Text>
+        <View className='gap-5 my-6'>
+            <Text className='text-2xl text-white font-rubik-bold'>{videoData.title}</Text>
             <View className='flex-row justify-around'>
                 <View className='items-center'>
-                    <Text className='text-white font-rubik-bold text-xl'>{videoData.likesCount}</Text>
-                    <Text className=' font-rubik text-sm text-gray-400'>Likes</Text>
+                    <Text className='text-xl text-white font-rubik-bold'>{videoData.likesCount}</Text>
+                    <Text className='text-sm text-gray-400 font-rubik'>Likes</Text>
                 </View>
                 <View className='items-center'>
-                    <Text className='text-white font-rubik-bold text-xl'>{videoData.views}</Text>
-                    <Text className='font-rubik text-sm text-gray-400'>Views</Text>
+                    <Text className='text-xl text-white font-rubik-bold'>{videoData.views}</Text>
+                    <Text className='text-sm text-gray-400 font-rubik'>Views</Text>
                 </View>
                 <View className='items-center'>
-                    <Text className='text-white font-rubik-bold text-xl'>{formatDM(videoData.createdAt)}</Text>
-                    <Text className='font-rubik text-sm text-gray-400'>{formatYear(videoData.createdAt)}</Text>
+                    <Text className='text-xl text-white font-rubik-bold'>{formatDM(videoData.createdAt)}</Text>
+                    <Text className='text-sm text-gray-400 font-rubik'>{formatYear(videoData.createdAt)}</Text>
                 </View>
             </View>
         </View>
         <View className='p-4 bg-dark-100 rounded-2xl'>
-        <Text className='text-white font-rubik text-lg'>{desc}</Text>
+        <Text className='text-lg text-white font-rubik'>{videoData.description}</Text>
         {/* <TextInput
         className='w-full bg-white'
         value={desc}

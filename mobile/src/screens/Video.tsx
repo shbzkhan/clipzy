@@ -45,6 +45,7 @@ const VideoDetails: FC = ({ route }) => {
   const { data, isLoading } = useGetVideoByIdQuery({ videoId });
    const [isLiked, setIsLiked] = useState(false);
    const [like, setLike] = useState(0);
+   console.log("video details", data)
 
   //apis
   const {videos, isLoading:loading, isFetching, handleLoadMore, page} = usePaginatedVideos({})

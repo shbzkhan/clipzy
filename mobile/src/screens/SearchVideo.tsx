@@ -31,7 +31,6 @@ const SearchVideo = () => {
             backPress={() => pop(2)}
           />
         </Pressable>
-        <Slider />
       </View>
       <FlatList
         data={!isLoading ? videos : [1, 2, 3, 4]}

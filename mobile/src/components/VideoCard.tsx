@@ -41,6 +41,8 @@ const VideoCard:FC<videoCardProps> = ({_id, title, thumbnail, views, duration, c
                entityId:{
                  video_id,
                  owner_id,
+                 thumb_uri:thumbnail,
+                 video_title:title,
                  isPlaylist:false
                }
              }
