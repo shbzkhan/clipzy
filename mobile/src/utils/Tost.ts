@@ -7,7 +7,6 @@ export const ToastLoading =(msg:string,)=>{
         type:"normal",
         duration:999999
     })
-    console.log(toastId)
     return toastId
 }
 export const ToastShow =(msg:string, type:typeProps = "success", toastsId?:any)=>{

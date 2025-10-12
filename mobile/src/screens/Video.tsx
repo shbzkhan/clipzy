@@ -45,7 +45,6 @@ const VideoDetails: FC = ({ route }) => {
   const { data, isLoading } = useGetVideoByIdQuery({ videoId });
    const [isLiked, setIsLiked] = useState(false);
    const [like, setLike] = useState(0);
-   console.log("video details", data)
 
   //apis
   const {videos, isLoading:loading, isFetching, handleLoadMore, page} = usePaginatedVideos({})
@@ -69,11 +68,9 @@ const VideoDetails: FC = ({ route }) => {
     }
         const toggledLike = await toggleLike(videoId).unwrap()
         setIsLiked(toggledLike.data.liked)
-        console.log(toggledLike.data)
       } catch (error) {
         setIsLiked(false)
         setLike(like - 1)
-        console.log("error message",error.message)
         ToastShow(error.data.message)
       }
 

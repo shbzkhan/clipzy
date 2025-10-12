@@ -1,17 +1,23 @@
 import { useEffect, useState } from 'react';
-import { Video } from '../types/video';
+import { Video } from '../types/video.types';
 import { useVideoCommentsQuery } from '../redux/api/commentApi';
 
 interface UsePaginatedVideosProps {
-  videoId?: string
+  videoId?: string;
   initialPage?: number;
 }
 
-export const usePaginatedComments = ({ videoId, initialPage = 1 }:UsePaginatedVideosProps) => {
+export const usePaginatedComments = ({
+  videoId,
+  initialPage = 1,
+}: UsePaginatedVideosProps) => {
   const [page, setPage] = useState(initialPage);
   const [comments, setComments] = useState<Video[]>([]);
 
-  const { data, isLoading, isFetching, refetch } = useVideoCommentsQuery({ videoId, page });
+  const { data, isLoading, isFetching, refetch } = useVideoCommentsQuery({
+    videoId,
+    page,
+  });
 
   useEffect(() => {
     if (page === 1) {
@@ -20,7 +26,9 @@ export const usePaginatedComments = ({ videoId, initialPage = 1 }:UsePaginatedVi
       const combinedComment =
         page === 1 ? data?.docs : [...comments, ...data?.docs];
       const uniqueComment = Array.from(
-        new Map(combinedComment?.map(comment => [comment._id, commnet])).values(),
+        new Map(
+          combinedComment?.map(comment => [comment._id, commnet]),
+        ).values(),
       );
       setComments(uniqueComment);
     }
@@ -44,6 +52,6 @@ export const usePaginatedComments = ({ videoId, initialPage = 1 }:UsePaginatedVi
     page,
     handleLoadMore,
     handleRefresh,
-    totalComments:data?.totalDocs
+    totalComments: data?.totalDocs,
   };
 };

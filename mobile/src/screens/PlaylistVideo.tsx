@@ -22,22 +22,9 @@ const PlaylistVideo: FC<playlistProps> = ({ route }) => {
   const { id: playlistId } = route.params as string;
   const {user} = useSelector((state:RootState)=>state.user)
   const { data, isLoading,} = usePlaylistByIdQuery({ playlistId });
-  // const [playlistDeleteVideo]  = usePlaylistDeleteVideoMutation()
-  console.log('data', data?.data?.videos)
 
 
-  // const handleDeleteVideoFromPlaylist =async(videoId:string) =>{
-  //   console.log("dskjdfsksdf")
-  //   try {
-  //     const deletedVideo = await playlistDeleteVideo({videoId:videoId, playlistId:playlistId}).unwrap()
-  //     console.log("delete video from Playlist ", deletedVideo)
-  //     ToastShow(deletedVideo?.message)
-  //   } catch (error) {
-  //     console.log("video not deleted form playlist ", error.message || error)
-  //     ToastShow(errr.data.message, 'danger')
-  //   }
-  // }
-
+ 
   if (isLoading) {
     return <GlobalLoader />;
   }

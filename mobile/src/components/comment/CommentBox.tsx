@@ -36,7 +36,6 @@ const CommentBox: FC<commentBoxProps> = ({
     if (update) {
       setEdit(false);
       setComment(updateData.content);
-      console.log('commentId', updateData.id);
     } else {
       setComment('');
     }
@@ -56,7 +55,6 @@ const CommentBox: FC<commentBoxProps> = ({
         videoId,
         content: comment,
       }).unwrap();
-      console.log('commented', commented);
       ToastShow(commented.message);
       setComment('');
     } catch (error) {
@@ -71,7 +69,6 @@ const CommentBox: FC<commentBoxProps> = ({
         commentId: updateData.id,
         content: comment,
       }).unwrap();
-      console.log('commented', commentUpdated);
       ToastShow(commentUpdated.message);
       setComment('');
       setUpdate(false);

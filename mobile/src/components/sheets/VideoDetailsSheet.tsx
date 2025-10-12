@@ -21,7 +21,6 @@ const VideoDetailsSheet = (props: SheetProps<'videoDetails-sheet'>) => {
   const { user } = useSelector((state: RootState) => state.user);
   const {video_id, owner_id, isPlaylist, playlistId} = props.payload?.entityId;
   const { colorScheme } = useColorScheme();
-  console.log("playlist id ", playlistId)
 
  //api's
   const [videoDelete] = useVideoDeleteMutation()
@@ -36,7 +35,6 @@ const VideoDetailsSheet = (props: SheetProps<'videoDetails-sheet'>) => {
           const deletedVideo = await videoDelete(video_id).unwrap()
           ToastShow(deletedVideo.message)
         } catch (error) {
-          console.log("Error", error.message)
           ToastShow(error.data.message,"danger")
         }
       }
@@ -44,14 +42,12 @@ const VideoDetailsSheet = (props: SheetProps<'videoDetails-sheet'>) => {
       
 // video delete form playlist handler
   const handleDeleteVideoFromPlaylist =async() =>{
-    console.log("dskjdfsksdf")
     try {
       SheetManager.hide(props.sheetId)
       const toastId = ToastLoading("Video removing form palylist...")
       const deletedVideo = await playlistDeleteVideo({videoId:video_id, playlistId}).unwrap()
       ToastShow(deletedVideo?.message,"success",toastId)
     } catch (error) {
-      console.log("video not deleted form playlist ", error.message || error)
       ToastShow(errr.data.message, 'danger',toastId)
     }
   }

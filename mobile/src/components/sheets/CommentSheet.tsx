@@ -24,26 +24,6 @@ const CommentSheet = (props:SheetProps<"comment-sheet">) => {
     content:""
   })
 
-//comment likes handler
-// const isLikedHandle = async(commentId:string) => {
-//       try {
-//       if (isLiked) {
-//       setLike(like - 1);
-//       setIsLiked(false);
-//     } else {
-//       setLike(like + 1);
-//       setIsLiked(true);
-//     }
-//         const toggledLike = await toggleLike(videoId).unwrap()
-//         setIsLiked(toggledLike.data.liked)
-//       } catch (error) {
-//         setIsLiked(false)
-//         setLike(like - 1)
-//         console.log("error message",error.message)
-//         ToastShow(error.data.message)
-//       }
-
-//   };
   return (
     <ActionSheet 
     id={props.sheetId}

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useGetVideosQuery } from '../redux/api/videoApi';
-import { Video } from '../types/video';
+import { Video } from '../types/video.types';
 
 interface UsePaginatedVideosProps {
   userId?: string;
@@ -9,11 +9,19 @@ interface UsePaginatedVideosProps {
   limit?: number;
 }
 
-export const usePaginatedVideos = ({ userId, search, initialPage = 1 }:UsePaginatedVideosProps) => {
+export const usePaginatedVideos = ({
+  userId,
+  search,
+  initialPage = 1,
+}: UsePaginatedVideosProps) => {
   const [page, setPage] = useState(initialPage);
   const [videos, setVideos] = useState<Video[]>([]);
 
-  const { data, isLoading, isFetching, refetch } = useGetVideosQuery({ page, userId, search });
+  const { data, isLoading, isFetching, refetch } = useGetVideosQuery({
+    page,
+    userId,
+    search,
+  });
 
   useEffect(() => {
     if (page === 1) {
@@ -46,6 +54,6 @@ export const usePaginatedVideos = ({ userId, search, initialPage = 1 }:UsePagina
     page,
     handleLoadMore,
     handleRefresh,
-    totalVideos:data?.totalDocs
+    totalVideos: data?.totalDocs,
   };
 };

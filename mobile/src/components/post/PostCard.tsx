@@ -16,7 +16,6 @@ const PostCard = ({item}:videoProp) => {
                 url:uri || "",
                 timeStamp:100,
             }).then(response=>{
-                console.log(response)
                 navigate("UploadVideo",{
                     thumb_uri:response.path,
                     file_uri:uri
@@ -32,7 +31,6 @@ const PostCard = ({item}:videoProp) => {
                 url:fileData?.node?.image?.filepath || "",
                 timeStamp:100,
             }).then(response=>{
-                console.log(response)
                 navigate("UploadVideo",{
                     thumb_uri:response.path,
                     file_uri:uri

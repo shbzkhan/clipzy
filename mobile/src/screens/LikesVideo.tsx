@@ -13,7 +13,7 @@ const LikesVideo = () => {
     const user = useSelector((state: RootState) => state.user.user);
       const {data, isLoading, isFetching, refetch} =useLikedVideoQuery()
   return (
-    <SafeAreaView className='flex-1 bg-white dark:bg-dark'>
+    <SafeAreaView className='flex-1 px-3 bg-white dark:bg-dark'>
         <CustomHeader title="Liked Videos" />
         <FlatList
               data={!isLoading ? data : [1, 2, 3, 4, 5, 6]}

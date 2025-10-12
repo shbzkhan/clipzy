@@ -16,7 +16,7 @@ interface TweetProps {
     _id: string;
     content: string;
     isLiked: boolean;
-    likeCount: number;
+    likeCount?: number;
     owner: {
       _id: string;
       username: string;
@@ -33,8 +33,8 @@ const TweetCard: FC<TweetProps> = ({
 }) => {
   const { user } = useSelector((state: RootState) => state.user);
   const [content, setContent] = useState(tweetCreator ? '' : item.content);
-  const [like, setLike] = useState(item.likeCount);
-    const [isLiked, setIsLiked] = useState(item.isLiked);
+  const [like, setLike] = useState(tweetCreator ? 0 :item.likeCount);
+  const [isLiked, setIsLiked] = useState(tweetCreator ? false :item.isLiked);
   const [updateContent, setUpdateContent] = useState(false);
   const [createTweet] = useCreateTweetMutation();
   const [updateTweet, { isLoading }] = useUpdateTweetMutation();
@@ -88,11 +88,10 @@ const TweetCard: FC<TweetProps> = ({
           setIsLiked(true);
         }
         const toggledTweetLike = await toggleTweetLike(item._id).unwrap();
-        console.log("Toggle Liked",toggledTweetLike)
         setIsLiked(toggledTweetLike.data.liked);
       } catch (error) {
         setIsLiked(false);
-        setLike(like - 1);
+        // setLike(like - 1);
         ToastShow(error.data.message);
       }
     };
@@ -109,7 +108,10 @@ const TweetCard: FC<TweetProps> = ({
           <Text className="text-sm text-gray-600 font-rubik-bold dark:text-gray-300">
             {!tweetCreator ? item.owner.username.slice(0,12) : user?.username.slice(0,12)}
           </Text>
+          {
+            !tweetCreator &&
           <Text className="text-xs text-gray-400 font-rubik-medium dark:text-gray-300">•   {like} likes</Text>
+          }
         </View>
         {!tweetCreator && user?._id === item.owner._id && (
           <View className="flex-row gap-5">

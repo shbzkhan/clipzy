@@ -27,15 +27,6 @@ const UploadVideo = () => {
   const [caption, setCaption] = useState<string>("")
 
 
-  // useEffect(() => {
-  //   console.log("Upload Loading", isLoading)
-  //   dispatch(uploadPost({
-  //     isUploading:isLoading,
-  //     imageUrl: item.thumb_uri,
-  //     title: caption ,
-  //   }));
-  // }, [isLoading]);
-
   const handleVideoUpload = async()=>{
     if(caption.trim()===""){
       return ToastShow("Title is required","danger")
@@ -57,7 +48,6 @@ const UploadVideo = () => {
     try {
           pop(2)
           const uploaded = await videoUpload(formData).unwrap()
-          console.log("video upload ",uploaded)
           ToastShow(uploaded.message)
     } catch (error) {
       ToastShow(error?.data?.message,"danger")

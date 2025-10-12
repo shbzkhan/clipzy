@@ -1,5 +1,6 @@
 import { createApi} from "@reduxjs/toolkit/query/react";
 import customBaseQuery from "../middleware/header";
+import { CreateTweetsResponse, DeleteTweetsResponse, GetTweetsResponse, UpdateTweetsResponse } from "../../types/tweet.types";
 
 
 export const tweetApi = createApi({
@@ -9,14 +10,14 @@ export const tweetApi = createApi({
     endpoints:(builder)=>({
        
         //user tweets
-        userTweet :builder.query<any, {userId:string}>({
+        userTweet :builder.query<GetTweetsResponse, {userId:string}>({
             query:({userId})=> `user/${userId}`,
             transformResponse: (response: { data: any }) => response.data,
             providesTags:["Tweet"]
         }),
 
         //create
-        createTweet: builder.mutation<any,{content:string}>({
+        createTweet: builder.mutation<CreateTweetsResponse,{content:string}>({
             query:({content})=> ({
                 url:"",
                 method:"POST",
@@ -25,7 +26,7 @@ export const tweetApi = createApi({
             invalidatesTags:['Tweet']
         }),
         //update
-        updateTweet: builder.mutation<any,{tweetId:string, content:string}>({
+        updateTweet: builder.mutation<UpdateTweetsResponse,{tweetId:string, content:string}>({
             query:({tweetId, content})=> ({
                 url:`${tweetId}`,
                 method:"PATCH",
@@ -34,7 +35,7 @@ export const tweetApi = createApi({
             invalidatesTags:['Tweet']
         }),
         //delete
-        deleteTweet: builder.mutation<any,{tweetId:string}>({
+        deleteTweet: builder.mutation<DeleteTweetsResponse,{tweetId:string}>({
             query:({tweetId})=> ({
                 url:`${tweetId}`,
                 method:"DELETE"

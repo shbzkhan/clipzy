@@ -14,7 +14,6 @@ const Tweet = () => {
   const { user } = useSelector((state: RootState) => state.user);
   const [isCreateTweet, setIsCreateTweet] = useState(false);
   const { data, isLoading } = useUserTweetQuery({ userId: user?._id });
-  console.log(data);
 
   if (isLoading) {
     return <GlobalLoader />;
@@ -32,7 +31,7 @@ const Tweet = () => {
         ListHeaderComponent={
           <View className="gap-6">
             <TouchableOpacity
-              className="p-3 border-2 rounded-md border-secondary dark:border-dark-100 flex-row justify-between items-center"
+              className="flex-row items-center justify-between p-3 border-2 rounded-md border-secondary dark:border-dark-100"
               onPress={() => setIsCreateTweet(!isCreateTweet)}
             >
               <Text className="text-lg font-rubik dark:text-white">

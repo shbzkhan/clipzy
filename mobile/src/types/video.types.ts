@@ -54,3 +54,12 @@ export interface WatchHistory{
   message: string;
   success: boolean;
 }
+
+export interface VideoUploadData{
+  title:string
+  videoFile:string
+  thumbnail:string
+}
+export interface VideoUpdateData extends VideoUploadData{
+  description:string
+}

@@ -1,5 +1,5 @@
 import { Text, TouchableOpacity, Pressable, View } from 'react-native';
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import UserLogo from './UserLogo';
 import SubscribedButton from './SubscribedButton';
 import { navigate } from '../navigation/NavigationUtils';
@@ -8,9 +8,19 @@ import { ToastShow } from '../utils/Tost';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 
-const ChannelBox = ({ item }) => {
+export interface ChannelUser {
+  item:{
+  _id: string;
+  username: string;
+  fullname?: string;
+  avatar: string;
+  isSubscribed: boolean;
+  subscribersCount?: number;
+}
+}
+
+const ChannelBox:FC<ChannelUser> = ({ item }) => {
   const { user } = useSelector((state: RootState) => state.user);
-  console.log('channelbox', item);
   const [isConnected, setIsConnected] = useState(item.isSubscribed);
   const [toggleConnetion] = useToggleConnetionMutation();
 
@@ -22,11 +32,9 @@ const ChannelBox = ({ item }) => {
         setIsConnected(true);
       }
       const toggledConnection = await toggleConnetion(item._id).unwrap();
-      console.log('toggled Connection', toggledConnection);
       setIsConnected(toggledConnection.data.subscribed);
     } catch (error) {
       setIsConnected(false);
-      console.log('error message', error.message);
       ToastShow(error.data.message);
     }
   };

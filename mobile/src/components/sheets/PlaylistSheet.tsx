@@ -36,7 +36,6 @@ const PlaylistSheet = (props: SheetProps<'playlist-sheet'>) => {
         videoId: sheet_id,
         playlistId: isSelected,
       }).unwrap();
-      console.log('video add in playlist ', addedVideoPlaylist);
       SheetManager.hide(props.sheetId);
       ToastShow(addedVideoPlaylist.message);
       setSelection(null);

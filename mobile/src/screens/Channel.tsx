@@ -41,7 +41,6 @@ const Channel = () => {
   if (channelVideoLoading || channelLoading) {
     return <GlobalLoader />;
   }
-  console.log('channel DAta', channelData);
   return (
     <Tabs.Container
       renderHeader={() => (

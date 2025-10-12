@@ -32,7 +32,6 @@ const UserDetail = () => {
   const user = useSelector((state: RootState) => state.user.user);
   const dispatch = useDispatch();
 
-  console.log(user);
   const [fullname, setFullname] = useState<string | undefined>(user?.fullname);
   const [avatarImage, setAvatarImaage] = useState<string>(user?.avatar);
   const [coverImg, setCoverImg] = useState<string | null>(user?.coverImage);
@@ -53,14 +52,12 @@ const UserDetail = () => {
       compressImageQuality: 0.8,
       mediaType: 'photo',
     }).then(image => {
-      console.log(image.path);
       setAvatarImaage(image.path);
       setEditAvatar(true);
       handleAvatarChange(image.path);
     });
   };
   const handleAvatarChange = async (imgUri: string) => {
-    console.log('imageUri', imgUri);
     const formData = new FormData();
     formData.append('avatar', {
       uri: imgUri,
@@ -87,7 +84,6 @@ const UserDetail = () => {
       compressImageQuality: 0.8,
       mediaType: 'photo',
     }).then(image => {
-      console.log(image.path);
       setCoverImg(image.path);
       handleCoverChange(image.path);
     });
@@ -102,7 +98,6 @@ const UserDetail = () => {
     });
     try {
       const updateCover = await coverImage(formData).unwrap();
-      console.log('coverUpdate', updateCover);
       dispatch(userData({ ...user, coverImage: imageUri }));
       ToastShow(updateCover.message);
     } catch (error) {
@@ -115,12 +110,10 @@ const UserDetail = () => {
   const handleChangeAccountDetails = async () => {
     try {
       const updatedAccountDetails = await changeAccountDetails({ fullname }).unwrap()
-      console.log(updatedAccountDetails)
       ToastShow(updatedAccountDetails.message);
       dispatch(userData({ ...user, fullname: updatedAccountDetails.data.fullname }));
       setEditable(false)
     } catch (error) {
-      console.log('error ', error);
       ToastShow(error.data.message);
     }
   };

@@ -12,7 +12,6 @@ import { usePaginatedVideos } from '../hooks/usePaginatedVideos';
 const YourVideo = () => {
   const user = useSelector((state: RootState) => state.user.user);
   const { videos, isLoading, handleLoadMore, isFetching, page } = usePaginatedVideos({userId:user?._id});
-  console.log(videos)
 
   return (
     <SafeAreaView className="flex-1 px-3 bg-white dark:bg-dark">

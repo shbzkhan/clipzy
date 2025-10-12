@@ -33,11 +33,9 @@ const [refreshAccessToken,{isLoading:refreshTokenLoading}] = useRefreshAccessTok
           if(decodedAcesssToken?.exp < currentTime){
             try {
               const updatedRefreshToken = await refreshAccessToken({refreshToken:refresh_token})
-              console.log("updatedRefreshToken ", updatedRefreshToken)
               await AsyncStorage.setItem("access-token", updatedRefreshToken?.data?.data.accessToken)
               await AsyncStorage.setItem("refresh-token", updatedRefreshToken?.data?.data.refreshToken)
             } catch (error) {
-              console.log("Occure error when refresh token ", error)
               resetAndNavigate("WelcomeScreen")
               return
             }

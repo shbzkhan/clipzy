@@ -1,6 +1,7 @@
 import { createApi} from "@reduxjs/toolkit/query/react";
 
 import customBaseQuery from "../middleware/header";
+import { LikedVideoReponse, LikeResponse } from "../../types/like.types";
 
 
 export const likeApi = createApi({
@@ -8,7 +9,7 @@ export const likeApi = createApi({
     baseQuery:customBaseQuery("likes/"),
     endpoints:(builder)=>({
         //toggle like of video
-        toggleLike: builder.mutation<any,string>({
+        toggleLike: builder.mutation<LikeResponse,string>({
             query:(videoId)=> ({
                 url:`toggle/v/${videoId}`,
                 method:"POST",
@@ -16,13 +17,13 @@ export const likeApi = createApi({
         }),
 
         // all liked video
-        likedVideo: builder.query<any, void>({
+        likedVideo: builder.query<LikedVideoReponse, void>({
                     query: () => "videos",
                     transformResponse: (response: { data: any}) => response.data,
     }),
 
     //toggle like of comment
-        toggleCommentLike: builder.mutation<any,string>({
+        toggleCommentLike: builder.mutation<LikeResponse,string>({
             query:(commentId)=> ({
                 url:`toggle/c/${commentId}`,
                 method:"POST",
@@ -30,7 +31,7 @@ export const likeApi = createApi({
         }),
 
         //toggle like of tweet
-        toggleTweetLike: builder.mutation<any,string>({
+        toggleTweetLike: builder.mutation<LikeResponse,string>({
             query:(tweetId)=> ({
                 url:`toggle/t/${tweetId}`,
                 method:"POST",

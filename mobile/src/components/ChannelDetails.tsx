@@ -22,11 +22,9 @@ const ChannelHeader =({user, totalVideos})=>{
           setIsConnected(true);
         }
          const toggledConnection = await toggleConnetion(user._id).unwrap()
-         console.log("toggled Connection", toggledConnection)
          setIsConnected(toggledConnection.data.subscribed)
         } catch (error) {
           setIsConnected(false)
-          console.log("error message",error.message)
           ToastShow(error.data.message)
         }
       }

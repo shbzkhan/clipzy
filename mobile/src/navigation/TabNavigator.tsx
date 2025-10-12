@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../screens/Home';
 import Subscriptions from '../screens/Following';
 import Profile from '../screens/Profile';
-import { TabNavigatorParamList } from '../types';
+import { TabNavigatorParamList } from '../types/index.types';
 import Icon from '../constants/Icons';
 import { Image, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -37,7 +37,6 @@ const TabNavigator = () => {
   const user = useSelector((state:any)=>state.user.user)
 
   if(currentDataLoading && userLoading){
-    console.log("loading work")
     return <GlobalLoader/>
   }
   return (

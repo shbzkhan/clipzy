@@ -8,7 +8,6 @@ import EmptyState from '../components/EmptyState'
 
 const WatchHistory = () => {
   const {data, isLoading, isFetching, refetch} = useWatchHistoryQuery()
-  console.log('watch  history', data)
   return (
     <SafeAreaView className='flex-1 px-3 bg-white dark:bg-dark'>
      <CustomHeader title='Watch Historys' />

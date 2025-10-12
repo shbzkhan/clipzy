@@ -12,7 +12,6 @@ import GlobalLoader from '../components/GlobalLoader'
 const Connections = () => {
     const {user} = useSelector((state:RootState)=>state.user)
     const {data, isLoading} = useFollowersConnetionsQuery(user?._id)
-      console.log("connection",data)
     if(isLoading){
         return <GlobalLoader/>
     }

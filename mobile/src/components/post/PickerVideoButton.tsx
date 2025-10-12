@@ -14,7 +14,6 @@ const PickerVideoButton = () => {
       includeExtra: true,
     })
       .then(res => {
-        console.log(res);
         createThumbnail({
           url: res.assets![0].uri || '',
           timeStamp: 100,

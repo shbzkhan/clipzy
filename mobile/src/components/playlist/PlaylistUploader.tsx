@@ -63,7 +63,6 @@ const PlaylistUploader:FC<playlsitUploaderProps> = ({isCreatePlaylist, setIsCrea
     try {
       const uploadData = await createPlaylist(form).unwrap()
       handleCreatePlaylistDisable()
-      console.log("video upload ",uploadData.data)
       ToastShow(uploadData.message)
     } catch (err) {
       ToastShow(err?.data?.message,"danger")
@@ -74,29 +73,23 @@ const PlaylistUploader:FC<playlsitUploaderProps> = ({isCreatePlaylist, setIsCrea
   const handleUpdatePlaylist = async (playlistId:string | null)=>{
     setError("")
     try {
-      console.log("uploading start")
       const updatedData = await updatePlaylist({id:playlistId, formData:form}).unwrap()
       handleCreatePlaylistDisable()
-      console.log("video upload ",updatedData.data)
       ToastShow(updatedData.message)
     } catch (err) {
       ToastShow(err?.data?.message,"danger")
       setError(err?.data?.message)
-      console.log("failed", errr)
     }
   }
-  const handleDeletePlaylist = async (playlistId:string | null)=>{
+  const handleDeletePlaylist = async (playlistId:string)=>{
     setError("")
     try {
-      console.log("uploading start")
       const deletedData = await deletePlaylist(playlistId).unwrap()
       handleCreatePlaylistDisable()
-      console.log("video upload ",deletedData.data)
       ToastShow(deletedData.message)
     } catch (err) {
       ToastShow(err?.data?.message,"danger")
       setError(err?.data?.message)
-      console.log("failed", errr)
     }
   }
   

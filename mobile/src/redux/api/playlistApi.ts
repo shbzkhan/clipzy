@@ -1,8 +1,8 @@
+import { createApi } from "@reduxjs/toolkit/query/react";
 import { formDataProps } from './../../components/playlist/PlaylistUploader';
-import { createApi} from "@reduxjs/toolkit/query/react";
 
+import { AddVideoToPlaylistResponse, CreatedPlaylistsResponse, DeletedPlaylistResponse, DeletedVideoToPlaylistResponse, GetPlaylistByIdResponse, GetPlaylistsResponse, UpdatedPlaylistsResponse } from "../../types/playlist.types";
 import customBaseQuery from "../middleware/header";
-import { PlaylistProps, PlaylistResponse } from "../../types/playlist";
 
 
 export const playlistApi = createApi({
@@ -12,13 +12,13 @@ export const playlistApi = createApi({
     endpoints:(builder)=>({
        
         //user playlist
-        userPlaylist :builder.query<PlaylistProps, {userId:string}>({
+        userPlaylist :builder.query<GetPlaylistsResponse, {userId:string}>({
             query:({userId})=> `user/${userId}`,
             providesTags:["PlaylistFetch"]
         }),
 
         //create
-        createPlaylist: builder.mutation<PlaylistProps,formDataProps>({
+        createPlaylist: builder.mutation<CreatedPlaylistsResponse,formDataProps>({
             query:(formData)=> ({
                 url:"",
                 method:"POST",
@@ -28,7 +28,7 @@ export const playlistApi = createApi({
         }),
 
         //update playlist
-        updatePlaylist: builder.mutation<PlaylistProps,{id:string | null, formData:formDataProps}>({
+        updatePlaylist: builder.mutation<UpdatedPlaylistsResponse,{id:string | null, formData:formDataProps}>({
             query:({id, formData})=> ({
                 url:`${id}`,
                 method:"PATCH",
@@ -38,7 +38,7 @@ export const playlistApi = createApi({
         }),
 
         //delet playlist
-        deletePlaylist: builder.mutation<PlaylistProps,{id:string | null}>({
+        deletePlaylist: builder.mutation<DeletedPlaylistResponse,{id:string | null}>({
             query:(id)=> ({
                 url:`${id}`,
                 method:"DELETE",
@@ -47,20 +47,20 @@ export const playlistApi = createApi({
         }),
 
         //playlist by id
-        playlistById :builder.query<PlaylistProps, {playlistId:string}>({
+        playlistById :builder.query<GetPlaylistByIdResponse, {playlistId:string}>({
             query:({playlistId})=> `${playlistId}`,
             providesTags:['videoFromPlaylist']
         }),
 
         // video of playlist
-        playlistAddVideo: builder.mutation<PlaylistResponse,{videoId:string, playlistId:string}>({
+        playlistAddVideo: builder.mutation<AddVideoToPlaylistResponse,{videoId:string, playlistId:string}>({
             query:({videoId, playlistId})=> ({
                 url:`add/${videoId}/${playlistId}`,
                 method:"PATCH",
             }),
             invalidatesTags:["videoFromPlaylist"]
         }),
-        playlistDeleteVideo: builder.mutation<PlaylistResponse,{videoId:string, playlistId:string}>({
+        playlistDeleteVideo: builder.mutation<DeletedVideoToPlaylistResponse,{videoId:string, playlistId:string}>({
             query:({videoId, playlistId})=> ({
                 url:`remove/${videoId}/${playlistId}`,
                 method:"PATCH",

@@ -44,7 +44,6 @@ const PostUpdate = () => {
       compressImageQuality: 0.8,
       mediaType: 'photo',
     }).then(image => {
-      console.log(image.path);
       setThumbnail(image.path);
     });
   };
@@ -64,11 +63,9 @@ const PostUpdate = () => {
     }
     try {
       const updateVideo = await videoUpdate({ video_id, formData }).unwrap();
-      console.log('updatedVideo', updateVideo);
       ToastShow(updateVideo.message);
       goBack()
     } catch (error) {
-      console.log('error ', error);
       ToastShow(error.data.message, 'danger');
     }
   };

@@ -29,7 +29,6 @@ const [googleLogin,{isLoading}] = useGoogleLoginMutation()
     }
       const userLoggedIn = await googleLogin({idToken}).unwrap()
           ToastShow(userLoggedIn.message, "success")
-          console.log(userLoggedIn)
           dispatch(userData(userLoggedIn.data.user))
           await AsyncStorage.setItem("token", userLoggedIn.data.accessToken)
     } catch (e: any) {
@@ -43,10 +42,10 @@ const [googleLogin,{isLoading}] = useGoogleLoginMutation()
     <SafeAreaView className={`flex-1 ${isLoading ?"bg-white":"bg-primary-50"}  justify-center items-center px-4 dark:bg-dark`}>
         {
           !isLoading ?(
-            <View className='justify-center items-center gap-4'>
+            <View className='items-center justify-center gap-4'>
             <Icon name='Lock' color='#3B82FE' size={70} />
-            <Text className='font-extrabold text-3xl dark:text-white'>Welcome to {name}</Text>
-            <Text className='font-medium text-gray-400 px-12 text-center leading-6'>Log in or sign up to unlock personalized feature, watch history, video and manage your account</Text>
+            <Text className='text-3xl font-extrabold dark:text-white'>Welcome to {name}</Text>
+            <Text className='px-12 font-medium leading-6 text-center text-gray-400'>Log in or sign up to unlock personalized feature, watch history, video and manage your account</Text>
             <CustomButton
             icon={ImageIcon.google}
             title='Login with Google'
