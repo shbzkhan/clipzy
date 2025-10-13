@@ -46,6 +46,9 @@ const userSchema = new Schema(
     googleId: {
       type: String,
     },
+    fcmToken:{
+      type:String
+    }
   },
   {
     timestamps: true,

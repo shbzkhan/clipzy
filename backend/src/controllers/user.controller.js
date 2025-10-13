@@ -72,7 +72,8 @@ const userRegister = asyncHandler(async (req, res) => {
         password,
         fullname,
         avatar: `https://api.dicebear.com/9.x/initials/png?seed=${fullname}`,
-        coverImage:""
+        coverImage:"",
+        fcmToken:""
     })
 
     const createdUser = await User.findOne(user._id).select("-password -refreshToken")
@@ -93,7 +94,7 @@ const loginUser = asyncHandler(async (req, res) => {
     //generate access and refress token
     //cookies me store karenge
     //return res
-    const { email, password } = req.body
+    const { email, password, fcmToken } = req.body
     
     if (!email) {
         throw new apiError(400, "email are required")
@@ -109,6 +110,11 @@ const loginUser = asyncHandler(async (req, res) => {
 
     if (!validatePassword) {
         throw new apiError(401, "Invalid user credantials");
+    }
+
+    if (fcmToken && user.fcmToken !== fcmToken) {
+          user.fcmToken = fcmToken;
+          await user.save({ validateBeforeSave: false });
     }
 
     const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id)
@@ -135,7 +141,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
 //google login
 const goolgeLogin = asyncHandler(async (req, res)=>{
-    const { idToken } = req.body
+    const { idToken, fcmToken } = req.body
     if(!idToken){
         throw new apiError(400, "id-token is required")
     }
@@ -161,15 +167,22 @@ const goolgeLogin = asyncHandler(async (req, res)=>{
             fullname:payload.name,
             email:payload.email,
             avatar:payload.picture,
-            username
+            username,
+            fcmToken
         })
+    }else{
+        if (fcmToken && user.fcmToken !== fcmToken) {
+          user.fcmToken = fcmToken;
+          await user.save({ validateBeforeSave: false });
+        }
     }
-
+    
     const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id)
 
     const loginUser = await User.findById(user._id).select(
       "-password -refreshToken -watchHistory"
     )
+    
     const options ={
         httpOnly: true,
         secure: true

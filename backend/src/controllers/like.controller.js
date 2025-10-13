@@ -3,6 +3,9 @@ import {Like} from "../models/like.model.js"
 import {apiError} from "../utils/ApiError.js"
 import {apiResponse} from "../utils/ApiResponse.js"
 import {asyncHandler} from "../utils/asyncHandler.js"
+import { Video } from "../models/video.model.js"
+import { User } from "../models/user.model.js"
+import { sendNotificationToDevice } from "../utils/sendNotificationToDevice.js"
 
 const toggleVideoLike = asyncHandler(async (req, res) => {
     const {videoId} = req.params
@@ -10,6 +13,10 @@ const toggleVideoLike = asyncHandler(async (req, res) => {
         throw new apiError(400, 'Invalid video id')
     }
 
+     const videoData = await Video.findById(videoId).populate("owner", "fullname username fcmToken");
+    if (!videoData) {
+        throw new apiError(404, "Video not found");
+    }
     const isLike = await Like.findOne({
         likedBy:req.user._id,
         video: videoId
@@ -29,7 +36,18 @@ const toggleVideoLike = asyncHandler(async (req, res) => {
         likedBy:req.user._id,
         video:videoId
     })
-
+      const liker = await User.findById(req.user._id).select("fullname username");
+    if (videoData.owner._id.toString() !== req.user._id.toString()) {
+    if (videoData.owner.fcmToken) {
+      await sendNotificationToDevice({
+        token: videoData.owner.fcmToken,
+        title: liker.username,
+        body: `${liker.fullname} liked your video,`,
+        imageUrl:videoData.thumbnail
+        
+      });
+    }
+  }
     return res
             .status(201)
             .json(
