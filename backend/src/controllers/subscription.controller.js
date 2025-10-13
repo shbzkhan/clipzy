@@ -1,7 +1,7 @@
 import mongoose, { isValidObjectId } from "mongoose";
 import { User } from "../models/user.model.js";
 import { Subscription } from "../models/subscription.model.js";
-import { ApiError } from "../utils/ApiError.js";
+import { ApiError } from "../utils/ApiError.js
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { sendNotificationToDevice } from "../utils/sendNotificationToDevice.js";
@@ -29,9 +29,7 @@ const toggleSubscription = asyncHandler(async (req, res) => {
     channel: channelId,
   });
 
-  const subscriber = await User.findById(req.user._id).select(
-    "fullname username"
-  );
+
   const channelOwner = await User.findById(channelId).select(
     "fcmToken fullname, username"
   );
@@ -40,8 +38,8 @@ const toggleSubscription = asyncHandler(async (req, res) => {
     console.count("sendNotificationToDevice called");
     await sendNotificationToDevice({
       token: channelOwner.fcmToken,
-      title: subscriber.username,
-      body: `${subscriber.fullname} follow to your channel ${channelOwner.username}.`,
+      title: req.user.username,
+      body: `${req.user.fullname} follow to your channel ${channelOwner.username}.`,
     });
   }
 

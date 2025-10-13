@@ -37,13 +37,12 @@ const toggleVideoLike = asyncHandler(async (req, res) => {
     likedBy: req.user._id,
     video: videoId,
   });
-  const liker = await User.findById(req.user._id).select("fullname username");
   if (videoData.owner._id.toString() !== req.user._id.toString()) {
     if (videoData.owner.fcmToken) {
       await sendNotificationToDevice({
         token: videoData.owner.fcmToken,
-        title: liker.username,
-        body: `${liker.fullname} liked your video,`,
+        title: req.user.username,
+        body: `${req.user.fullname} liked your video,`,
         imageUrl: videoData.thumbnail,
       });
     }

@@ -3,10 +3,10 @@ import jwt from "jsonwebtoken"
 import {User} from "../models/user.model.js"
 import { asyncHandler } from "../utils/asyncHandler.js"
 import { deleteOnCloudinary, updateOnCloudinary, uploadOnCloudinary } from "../utils/cloudinary.js";
-import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import {OAuth2Client} from "google-auth-library"
 import { generateUniqueUsername } from "../utils/usernameGenrator.js";
+import { ApiError } from "../utils/ApiError.js";
 
 //googleClientId
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
