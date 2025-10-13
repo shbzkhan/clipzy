@@ -8,10 +8,13 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-import fs from "fs";
-const serviceAccount = JSON.parse(
-  fs.readFileSync(path.join(__dirname, "./utils/serviceAccountKey.json"), "utf8")
-);
+// import fs from "fs";
+// const serviceAccount = JSON.parse(
+//   fs.readFileSync(path.join(__dirname, "./utils/serviceAccountKey.json"), "utf8")
+// );
+
+const serviceAccountJSON = Buffer.from(process.env.GOOGLE_SERVICE_KEY, "base64").toString("utf8");
+const serviceAccount = JSON.parse(serviceAccountJSON);
 
 admin.initializeApp({
     credential:admin.credential.cert(serviceAccount)
@@ -28,20 +31,6 @@ app.use(cors({
     credentials: true
 }))
 
-// app.post("/api/v1/send-notification", async (req, res) => {
-//   const { token, title, body, imageUrl } = req.body;
-//   try {
-//     sendNotificationToDevice({
-//       token,
-//       title,
-//       body,
-//       imageUrl
-//     })
-//     res.status(200).json({ success: true, response });
-//   } catch (error) {
-//     res.status(500).json({ success: false, error });
-//   }
-// });
 
 //import route statement
 import userRouter from "./routes/user.routes.js"
