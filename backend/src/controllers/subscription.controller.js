@@ -1,8 +1,8 @@
 import mongoose, { isValidObjectId } from "mongoose";
 import { User } from "../models/user.model.js";
 import { Subscription } from "../models/subscription.model.js";
-import { apiError } from "../utils/ApiError.js";
-import { apiResponse } from "../utils/ApiResponse.js";
+import { ApiError } from "../utils/ApiError.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { sendNotificationToDevice } from "../utils/sendNotificationToDevice.js";
 
@@ -10,7 +10,7 @@ const toggleSubscription = asyncHandler(async (req, res) => {
   console.count("toggleSubscription called");
   const { channelId } = req.params;
   if (!isValidObjectId(req.user._id)) {
-    throw new apiError(400, "Invalid User ID");
+    throw new ApiError(400, "Invalid User ID");
   }
 
   const isSubscribed = await Subscription.findOne({
@@ -21,7 +21,7 @@ const toggleSubscription = asyncHandler(async (req, res) => {
     await Subscription.findByIdAndDelete(isSubscribed._id);
     return res
       .status(200)
-      .json(new apiResponse(200, { subscribed: false }, "Unsubscribed"));
+      .json(new ApiResponse(200, { subscribed: false }, "Unsubscribed"));
   }
 
   await Subscription.create({
@@ -47,14 +47,14 @@ const toggleSubscription = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new apiResponse(200, { subscribed: true }, "Subscribed"));
+    .json(new ApiResponse(200, { subscribed: true }, "Subscribed"));
 });
 
 // controller to return subscriber list of a channel
 const getUserChannelSubscribers = asyncHandler(async (req, res) => {
   let { channelId } = req.params;
   if (!isValidObjectId(channelId)) {
-    throw new apiError(400, "Invalid Channel ID");
+    throw new ApiError(400, "Invalid Channel ID");
   }
   channelId = new mongoose.Types.ObjectId(channelId);
   const subscribers = await Subscription.aggregate([
@@ -117,13 +117,13 @@ const getUserChannelSubscribers = asyncHandler(async (req, res) => {
   ]);
 
   if (!subscribers) {
-    throw new apiError(404, "Subscribers not found");
+    throw new ApiError(404, "Subscribers not found");
   }
 
   return res
     .status(200)
     .json(
-      new apiResponse(200, subscribers, "Subscribers fetched successfully")
+      new ApiResponse(200, subscribers, "Subscribers fetched successfully")
     );
 });
 
@@ -190,13 +190,13 @@ const getSubscribedChannels = asyncHandler(async (req, res) => {
   ]);
 
   if (!subscribedChannels) {
-    throw new apiError(404, "Subscribed Channels not found");
+    throw new ApiError(404, "Subscribed Channels not found");
   }
 
   return res
     .status(200)
     .json(
-      new apiResponse(
+      new ApiResponse(
         200,
         subscribedChannels,
         "Subscribed Channel fetched successfully"
