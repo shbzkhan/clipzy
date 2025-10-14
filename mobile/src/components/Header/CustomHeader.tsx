@@ -5,12 +5,14 @@ import { goBack } from '../../navigation/NavigationUtils'
 
 const CustomHeader = ({title}:{title:string}) => {
   return (
-    <View className='py-4 flex-row items-center gap-[24%]'>
+    <View className='relative flex-row items-center py-4'>
         <TouchableOpacity onPress={()=>goBack()}>
         <Icon name='ChevronLeft' color='#2563EB' size={35}
         />
         </TouchableOpacity>
-            <Text className=' font-extrabold text-2xl text-center dark:text-white'>{title}</Text>
+        <View className='absolute items-center justify-center w-full'>
+            <Text className='text-2xl font-extrabold text-center dark:text-white'>{title}</Text>
+        </View>
     </View>
   )
 }

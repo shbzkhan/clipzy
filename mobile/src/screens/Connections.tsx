@@ -17,7 +17,7 @@ const Connections = () => {
     }
   return (
     <SafeAreaView className='flex-1 px-3 bg-white dark:bg-dark'>
-        <CustomHeader title=' Connections'/>
+        <CustomHeader title='Connections'/>
          <FlatList
          data={data}
          keyExtractor={item=>item._id}
