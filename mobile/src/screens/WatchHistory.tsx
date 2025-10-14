@@ -10,7 +10,7 @@ const WatchHistory = () => {
   const {data, isLoading, isFetching, refetch} = useWatchHistoryQuery()
   return (
     <SafeAreaView className='flex-1 px-3 bg-white dark:bg-dark'>
-     <CustomHeader title='Watch Historys' />
+     <CustomHeader title='Watch History' />
         <FlatList
             data={!isLoading?data?.data:[1,2,3,4,5,6,7,8,9]}
             keyExtractor={(video, index) =>!isLoading?video?._id:index.toString()}
