@@ -1,7 +1,8 @@
 import { ApiResponse } from './auth.types';
 export interface LoginUser {
     email:string
-    password:string
+    password:string,
+    fcmToken:string 
 }
 export interface RegisterUser extends LoginUser {
     fullname:string

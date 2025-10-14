@@ -21,6 +21,7 @@ const dispatch = useDispatch();
 const [googleLogin,{isLoading}] = useGoogleLoginMutation()
 
    const handleGoogle = async () => {
+    const fcmToken = await AsyncStorage.getItem("fcmToken");
     try {
       await GoogleSignin.hasPlayServices();
       await GoogleSignin.signOut()
@@ -29,7 +30,7 @@ const [googleLogin,{isLoading}] = useGoogleLoginMutation()
     if (!idToken) {
       return;
     }
-      const userLoggedIn = await googleLogin({idToken}).unwrap()
+      const userLoggedIn = await googleLogin({idToken, fcmToken}).unwrap()
       console.log("login data", userLoggedIn.data)
           ToastShow(userLoggedIn.message, "success")
           console.log(userLoggedIn)

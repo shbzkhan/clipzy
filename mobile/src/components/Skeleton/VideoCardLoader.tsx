@@ -1,21 +1,24 @@
 import { useColorScheme } from 'nativewind'
-import { View } from 'react-native'
+import { Dimensions, View } from 'react-native'
 import LinearGradient from "react-native-linear-gradient"
 import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder'
 
 const VideoCardLoader = () => {
-  const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient)
+  const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient);
   const { colorScheme } = useColorScheme()
+  const { width: SCREEN_WIDTH } = Dimensions.get('window')
 
   const shimmerColors =
     colorScheme === 'dark'
       ? ['#22313F', '#506A85', '#22313F'] 
       : ['#ebebeb', '#c5c5c5', '#ebebeb'] 
 
+       const thumbnailHeight = SCREEN_WIDTH * 9 / 16
   return (
     <View className="gap-4">
       <ShimmerPlaceholder
-        style={{ width: '100%', height: 200 }}
+        visible={false}
+        style={{ width: SCREEN_WIDTH,  height: thumbnailHeight, }}
         shimmerColors={shimmerColors}
       />
 

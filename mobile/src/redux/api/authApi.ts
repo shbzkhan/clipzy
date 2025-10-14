@@ -36,11 +36,11 @@ export const authApi = createApi({
         body: user,
       }),
     }),
-    googleLogin: builder.mutation<LoginUserResponse, { idToken: string }>({
-      query: ({ idToken }) => ({
+    googleLogin: builder.mutation<LoginUserResponse, { idToken: string, fcmToken:string }>({
+      query: ({ idToken, fcmToken }) => ({
         url: 'google-login',
         method: 'POST',
-        body: { idToken },
+        body: { idToken, fcmToken },
       }),
     }),
     refreshAccessToken: builder.mutation<

@@ -31,8 +31,9 @@ const Login = () => {
   const dispatch = useDispatch();
 
   const handleLogin = async (user: LoginUser, { resetForm }: any) => {
+    const fcmToken = await AsyncStorage.getItem("fcmToken");
     try {
-      const userLoggedIn = await login(user).unwrap();
+      const userLoggedIn = await login({...user, fcmToken}).unwrap();
       ToastShow(userLoggedIn.message, 'success');
       dispatch(userData(userLoggedIn.data.user));
       await AsyncStorage.setItem(

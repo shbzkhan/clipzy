@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Image, Dimensions } from 'react-native';
 import React, { FC, useState } from 'react';
 import Icon from '../constants/Icons';
 import { navigate } from '../navigation/NavigationUtils';
@@ -34,6 +34,7 @@ const VideoCard: FC<videoCardProps> = ({
 }) => {
   const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient);
   const { colorScheme } = useColorScheme();
+const { width: SCREEN_WIDTH } = Dimensions.get('window')
 
   const shimmerColors =
     colorScheme === 'dark'
@@ -41,6 +42,7 @@ const VideoCard: FC<videoCardProps> = ({
       : ['#ebebeb', '#c5c5c5', '#ebebeb'];
 
   const [thumbLoading, setThumbLoading] = useState(true);
+  const thumbnailHeight = SCREEN_WIDTH * 9 / 16
 
   const handleSheetOpen = (video_id: string, owner_id: string) => {
     SheetManager.show('videoDetails-sheet', {
@@ -62,15 +64,15 @@ const VideoCard: FC<videoCardProps> = ({
       <View className="relative">
         {thumbLoading && (
           <ShimmerPlaceholder
-            style={{ width: '100%', height: 200 }}
             shimmerColors={shimmerColors}
+            style={{ width: SCREEN_WIDTH, height: thumbnailHeight, borderRadius: 8 }}
           />
         )}
         <Image
           source={{ uri: thumbnail }}
           onLoadStart={() => setThumbLoading(true)}
           onLoad={() => setThumbLoading(false)}
-          className="w-full h-[200px]"
+          className="w-full aspect-[16/9]"
           resizeMode="cover"
         />
 

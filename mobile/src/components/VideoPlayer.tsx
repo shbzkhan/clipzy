@@ -66,12 +66,18 @@ useEffect(() => {
     fullscreen ? exitFullscreen() : enterFullscreen();
   };
   return (
-    <View className={`w-full ${fullscreen?"h-screen":"h-[200px]"} relative bg-black`}>
+    <View className={`w-full ${fullscreen?"h-screen":"aspect-[16/9]"} relative bg-black`}>
   <Video
     paused={paushed}
     source={{ uri: data.videoFile}}
-    style={{ width: '100%', height: fullscreen? "100%": 200 }}
-    resizeMode={fullscreen?"contain":"cover"}
+    style={[
+    { width: "100%" },
+    fullscreen
+      ? { height: "100%" }          // when fullscreen = true
+      : { aspectRatio: 16 / 9 }     // when fullscreen = false
+  ]}
+    // resizeMode={fullscreen?"contain":"cover"}
+    resizeMode='contain'
     ref={ref}
     onLoadStart={()=>setLoading(true)}
     onLoad={()=>setLoading(false)}

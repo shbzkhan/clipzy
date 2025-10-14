@@ -34,7 +34,7 @@ const SearchVideo = () => {
       </View>
       <FlatList
         data={!isLoading ? videos : [1, 2, 3, 4]}
-        keyExtractor={video => video._id}
+        keyExtractor={(video, index) => !isLoading ?video._id:index}
         onEndReached={handleLoadMore}
         onEndReachedThreshold={0.5}
         refreshing={isFetching && page === 1 && !isLoading}

@@ -13,6 +13,7 @@ import messaging from '@react-native-firebase/messaging';
 import { requestNotificationPermission } from "./utils/notificationService";
 import { Alert } from "react-native";
 import Orientation from 'react-native-orientation-locker';
+import notifee, { AndroidImportance, AndroidStyle, EventType } from '@notifee/react-native';
 
 
 
@@ -32,15 +33,52 @@ export default function App() {
 
   //notifications
   requestNotificationPermission()
-  },[])
-
-  useEffect(() => {
-    const unsubscribe = messaging().onMessage(async remoteMessage => {
+  
+  //notificatin service
+  const unsubscribe = messaging().onMessage(async remoteMessage => {
       Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+      const {title, body, imageUrl} = remoteMessage.data;
+      await notifee.displayNotification({
+        title,
+        body,
+        android:{
+          channelId:"default",
+          importance: AndroidImportance.HIGH,
+          pressAction:{id:"default"},
+          style:imageUrl?{type:AndroidStyle.BIGPICTURE, picture:imageUrl}: undefined
+        }
+      })
     });
 
-    return unsubscribe;
-  }, []);
+    messaging().setBackgroundMessageHandler(async remoteMessage =>{
+      Alert.alert('A new FCM message backround!', JSON.stringify(remoteMessage));
+      const {title, body, imageUrl} = remoteMessage.data;
+      await notifee.displayNotification({
+        title,
+        body,
+        android:{
+          channelId:"default",
+          importance: AndroidImportance.HIGH,
+          pressAction:{id:"default"},
+          style:imageUrl?{type:AndroidStyle.BIGPICTURE, picture:imageUrl}: undefined
+        }
+      })
+    });
+
+    notifee.onBackgroundEvent(async ({ type, detail }) => {
+      // console.log("Notifee background event:", type, detail);
+        
+      if (type === EventType.PRESS) {
+        console.log("Notification pressed in background", detail.notification);
+      }
+    });
+
+    return() =>{
+      unsubscribe();
+    }
+      
+  },[])
+
 
   return (
     <Provider store={store}>   

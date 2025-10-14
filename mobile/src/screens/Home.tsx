@@ -1,17 +1,11 @@
+import React from 'react';
 import { FlatList, View } from 'react-native';
-import React, { useEffect, useState } from 'react';
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
-import HomeHeader from '../components/Header/HomeHeader';
-import VideoCard from '../components/VideoCard';
-import Slider from '../components/Header/Slider';
-import VideoCardLoader from '../components/Skeleton/VideoCardLoader';
-import { Video } from '../types/video.types';
-import { useGetVideosQuery } from '../redux/api/videoApi';
 import { ActivityIndicator } from 'react-native-paper';
-import EmptyState from '../components/EmptyState';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import HomeHeader from '../components/Header/HomeHeader';
+import HomeSearchInput from '../components/Header/HomeSearchInput';
+import VideoCardLoader from '../components/Skeleton/VideoCardLoader';
+import VideoCard from '../components/VideoCard';
 import { usePaginatedVideos } from '../hooks/usePaginatedVideos';
 
 const Home = () => {
@@ -22,6 +16,7 @@ const Home = () => {
     <SafeAreaView className="bg-white dark:bg-dark">
       <View className="gap-4 mb-2">
         <HomeHeader />
+        <HomeSearchInput />
       </View>
       <FlatList
         data={!isLoading ? videos : [1, 2, 3, 4]}
