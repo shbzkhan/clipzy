@@ -50,7 +50,7 @@ const CommentSheet = (props:SheetProps<"comment-sheet">) => {
       </View>
       <FlatList
        data={!isLoading?comments:[1,2,3,4,5,6,7]}
-       keyExtractor={(item)=>item._id}
+       keyExtractor={(item, index)=>!isLoading?item._id:index}
        contentContainerClassName='px-3 mt-5 gap-5 pb-24'
        showsVerticalScrollIndicator={false}
        bounces={false}

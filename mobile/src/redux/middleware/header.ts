@@ -4,7 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const customBaseQuery =(basePath: string)=> 
   fetchBaseQuery({
-  baseUrl: `${ "http:172.29.230.250:4000/api/v1"}/${basePath}`,
+  baseUrl: `${ "https://clipzy-m3wc.onrender.com/api/v1"}/${basePath}`,
   prepareHeaders: async (headers) => {
     const token = await AsyncStorage.getItem("access-token");
     if (token) {

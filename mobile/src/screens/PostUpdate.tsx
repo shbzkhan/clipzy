@@ -74,7 +74,7 @@ const PostUpdate = () => {
     return <GlobalLoader />;
   }
   return (
-    <SafeAreaView className="flex-1 gap-4 bg-white">
+    <SafeAreaView className="flex-1 gap-4 bg-white dark:bg-dark">
       <CustomHeader title="Update Post" />
       <TouchableOpacity className="relative" onPress={handleThumbPicker}>
         <Image
@@ -101,7 +101,7 @@ const PostUpdate = () => {
       <View className="gap-5 px-3">
         <TextInput
           value={desc}
-          className="px-2 align-top border rounded-md font-rubik h-52 border-primary-300"
+          className="px-2 align-top border rounded-md font-rubik h-52 border-primary-300 dark:text-white"
           placeholder="Write you description"
           multiline
           onChangeText={e => setDesc(e)}

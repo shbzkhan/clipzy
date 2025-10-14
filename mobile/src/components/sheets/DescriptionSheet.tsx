@@ -27,13 +27,10 @@ const DescriptionSheet = (props: SheetProps<'comment-sheet'>) => {
       containerStyle={styles.container}
     >
       <SafeAreaView className="h-full">
-        <View className="flex-row justify-between px-4 py-4 border-b border-gray-500">
-          <Text className="text-xl text-white font-rubik-bold">
-            Description
+        <View className="flex-row justify-center px-4 py-4 border-b border-gray-500">
+          <Text className="text-center text-white text font-rubik-bold">
+            Video Details
           </Text>
-          <TouchableOpacity onPress={() => SheetManager.hide(props.sheetId)}>
-            <Icon name="X" color="white" />
-          </TouchableOpacity>
         </View>
         <ScrollView contentContainerClassName="px-4 gap-3">
           <View className="gap-5 my-6">

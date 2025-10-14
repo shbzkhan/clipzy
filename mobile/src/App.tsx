@@ -36,7 +36,6 @@ export default function App() {
   
   //notificatin service
   const unsubscribe = messaging().onMessage(async remoteMessage => {
-      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
       const {title, body, imageUrl} = remoteMessage.data;
       await notifee.displayNotification({
         title,
@@ -51,7 +50,6 @@ export default function App() {
     });
 
     messaging().setBackgroundMessageHandler(async remoteMessage =>{
-      Alert.alert('A new FCM message backround!', JSON.stringify(remoteMessage));
       const {title, body, imageUrl} = remoteMessage.data;
       await notifee.displayNotification({
         title,

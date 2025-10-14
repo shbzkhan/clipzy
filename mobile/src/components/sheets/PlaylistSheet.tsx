@@ -64,7 +64,7 @@ const PlaylistSheet = (props: SheetProps<'playlist-sheet'>) => {
           Add video in playlists
         </Text>
         <FlatList
-          data={!isLoading ? data.data : [1, 2, 3, 4, 5, 6, 7]}
+          data={!isLoading ? data.data : 1}
           keyExtractor={(video, index) =>
             !isLoading ? video._id : index.toString()
           }

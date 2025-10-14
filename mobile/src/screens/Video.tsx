@@ -131,7 +131,6 @@ const VideoDetails: FC = ({ route }) => {
                   </Text>
                 </Text>
               </TouchableOpacity>
-              <ChannelBox item={data.data.owner}/>
               <ScrollView
                 horizontal
                 contentContainerClassName="gap-4 py-2"
@@ -142,6 +141,17 @@ const VideoDetails: FC = ({ route }) => {
                   icon="Heart"
                   focused={isLiked}
                   handlePress={isLikedHandle}
+                />
+                <CustomVideoSliderCard
+                  title="Comments"
+                  icon="MessageCircle"
+                  handlePress={() => {
+                  SheetManager.show('comment-sheet', {
+                    payload: {
+                      entityId: videoId,
+                    },
+                  });
+                }}
                 />
                 <CustomVideoSliderCard
                   title="Share"
@@ -174,8 +184,9 @@ const VideoDetails: FC = ({ route }) => {
                   handlePress={() => ToastShow('Thanks for Click', 'success')}
                 />
               </ScrollView>
+              <ChannelBox item={data.data.owner}/>
 
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 className="gap-2 px-4 py-3 mt-3 mb-5 bg-secondary rounded-xl dark:bg-dark-100"
                 onPress={() => {
                   SheetManager.show('comment-sheet', {
@@ -197,7 +208,7 @@ const VideoDetails: FC = ({ route }) => {
                     {data?.data?.owner.fullname + ' please write a comment'}
                   </Text>
                 </View>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
           }
         />

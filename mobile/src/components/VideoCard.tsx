@@ -41,7 +41,7 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window')
       ? ['#22313F', '#506A85', '#22313F']
       : ['#ebebeb', '#c5c5c5', '#ebebeb'];
 
-  const [thumbLoading, setThumbLoading] = useState(true);
+  const [thumbLoading, setThumbLoading] = useState(false);
   const thumbnailHeight = SCREEN_WIDTH * 9 / 16
 
   const handleSheetOpen = (video_id: string, owner_id: string) => {
@@ -65,14 +65,14 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window')
         {thumbLoading && (
           <ShimmerPlaceholder
             shimmerColors={shimmerColors}
-            style={{ width: SCREEN_WIDTH, height: thumbnailHeight, borderRadius: 8 }}
+            style={{ width: SCREEN_WIDTH, height: thumbnailHeight,}}
           />
         )}
         <Image
           source={{ uri: thumbnail }}
           onLoadStart={() => setThumbLoading(true)}
           onLoad={() => setThumbLoading(false)}
-          className="w-full aspect-[16/9]"
+          className={`w-full ${thumbLoading ? "h-0":"aspect-[16/9]"}`}
           resizeMode="cover"
         />
 

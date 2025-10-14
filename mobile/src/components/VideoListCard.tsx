@@ -40,7 +40,7 @@ const VideoListCard:FC<videoCardProps> = ({_id, title, thumbnail,views, owner: {
     >
       <Image
       source={{uri: thumbnail}}
-      className='w-48 h-28 rounded-xl'
+      className='w-[45%] aspect-[16/10] rounded-xl'
       resizeMode='cover'
       />
       <View className='flex-1'>

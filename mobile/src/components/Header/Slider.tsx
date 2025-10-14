@@ -14,7 +14,7 @@ const Slider = () => {
       {
         SliderData.map(item=>(
             <TouchableOpacity
-            className='px-3 py-2 bg-secondary rounded-md dark:bg-dark-100'
+            className='px-3 py-2 rounded-md bg-secondary dark:bg-dark-100'
             key={item._id}
             onPress={()=>setSelectedSlider(item.name)}
             >

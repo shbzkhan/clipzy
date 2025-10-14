@@ -17,6 +17,7 @@ const VideoPlayer:FC<VideoById> = ({data}) => {
   const [progress, setProgress] = useState<any>(0)
   const [fullscreen, setFullscreen] = useState<boolean>(false)
 
+  // console.log(progress)
   
   useEffect(()=>{
         if(clicked){
@@ -86,6 +87,8 @@ useEffect(() => {
     setProgress(x);
     if (x.currentTime === x.seekableDuration) {
       setPaushed(true)
+      ref.current.seek(0)
+      setProgress(0)
     }
   }}
   />

@@ -1,12 +1,13 @@
 import { useColorScheme } from "nativewind"
-import { View } from "react-native"
+import { Dimensions, View } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder'
 
 const VideoListCardLoader = () => {
   const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient)
   const { colorScheme } = useColorScheme()
-
+  const { width: SCREEN_WIDTH } = Dimensions.get('window')
+  const cardWidth = SCREEN_WIDTH * 0.45;
   const shimmerColors =
     colorScheme === 'dark'
       ? ['#22313F', '#506A85', '#22313F'] 
@@ -15,7 +16,7 @@ const VideoListCardLoader = () => {
   return (
     <View className="flex-row gap-2">
       <ShimmerPlaceholder
-        style={{ width: 180, height: 98, borderRadius: 12 }}
+        style={{ width: cardWidth, height: cardWidth * 10 / 16, borderRadius: 12 }}
         shimmerColors={shimmerColors}
       />
 

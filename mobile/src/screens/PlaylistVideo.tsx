@@ -38,7 +38,10 @@ const PlaylistVideo: FC<playlistProps> = ({ route }) => {
         contentContainerClassName="gap-6 pt-2 pb-14"
         renderItem={({ item }) =>
           !isLoading ? (
-            <VideoListCard {...item} isPlaylist={data?.data?.owner._id === user?._id} playlistId={data?.data?._id} />
+            <View className="px-3">
+              <VideoListCard {...item} isPlaylist={data?.data?.owner._id === user?._id} playlistId={data?.data?._id} />
+              
+            </View>
           ) : (
             <VideoListCardLoader />
           )
