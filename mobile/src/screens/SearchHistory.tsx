@@ -51,7 +51,7 @@ const filterdata = ()=>{
   await AsyncStorage.setItem("search-history", JSON.stringify(newSearchData));
 };
   return (
-    <SafeAreaView className='flex-1 bg-white px-4 dark:bg-dark'>
+    <SafeAreaView className='flex-1 px-3 bg-white dark:bg-dark'>
       <SearchHeader
       value={search}
       backPress={()=>goBack()}
@@ -63,9 +63,9 @@ const filterdata = ()=>{
       <FlatList
       data={searchData.reverse()}
       keyExtractor={(item)=>item.id}
-      contentContainerClassName='gap-3 mt-4'
+      contentContainerClassName='gap-5 mt-4'
       renderItem={({item})=>(
-         <TouchableOpacity className='pl-3 flex-row justify-between items-center'
+         <TouchableOpacity className='flex-row items-center justify-between pl-3'
          key={item.id}
          onPress={()=>{
            navigate("SearchVideo", item.text)
@@ -74,7 +74,7 @@ const filterdata = ()=>{
          >
               <View className='flex-row gap-6'>
               <Icon name="History" size={26}/>
-              <Text className='font-rubik-medium text-xl dark:text-white'>{item.text}</Text>
+              <Text className='text-xl font-rubik-medium dark:text-white'>{item.text}</Text>
               </View>
               <TouchableOpacity
               onPress={()=>removeSearch(item.id)}
