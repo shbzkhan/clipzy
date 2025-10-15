@@ -140,7 +140,7 @@ const loginUser = asyncHandler(async (req, res) => {
 })
 
 //google login
-const goolgeLogin = asyncHandler(async (req, res)=>{
+const googleLogin = asyncHandler(async (req, res)=>{
     const { idToken, fcmToken } = req.body
     if(!idToken){
         throw new ApiError(400, "id-token is required")
@@ -394,7 +394,7 @@ const updateUserAvatar = asyncHandler(async(req, res)=>{
             req.user._id,
             {
                 $set:{
-                    avatar: avatar.url,
+                    avatar: avatar.secure_url,
                 }
             },{
                 new:true
@@ -451,7 +451,7 @@ const updateUserCoverImage = asyncHandler(async(req, res)=>{
             req.user._id,
             {
                 $set:{
-                    coverImage: coverImage.url
+                    coverImage: coverImage.secure_url
                 }
             },{
                 new:true
@@ -622,7 +622,7 @@ const getUserWatchHistory = asyncHandler(async(req, res)=>{
 export {
     userRegister,
     loginUser,
-    goolgeLogin,
+    googleLogin,
     logoutUser,
     refreshAccessToken,
     getCurrentUser,

@@ -4,7 +4,7 @@ import {
     getCurrentUser,
     getUserChannelProfile,
     getUserWatchHistory,
-    goolgeLogin,
+    googleLogin,
     loginUser, 
     logoutUser, 
     refreshAccessToken, 
@@ -21,7 +21,7 @@ const router = Router();
 
 router.route("/register").post(userRegister)
 router.route("/login").post(loginUser)
-router.route("/google-login").post(goolgeLogin)
+router.route("/google-login").post(googleLogin)
 router.route("/logout").post(auth,logoutUser)
 router.route("/refresh-token").post(refreshAccessToken)
 router.route("/current").get(auth, getCurrentUser)

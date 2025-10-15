@@ -139,8 +139,8 @@ const publishAVideo = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Thumbnail not uploaded");
   }
   const video = await Video.create({
-    videoFile: videoFile.url,
-    thumbnail: thumbnail.url,
+    videoFile: videoFile.secure_url,
+    thumbnail: thumbnail.secure_url,
     title,
     duration: videoFile.duration,
     owner: req.user._id,
@@ -356,7 +356,6 @@ const updateVideo = asyncHandler(async (req, res) => {
   }
 
   const thumbnailLocalPath = req.file?.path;
-  console.log(thumbnailLocalPath);
 
   if (thumbnailLocalPath) {
     const publicId = video.thumbnail.split("/").pop().split(".")[0];
@@ -368,7 +367,7 @@ const updateVideo = asyncHandler(async (req, res) => {
     if (!deletedThum) {
       throw new ApiError(400, "thumbnail not update try again");
     }
-    video.thumbnail = thumbnail.url;
+    video.thumbnail = thumbnail.secure_url;
   }
 
   video.title = title;

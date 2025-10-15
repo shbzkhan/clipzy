@@ -8,10 +8,6 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// import fs from "fs";
-// const serviceAccount = JSON.parse(
-//   fs.readFileSync(path.join(__dirname, "./utils/serviceAccountKey.json"), "utf8")
-// );
 
 const serviceAccountJSON = Buffer.from(process.env.GOOGLE_SERVICE_KEY, "base64").toString("utf8");
 const serviceAccount = JSON.parse(serviceAccountJSON);
