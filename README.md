@@ -588,3 +588,6 @@ If you would like to contribute:
 # License
 
 This project is licensed under the **ISC License**.
+
+### Developed By
+Shahbaz Husain Khan
