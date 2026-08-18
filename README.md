@@ -571,20 +571,6 @@ GOOGLE_WEB_CLIENT_ID=your_google_web_client_id
 - Video Transcoding
 - Adaptive Bitrate Streaming
 - Advanced Recommendation System
-
-# Contributing
-
-Contributions are welcome!
-
-If you would like to contribute:
-
-1. Fork the repository.
-2. Create a new feature branch.
-3. Make your changes.
-4. Commit your changes.
-5. Push the branch.
-6. Open a Pull Request.
-
 # License
 
 This project is licensed under the **ISC License**.
