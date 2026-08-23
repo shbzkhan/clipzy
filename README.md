@@ -578,5 +578,8 @@ This project is licensed under the **ISC License**.
 ### Developed By
 Shahbaz Husain Khan
 
-portfolio 
-https://shahbazkhan.vercel.app/
+Portfolio 
+https://shahbazkhan.vercel.app
+
+Linkedin
+https://www.linkedin.com/in/shahbaz-husain
