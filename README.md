@@ -64,9 +64,9 @@ clipzy/
 └── README.md
 ```
 
-# Backend
+## Backend
 
-## Tech Stack
+### Tech Stack
 
 | Technology | Purpose |
 | ---------- | ------- |
@@ -212,9 +212,9 @@ backend/
 └── package-lock.json
 ```
 
-# Database
+## Database
 
-## Core Entities
+### Core Entities
 
 - **User** – User accounts and channel information
 - **Video** – Uploaded video content
@@ -224,9 +224,9 @@ backend/
 - **Playlist** – User-created playlists
 - **Tweet** – Social posts
 
-# REST API Documentation
+## REST API Documentation
 
-## Authentication & User APIs
+### Authentication & User APIs
 
 | Method | Endpoint | Description |
 |---|---|---|
@@ -241,7 +241,7 @@ backend/
 | `PATCH` | `/api/v1/users/cover-image` | Update cover image |
 | `GET` | `/api/v1/users/c/:username` | Get user channel profile |
 
-## Video APIs
+### Video APIs
 
 | Method | Endpoint | Description |
 |---|---|---|
@@ -252,7 +252,7 @@ backend/
 | `DELETE` | `/api/v1/videos/:videoId` | Delete video |
 | `PATCH` | `/api/v1/videos/toggle/publish/:videoId` | Publish or unpublish video |
 
-## Comments APIs
+### Comments APIs
 
 | Method | Endpoint | Description |
 |---|---|---|
@@ -261,14 +261,14 @@ backend/
 | `PATCH` | `/api/v1/comments/c/:commentId` | Update a comment |
 | `DELETE` | `/api/v1/comments/c/:commentId` | Delete a comment |
 
-## Likes APIs
+### Likes APIs
 
 | Method | Endpoint | Description |
 |---|---|---|
 | `POST` | `/api/v1/likes/toggle/v/:videoId` | Like or unlike a video |
 | `GET` | `/api/v1/likes/videos` | Get liked videos |
 
-## Subscription APIs
+### Subscription APIs
 
 | Method | Endpoint | Description |
 |---|---|---|
@@ -276,7 +276,7 @@ backend/
 | `GET` | `/api/v1/subscriptions/c/:channelId` | Get channel subscribers |
 | `GET` | `/api/v1/subscriptions/u/:subscriberId` | Get subscribed channels |
 
-## Playlist APIs
+### Playlist APIs
 
 | Method | Endpoint | Description |
 |---|---|---|
@@ -288,7 +288,7 @@ backend/
 | `PATCH` | `/api/v1/playlists/add/:videoId/:playlistId` | Add video to playlist |
 | `PATCH` | `/api/v1/playlists/remove/:videoId/:playlistId` | Remove video from playlist |
 
-## Tweet APIs
+### Tweet APIs
 
 | Method | Endpoint | Description |
 |---|---|---|
@@ -297,16 +297,16 @@ backend/
 | `PATCH` | `/api/v1/tweets/:tweetId` | Update a tweet |
 | `DELETE` | `/api/v1/tweets/:tweetId` | Delete a tweet |
 
-## Dashboard APIs
+### Dashboard APIs
 
 | Method | Endpoint | Description |
 |---|---|---|
 | `GET` | `/api/v1/dashboard/stats` | Get dashboard statistics |
 | `GET` | `/api/v1/dashboard/videos` | Get dashboard videos |
 
-# Mobile Application
+## Mobile Application
 
-## Tech Stack
+### Tech Stack
 
 | Technology | Purpose |
 | ---------- | ------- |
@@ -324,7 +324,7 @@ backend/
 | AsyncStorage | Local Storage |
 | React Native Reanimated | Animations |
 
-## Mobile Features
+### Mobile Features
 
 ### Authentication
 
@@ -382,7 +382,7 @@ backend/
 - Loading & Shimmer Effects
 - Modern UI
 
-## Mobile Folder Structure
+### Mobile Folder Structure
 
 ```text
 mobile/
@@ -410,7 +410,7 @@ mobile/
 └── package.json
 ```
 
-# Media Management
+## Media Management
 
 Clipzy uses **Cloudinary** for cloud-based media management.
 
@@ -418,7 +418,7 @@ Videos and images can be uploaded to cloud storage while their URLs and associat
 
 The backend uses **Multer** for handling multipart file uploads and **Cloudinary** for cloud media storage.
 
-# Authentication Flow
+## Authentication Flow
 
 ```text
 User
@@ -442,9 +442,9 @@ Protected Controller
 MongoDB
 ```
 
-# Getting Started
+## Getting Started
 
-## Prerequisites
+### Prerequisites
 
 - Node.js 18+
 - npm or yarn
@@ -455,14 +455,14 @@ MongoDB
 - Cloudinary account
 - Firebase project
 
-## Clone Repository
+### Clone Repository
 
 ```bash
 git clone https://github.com/shbzkhan/clipzy.git
 cd clipzy
 ```
 
-## Backend Setup
+### Backend Setup
 
 ```bash
 cd backend
@@ -472,7 +472,7 @@ npm install
 npm run dev
 ```
 
-## Mobile Setup
+### Mobile Setup
 
 ```bash
 cd mobile
@@ -480,27 +480,27 @@ cd mobile
 npm install
 ```
 
-### Start Metro
+#### Start Metro
 
 ```bash
 npm start
 ```
 
-### Run Android
+#### Run Android
 
 ```bash
 npm run android
 ```
 
-### Run iOS
+#### Run iOS
 
 ```bash
 npm run ios
 ```
 
-# Environment Variables
+## Environment Variables
 
-## Backend `.env`
+### Backend `.env`
 
 ```env
 PORT=8000
@@ -543,7 +543,7 @@ FIREBASE_PRIVATE_KEY=your_firebase_private_key
 | `FIREBASE_PRIVATE_KEY` | Firebase service account private key |
 
 
-## Mobile `.env`
+### Mobile `.env`
 
 ```env
 API_BASE_URL=http://your-backend-url/api
@@ -555,7 +555,7 @@ GOOGLE_WEB_CLIENT_ID=your_google_web_client_id
 | `GOOGLE_WEB_CLIENT_ID` | Google OAuth web client ID used for Google Sign-In |
 
 
-# Future Improvements
+## Future Improvements
 
 - Real-Time Chat
 - Live Streaming
@@ -571,9 +571,6 @@ GOOGLE_WEB_CLIENT_ID=your_google_web_client_id
 - Video Transcoding
 - Adaptive Bitrate Streaming
 - Advanced Recommendation System
-# License
-
-This project is licensed under the **ISC License**.
 
 ### Developed By
 Shahbaz Husain Khan
