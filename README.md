@@ -564,7 +564,6 @@ GOOGLE_WEB_CLIENT_ID=your_google_web_client_id
 - Video Categories
 - Watch History
 - Watch Later
-- Advanced Creator Dashboard
 - Video Analytics
 - Content Moderation
 - Admin Dashboard
